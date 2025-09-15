@@ -5,20 +5,17 @@ import { autoUpdater } from './modules/AutoUpdater';
 import { allowInternalOrigins } from './modules/BlockNotAllowdOrigins';
 import { allowExternalUrls } from './modules/ExternalUrls';
 import { hardwareAccelerationMode } from './modules/HardwareAccelerationModule';
-import { createIpcNotificationModule } from './modules/IpcNotification';
 import { disallowMultipleAppInstance } from './modules/SingleInstanceApp';
 import { createWindowManagerModule } from './modules/WindowManager';
 
 export async function initApp(initConfig: AppInitConfig): Promise<void> {
+  console.warn('🔥 Hot reload test - this should appear when app restarts');
   const moduleRunner = createModuleRunner()
     .init(createWindowManagerModule({ initConfig, openDevTools: import.meta.env.DEV }))
     .init(disallowMultipleAppInstance())
     .init(terminateAppOnLastWindowClose())
     .init(hardwareAccelerationMode({ enable: false }))
     .init(autoUpdater())
-
-    // IPC Notification module
-    .init(createIpcNotificationModule())
 
     // Install DevTools extension if needed
     // .init(chromeDevToolsExtension({extension: 'VUEJS3_DEVTOOLS'}))
