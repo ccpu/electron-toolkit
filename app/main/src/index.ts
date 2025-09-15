@@ -9,7 +9,6 @@ import { disallowMultipleAppInstance } from './modules/SingleInstanceApp';
 import { createWindowManagerModule } from './modules/WindowManager';
 
 export async function initApp(initConfig: AppInitConfig): Promise<void> {
-  console.warn('🔥 Hot reload test - this should appear when app restarts');
   const moduleRunner = createModuleRunner()
     .init(createWindowManagerModule({ initConfig, openDevTools: import.meta.env.DEV }))
     .init(disallowMultipleAppInstance())
