@@ -1,0 +1,25 @@
+{
+  "name": "@internal/electron-versions",
+  "type": "module",
+  "description": "A set of helper functions to get the versions of internal components bundled within Electron",
+  "main": "./index.js",
+  "files": [],
+  "scripts": {
+    "clean": "git clean -xdf .cache .turbo node_modules",
+    "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
+    "format:fix": "prettier --write . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "test": "vitest --run --passWithNoTests",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui"
+  },
+  "prettier": "@internal/prettier-config",
+  "devDependencies": {
+    "@internal/eslint-config": "workspace:*",
+    "@internal/prettier-config": "workspace:*",
+    "@internal/tsconfig": "workspace:*",
+    "@internal/vitest-config": "workspace:*",
+    "vitest": "catalog:dev"
+  }
+}

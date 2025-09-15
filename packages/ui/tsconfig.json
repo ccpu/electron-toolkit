@@ -1,0 +1,4 @@
+{
+  "extends": "@internal/tsconfig/tsconfig.app.json",
+  "include": ["src", "test", "vite.config.ts", "vitest.config.ts"]
+}

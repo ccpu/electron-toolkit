@@ -1,0 +1,10 @@
+{
+  "extends": "@internal/tsconfig/base.json",
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  },
+  "include": ["."],
+  "exclude": ["node_modules"]
+}

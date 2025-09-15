@@ -1,0 +1,5 @@
+{
+  "extends": "@internal/tsconfig/tsconfig.app.json",
+  "include": ["."],
+  "exclude": ["dist", "node_modules"]
+}

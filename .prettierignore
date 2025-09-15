@@ -1,0 +1,25 @@
+# Ignore TypeScript config files to preserve custom formatting
+**/tsconfig*.json
+
+# Common ignore patterns
+node_modules/
+dist/
+build/
+coverage/
+.turbo/
+.next/
+.expo/
+.cache/
+
+# Exclude auto-generated API client from formatting
+api/client/src/
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Ignore swagger.json files
+**/swagger.json
+
+cloudflare-env.d.ts

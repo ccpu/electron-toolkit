@@ -1,0 +1,21 @@
+{
+  "extends": "./tooling/typescript/base.json",
+  "compilerOptions": {
+    "baseUrl": "."
+  },
+  "exclude": [
+    "node_modules",
+    "**/node_modules/*",
+    "**/.cache/*",
+    "**/.expo/*",
+    "**/.nest/*",
+    "**/build/*",
+    "**/babel.config.js",
+    "**/metro.config.js",
+    "**/zip.js",
+    "coverage",
+    "**/dist/*",
+    "**/*.js",
+    "api/server/**/*"
+  ]
+}

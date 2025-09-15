@@ -1,0 +1,38 @@
+{
+  "name": "@internal/eslint-config",
+  "type": "module",
+  "version": "0.3.0",
+  "private": true,
+  "exports": {
+    "./base": "./base.mjs",
+    "./nextjs": "./nextjs.mjs",
+    "./react": "./react.mjs"
+  },
+  "scripts": {
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
+    "format:fix": "prettier --write . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "test": "vitest --run --passWithNoTests",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "@pixpilot/antfu-eslint-config": "^4.0.3",
+    "@pixpilot/eslint-config": "^2.7.3",
+    "@pixpilot/eslint-config-next": "^0.0.24",
+    "@pixpilot/eslint-config-react": "^0.4.5",
+    "eslint-plugin-turbo": "^2.5.6",
+    "prettier-plugin-tailwindcss": "catalog:dev",
+    "typescript-eslint": "catalog:dev"
+  },
+  "devDependencies": {
+    "@internal/prettier-config": "workspace:*",
+    "@internal/tsconfig": "workspace:*",
+    "eslint": "catalog:dev",
+    "prettier": "catalog:dev",
+    "typescript": "catalog:dev"
+  },
+  "prettier": "@internal/prettier-config"
+}

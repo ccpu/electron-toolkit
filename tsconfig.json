@@ -1,0 +1,31 @@
+{
+  "extends": "./tooling/typescript/base.json",
+  "compilerOptions": {
+    "types": ["node", "vite/client", "vitest/globals"],
+    "skipLibCheck": true
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/node_modules/**",
+    "**/.pnpm/**",
+    ".pnpm/**",
+    "**/.cache/**",
+    "**/.expo/**",
+    "**/.nest/**",
+    "**/build/**",
+    "**/babel.config.js",
+    "**/metro.config.js",
+    "**/zip.js",
+    "coverage",
+    "**/dist/**",
+    "**/*.js",
+    "api/server/**/*",
+    "app/main/dist/**/*",
+    "**/vite.config.*",
+    "**/vitest.config.*"
+  ]
+}

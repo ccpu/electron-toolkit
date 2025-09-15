@@ -1,0 +1,37 @@
+{
+  "name": "@internal/utils",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "exports": "./src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "tsc --watch",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
+    "format:fix": "prettier --write . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "test": "vitest --run",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "@internal/eslint-config": "workspace:*",
+    "@internal/prettier-config": "workspace:*",
+    "@internal/tsconfig": "workspace:*",
+    "@internal/vitest-config": "workspace:*",
+    "eslint": "catalog:dev",
+    "prettier": "catalog:dev",
+    "typescript": "catalog:dev"
+  },
+  "prettier": "@internal/prettier-config"
+}

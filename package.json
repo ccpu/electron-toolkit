@@ -1,0 +1,101 @@
+{
+  "name": "react-electron-vite-monorepo-template",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.15.0",
+  "description": "Modern React Electron application template with pnpm monorepo, Turbo, Vite, TypeScript, Tailwind CSS, and Vitest - specifically designed for React applications",
+  "author": {
+    "email": "your-email@example.com",
+    "name": "Your Name",
+    "url": "https://github.com/ccpu"
+  },
+  "homepage": "https://github.com/ccpu/electron-vite-tailwind-monorepo-template",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ccpu/electron-vite-tailwind-monorepo-template.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ccpu/electron-vite-tailwind-monorepo-template/issues"
+  },
+  "keywords": [
+    "electron",
+    "vite",
+    "react",
+    "typescript",
+    "tailwindcss",
+    "vitest",
+    "monorepo",
+    "pnpm",
+    "turbo",
+    "template",
+    "boilerplate",
+    "react-template",
+    "electron-react"
+  ],
+  "main": "scripts/electron-entry.mjs",
+  "engines": {
+    "node": ">=22.14.0",
+    "pnpm": ">=9.6.0"
+  },
+  "scripts": {
+    "start": "node scripts/dev-mode.js",
+    "build": "turbo run build",
+    "create-window": "node scripts/create-new-window.js",
+    "compile": "turbo run build && electron-builder build --config electron-builder.mjs",
+    "test": "turbo run test",
+    "test:e2e": "pnpm run compile && npx playwright test ./tests/e2e.spec.ts",
+    "typecheck": "turbo run typecheck",
+    "tsc:watch": "tsc --noEmit --watch --project tsconfig.json",
+    "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
+    "format:fix": "pnpm format --write",
+    "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache && pnpm lint:root",
+    "lint:fix": "pnpm lint --fix && pnpm lint:root:fix",
+    "lint:root": "eslint tests scripts .github *.json --cache --cache-location .cache/.eslintcache",
+    "lint:root:fix": "pnpm lint:root --fix",
+    "lint:ws": "pnpm dlx sherif@latest",
+    "fix:all": "pnpm format:fix && pnpm lint:fix",
+    "clean:workspaces": "turbo run clean",
+    "clean:workspaces:install": "pnpm clean:workspaces && pnpm install",
+    "deps:update": "npx taze -r -w && pnpm install",
+    "deps:update:major": "npx taze major -r -w && pnpm install",
+    "turbo:gen:init": "pnpm turbo gen init",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@manypkg/get-packages": "^3.1.0",
+    "electron-updater": "^6.6.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@internal/eslint-config": "workspace:*",
+    "@internal/prettier-config": "workspace:*",
+    "@internal/tsconfig": "workspace:*",
+    "@pixpilot/dev-config": "catalog:dev",
+    "@pixpilot/workspace-package-generator": "^1.1.2",
+    "@playwright/test": "1.55.0",
+    "@turbo/gen": "^2.5.6",
+    "@types/node": "catalog:dev",
+    "create-vite": "7.1.1",
+    "electron": "catalog:dev",
+    "electron-builder": "26.0.12",
+    "eslint": "catalog:dev",
+    "glob": "11.0.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.5",
+    "playwright": "^1.55.0",
+    "prettier": "catalog:dev",
+    "prettier-plugin-tailwindcss": "catalog:dev",
+    "turbo": "^2.5.6",
+    "typescript": "catalog:dev",
+    "typescript-eslint": "catalog:dev",
+    "vite": "catalog:dev",
+    "vitest": "catalog:dev"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron"
+    ]
+  },
+  "prettier": "@internal/prettier-config"
+}

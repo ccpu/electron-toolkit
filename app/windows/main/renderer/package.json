@@ -1,0 +1,63 @@
+{
+  "name": "@app/renderer",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": {
+      "default": "./dist/index.html"
+    }
+  },
+  "main": "./dist/index.html",
+  "files": [
+    "dist/**",
+    "package.json"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build --base ./",
+    "preview": "vite preview",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
+    "format:fix": "prettier --write . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "test": "vitest --run",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "@internal/configs": "workspace:*",
+    "@internal/eslint-config": "workspace:*",
+    "@internal/ipc": "workspace:*",
+    "@internal/ui": "workspace:*",
+    "@internal/utils": "workspace:*",
+    "react": "catalog:prod",
+    "react-dom": "catalog:prod",
+    "react-icons": "catalog:prod"
+  },
+  "devDependencies": {
+    "@internal/prettier-config": "workspace:*",
+    "@internal/tsconfig": "workspace:*",
+    "@internal/vite": "workspace:*",
+    "@internal/vitest-config": "workspace:*",
+    "@tailwindcss/vite": "catalog:dev",
+    "@testing-library/jest-dom": "catalog:dev",
+    "@testing-library/react": "catalog:dev",
+    "@testing-library/user-event": "catalog:dev",
+    "@types/react": "catalog:dev",
+    "@types/react-dom": "catalog:dev",
+    "@vitejs/plugin-react": "catalog:dev",
+    "@vitest/coverage-v8": "catalog:dev",
+    "@vitest/ui": "catalog:dev",
+    "eslint": "catalog:dev",
+    "globals": "^16.3.0",
+    "jsdom": "catalog:dev",
+    "minimatch": "^10.0.3",
+    "tailwindcss": "catalog:dev",
+    "typescript": "catalog:dev",
+    "vite": "catalog:dev",
+    "vitest": "catalog:dev"
+  },
+  "prettier": "@internal/prettier-config"
+}

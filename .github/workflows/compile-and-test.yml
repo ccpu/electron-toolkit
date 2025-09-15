@@ -1,0 +1,71 @@
+name: Compile and test
+
+on:
+  workflow_call:
+    inputs:
+      app-version:
+        required: true
+        type: string
+      distribution-channel:
+        required: true
+        type: string
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+env:
+  NODE_NO_WARNINGS: 1
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup-project
+        name: Setup project
+      - run: pnpm run typecheck
+
+  compile:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-latest
+          - ubuntu-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup-project
+        name: Setup project
+
+      - run: pnpm version "${{inputs.app-version}}" --no-git-tag-version
+      - run: pnpm run compile -- -p never
+        env:
+          VITE_DISTRIBUTION_CHANNEL: ${{inputs.distribution-channel}}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - run: pnpm run test
+
+      - run: pnpm run test:e2e
+        if: matrix.os != 'ubuntu-latest'
+
+      - run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- pnpm run test:e2e
+        if: matrix.os == 'ubuntu-latest'
+
+      - uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: 'dist/Electron Vite Monorepo Template*, dist/latest*.yml'
+
+      - name: Upload compiled app
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-${{inputs.distribution-channel}}
+          path: dist

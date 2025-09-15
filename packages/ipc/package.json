@@ -1,0 +1,38 @@
+{
+  "name": "@internal/ipc",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.12.2",
+  "author": "",
+  "license": "MIT",
+  "keywords": [],
+  "exports": "./src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "test": "vitest --run --passWithNoTests",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint",
+    "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore"
+  },
+  "dependencies": {
+    "change-case": "^5.4.4"
+  },
+  "devDependencies": {
+    "@internal/eslint-config": "workspace:*",
+    "@internal/prettier-config": "workspace:*",
+    "@internal/tsconfig": "workspace:*",
+    "@internal/utils": "workspace:*",
+    "@internal/vitest-config": "workspace:*",
+    "@types/node": "catalog:dev",
+    "eslint": "catalog:dev",
+    "typescript": "catalog:dev"
+  },
+  "prettier": "@internal/prettier-config"
+}

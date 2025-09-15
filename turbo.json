@@ -1,0 +1,68 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "ui": "tui",
+  "remoteCache": {
+    "enabled": false,
+    "teamId": ""
+  },
+  "tasks": {
+    "topo": {
+      "dependsOn": ["^topo"]
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".cache/tsbuildinfo.json", "dist/**"]
+    },
+    "dev": {
+      "dependsOn": ["^dev"],
+      "cache": false,
+      "persistent": false
+    },
+    "start": {
+      "dependsOn": ["^start"],
+      "cache": false,
+      "persistent": false
+    },
+    "format": {
+      "outputs": [".cache/.prettiercache"],
+      "outputLogs": "new-only"
+    },
+    "lint": {
+      "dependsOn": ["^topo", "^build"],
+      "outputs": [".cache/.eslintcache"]
+    },
+    "typecheck": {
+      "dependsOn": ["^topo", "^build"],
+      "outputs": [".cache/tsbuildinfo.json"]
+    },
+    "clean": {
+      "cache": false
+    },
+    "test": {
+      "dependsOn": ["^topo", "^build"],
+      "outputs": [".cache/test-results/**"],
+      "cache": false,
+      "persistent": false
+    }
+  },
+  "globalEnv": [
+    "VITE_API_URL",
+    "VITE_APP_VERSION",
+    "VITE_DISTRIBUTION_CHANNEL",
+    "ELECTRON_BUILDER_CACHE",
+    "GH_TOKEN",
+    "NOTARIZE_APPLE_ID",
+    "NOTARIZE_APP_PASSWORD",
+    "CSC_LINK",
+    "CSC_KEY_PASSWORD"
+  ],
+  "globalPassThroughEnv": [
+    "NODE_ENV",
+    "CI",
+    "GITHUB_ACTIONS",
+    "GH_TOKEN",
+    "npm_lifecycle_event",
+    "DEV",
+    "MODE"
+  ]
+}
