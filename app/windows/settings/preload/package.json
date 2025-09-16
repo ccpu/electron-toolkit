@@ -1,5 +1,6 @@
 {
   "name": "@app/settings-preload",
+  "private": true,
   "exports": {
     ".": {
       "types": "./src/index.ts",

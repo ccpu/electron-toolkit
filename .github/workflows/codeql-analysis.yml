@@ -4,7 +4,6 @@ permissions:
   security-events: write
   actions: read
   contents: read
-  issues: write # Required for pixpilot/codeql-scanner@main
 
 on:
   push:
@@ -45,7 +44,7 @@ jobs:
 # -------------------------------------------------------------
 # Alternative: pixpilot/codeql-scanner@main
 # -------------------------------------------------------------
-# Use this ONLY if your repo is private and you do NOT have GitHub Enterprise.
+# Use this ONLY if your repo is private.
 # The official CodeQL workflow (see above) is always preferred for security and
 # integration with GitHub Security UI.
 #
@@ -59,6 +58,5 @@ jobs:
 #       - name: Run CodeQL Scanner
 #         uses: pixpilot/codeql-scanner@main
 #         with:
-#           token: ${{ secrets.GH_TOKEN }}
+#           token: ${{ secrets.GITHUB_TOKEN }}
 #           config-file: .github/codeql/codeql-config.yml
-

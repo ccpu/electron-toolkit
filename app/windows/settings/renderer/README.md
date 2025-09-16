@@ -21,7 +21,7 @@ The renderer package contains the frontend user interface built with **React**, 
 pnpm dev
 
 # Run in specific package
-pnpm --filter @app/renderer dev
+pnpm --filter @app/settings-renderer dev
 ```
 
 ### Testing

@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "packageManager": "pnpm@10.15.0",
-  "description": "Modern React Electron application template with pnpm monorepo, Turbo, Vite, TypeScript, Tailwind CSS, and Vitest - specifically designed for React applications",
+  "description": "A collection of packages to help Electron developers build better applications",
   "author": {
-    "email": "your-email@example.com",
-    "name": "Your Name",
+    "email": "m.doaie@hotmail.com",
+    "name": "Mohamad Doaie",
     "url": "https://github.com/ccpu"
   },
   "homepage": "https://github.com/ccpu/electron-toolkit",
@@ -58,13 +58,15 @@
     "deps:update": "npx taze -r -w && pnpm install",
     "deps:update:major": "npx taze major -r -w && pnpm install",
     "turbo:gen:init": "pnpm turbo gen init",
-    "prepare": "husky"
+    "prepare": "husky",
+    "release": "pnpm changeset"
   },
   "dependencies": {
     "@manypkg/get-packages": "^3.1.0",
     "electron-updater": "^6.6.2"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.5",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@internal/eslint-config": "workspace:*",

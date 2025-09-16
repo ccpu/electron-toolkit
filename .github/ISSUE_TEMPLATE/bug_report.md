@@ -1,28 +1,27 @@
 ---
-name: Bug report
-about: Create a report to help us improve
+name: 'Bug Report'
+about: Report a reproducible bug or regression.
 title: ''
 labels: bug
-assignees: copilot
-
+assignees: ''
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+## Current Behavior
 
-**To Reproduce**
-Steps to reproduce the behavior:
+<!-- Describe how the issue manifests. -->
 
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+## Expected Behavior
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+<!-- Describe what the desired behavior would be. -->
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+## Steps to Reproduce the Problem
 
-**Additional context**
-Add any other context about the problem here.
+1.
+1.
+1.
+
+## Environment
+
+- Version: <!-- Version set in package.json -->
+- Platform: <!-- Win/Mac/Linux -->
+- Node.js Version: <!-- Output of running `node -v` -->

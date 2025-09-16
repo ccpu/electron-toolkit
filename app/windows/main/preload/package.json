@@ -1,6 +1,7 @@
 {
   "name": "@app/preload",
   "type": "module",
+  "private": true,
   "exports": {
     ".": {
       "types": "./src/index.ts",

@@ -1,5 +1,6 @@
 {
   "name": "@app/window-name-preload",
+  "private": true,
   "exports": {
     ".": {
       "types": "./src/index.ts",

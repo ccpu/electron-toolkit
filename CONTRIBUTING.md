@@ -1,4 +1,4 @@
-# Contributing to Electron Vite Monorepo Template
+# Contributing to electron-toolkit
 
 Thank you for your interest in contributing! 🎉
 
@@ -22,10 +22,12 @@ We welcome bug reports, feature requests, documentation improvements, and code c
 
 Monorepo using pnpm workspaces and Turbo:
 
-- `packages/main/`: Electron main process
-- `packages/preload/`: Preload scripts
-- `packages/renderer/`: React frontend
-- `tooling/`: Shared dev tools (ESLint, Prettier, etc.)
+- `app/main/`: Electron main process
+- `app/windows/`: Electron windows (main, settings, etc.)
+- `packages/`: Shared packages (@internal/electron-versions, @internal/ui, @internal/utils, etc.)
+- `packages/electron-ipc-bridge/`: Public IPC library
+- `tooling/`: Shared dev tools (ESLint, Prettier, TypeScript, Vite, etc.)
+- `templates/`: Window templates for creating new windows
 
 ## 🛠️ Key Commands
 

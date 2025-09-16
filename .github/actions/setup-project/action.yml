@@ -12,10 +12,10 @@ inputs:
   registry-url:
     description: npm registry URL
     required: false
-  build-web:
-    description: Whether to run the build step for the web package
+  build:
+    description: Whether to run the build step
     required: false
-    default: 'false'
+    default: 'true'
 
 runs:
   using: composite
@@ -37,6 +37,11 @@ runs:
       shell: bash
 
     - name: Install Turbo CLI
+      if: ${{ inputs.build == 'true' }}
       run: pnpm add -g turbo
       shell: bash
 
+    - name: Build package
+      if: ${{ inputs.build == 'true' }}
+      run: pnpm run build
+      shell: bash

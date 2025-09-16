@@ -8,14 +8,14 @@ A collection of packages to help Electron developers build better applications.
 
 - **`electron-ipc-bridge`** - Type-safe IPC communication library for Electron applications
 
-### Internal Packages
+## Release Workflow
 
-- **`configs`** - Shared configuration files
-- **`electron-versions`** - Electron version utilities
-- **`ipc`** - IPC utilities and helpers
-- **`ui`** - Reusable UI components
-- **`utils`** - General utility functions
+Push to the `main` or `next` branch to trigger automated versioning and publishing via GitHub Actions ([Changeset Autopilot Action](https://github.com/pixpilot/changesets-autopilot)).
 
-## 📄 License
+## Contributing
 
-MIT License - see [LICENSE](./LICENSE) file for details
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## License
+
+[MIT](LICENSE)
