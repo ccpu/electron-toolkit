@@ -18,8 +18,8 @@
   "scripts": {
     "build": "vite build",
     "clean:all": "git clean -xdf .cache .turbo dist node_modules",
-    "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
-    "format:fix": "prettier --write . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
+    "format": "prettier --check . --ignore-path ../../../../.gitignore --ignore-path ../../../../.prettierignore",
+    "format:fix": "prettier --write . --ignore-path ../../../../.gitignore --ignore-path ../../../../.prettierignore",
     "lint": "eslint",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "test": "vitest --run --passWithNoTests",
