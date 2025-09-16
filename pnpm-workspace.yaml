@@ -29,6 +29,7 @@ catalogs:
     typescript: ^5.9.2
     vite: ^7.1.4
     vitest: ^3.2.4
+    rollup: ^4.46.2
   prod:
     react-icons: ^5.5.0
     react: ^19.1.1

@@ -12,7 +12,7 @@
     "dist"
   ],
   "scripts": {
-    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "clean:all": "git clean -xdf .cache .turbo dist node_modules",
     "test": "vitest --run --passWithNoTests",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",

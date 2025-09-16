@@ -54,7 +54,7 @@
     "lint:root:fix": "pnpm lint:root --fix",
     "lint:ws": "pnpm dlx sherif@latest",
     "fix:all": "pnpm format:fix && pnpm lint:fix",
-    "clean:workspaces": "turbo run clean",
+    "clean:workspaces": "turbo run clean:all",
     "clean:workspaces:install": "pnpm clean:workspaces && pnpm install",
     "deps:update": "npx taze -r -w && pnpm install",
     "deps:update:major": "npx taze major -r -w && pnpm install",

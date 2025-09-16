@@ -5,11 +5,14 @@ import { autoUpdater } from './modules/AutoUpdater';
 import { allowInternalOrigins } from './modules/BlockNotAllowdOrigins';
 import { allowExternalUrls } from './modules/ExternalUrls';
 import { hardwareAccelerationMode } from './modules/HardwareAccelerationModule';
+import { createIpcNotificationModule } from './modules/IpcNotification';
 import { disallowMultipleAppInstance } from './modules/SingleInstanceApp';
 import { createWindowManagerModule } from './modules/WindowManager';
 
 export async function initApp(initConfig: AppInitConfig): Promise<void> {
   const moduleRunner = createModuleRunner()
+    // IPC Notification module
+    .init(createIpcNotificationModule())
     .init(createWindowManagerModule({ initConfig, openDevTools: false }))
     .init(disallowMultipleAppInstance())
     .init(terminateAppOnLastWindowClose())

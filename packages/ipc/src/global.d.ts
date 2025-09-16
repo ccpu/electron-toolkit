@@ -1,4 +1,4 @@
-import type { appApi } from '@internal/ipc';
+import type { appApi } from './app-api';
 
 declare global {
   interface Window {

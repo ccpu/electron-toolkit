@@ -1,3 +1,4 @@
+import { appApi } from '@internal/ipc';
 import { useState } from 'react';
 
 export function NotificationDemoCard() {
@@ -11,10 +12,7 @@ export function NotificationDemoCard() {
   const handleCustomNotification = async () => {
     try {
       setIsLoading(true);
-      const result = await window.appApi.invoke.showNotification(
-        customTitle,
-        customMessage,
-      );
+      const result = await appApi.invoke.showNotification(customTitle, customMessage);
       setLastResult(
         result.success ? 'Custom notification sent!' : `Failed: ${result.message}`,
       );
@@ -28,7 +26,7 @@ export function NotificationDemoCard() {
   const handleSimpleNotification = async () => {
     try {
       setIsLoading(true);
-      const result = await window.appApi.invoke.notifyMessage(simpleMessage);
+      const result = await appApi.invoke.notifyMessage(simpleMessage);
       setLastResult(
         result.success ? 'Message notification sent!' : `Failed: ${result.message}`,
       );
@@ -42,7 +40,7 @@ export function NotificationDemoCard() {
   const handleInfoNotification = async () => {
     try {
       setIsLoading(true);
-      const result = await window.appApi.invoke.notifyInfo(infoMessage);
+      const result = await appApi.invoke.notifyInfo(infoMessage);
       setLastResult(
         result.success ? 'Info notification sent!' : `Failed: ${result.message}`,
       );
