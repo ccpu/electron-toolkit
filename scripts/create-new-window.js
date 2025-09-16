@@ -35,7 +35,7 @@ function colorLog(message, color = 'reset') {
 
 // Get project paths
 const projectRoot = path.dirname(__dirname);
-const templateDir = path.join(projectRoot, 'templates', 'app', 'new-window');
+const templateDir = path.join(projectRoot, 'templates', 'windows', 'new-window');
 const windowsDir = path.join(projectRoot, 'app', 'windows');
 
 /**
