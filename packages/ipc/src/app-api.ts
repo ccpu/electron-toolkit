@@ -36,7 +36,7 @@ export const appApi = createIpcBridge({
       return { success: true, message: 'Message notification shown' };
     },
     'notify-info': (_event: IpcMainInvokeEvent, info: string) => {
-      notify('Info', { body: info });
+      notify('Info', { body: `${info}` });
       return { success: true, message: 'Info notification shown' };
     },
   },

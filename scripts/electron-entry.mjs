@@ -1,6 +1,13 @@
 import fs from 'node:fs';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+// import { app } from 'electron';
+
+// app.disableHardwareAcceleration();
+
+// Constants for renderer server waiting
+// const RENDERER_RETRY_ATTEMPTS = 20;
+// const RENDERER_RETRY_DELAY = 500;
 
 // noinspection JSIgnoredPromiseFromCall
 /**
@@ -12,6 +19,38 @@ import { fileURLToPath } from 'node:url';
  * the main module remains simplistic and efficient
  * as it receives initialization instructions rather than direct module imports.
  */
+
+/**
+ * Wait for renderer dev server to be available before proceeding
+ * @param {string} url - The dev server URL to check
+ * @param {number} retries - Number of retry attempts
+ * @param {number} delay - Delay between retries in milliseconds
+ */
+// async function waitForRenderer(
+//   url,
+//   retries = RENDERER_RETRY_ATTEMPTS,
+//   delay = RENDERER_RETRY_DELAY,
+// ) {
+//   for (let i = 0; i < retries; i++) {
+//     try {
+//       const response = await fetch(url);
+//       if (response.ok) {
+//         console.log(`✅ Renderer dev server ready at ${url}`);
+//         return;
+//       }
+//     } catch {
+//       console.log(
+//         `⏳ Waiting for renderer dev server at ${url} (attempt ${i + 1}/${retries})`,
+//       );
+//     }
+//     await new Promise((resolve) => {
+//       setTimeout(resolve, delay);
+//     });
+//   }
+//   throw new Error(
+//     `Renderer dev server at ${url} not responding after ${retries} attempts`,
+//   );
+// }
 
 (async () => {
   const mainDist = await import('../app/main/dist/index.js');
@@ -42,6 +81,7 @@ import { fileURLToPath } from 'node:url';
       }
 
       if (devServerUrl) {
+        // await waitForRenderer(devServerUrl); // Wait for the renderer dev server to be ready
         renderer = new URL(devServerUrl);
       } else {
         // Fallback to built files if dev server URL not available

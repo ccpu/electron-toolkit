@@ -9,6 +9,8 @@ import { appApi } from '@internal/ipc';
 import { BrowserWindow, ipcMain, Menu, MenuItem, shell } from 'electron';
 import { WindowStateManager } from './WindowStateManager';
 
+const WINDOW_LOAD_TIMEOUT_MS = 1000; // 1 second timeout
+
 /**
  * The expected shape of the initConfig object for the WindowManager.
  */
@@ -140,14 +142,41 @@ class WindowManager implements AppModule {
       await browserWindow.loadFile(config.renderer.path);
     }
 
-    // Show the window only when it's ready to avoid a white flash
-    browserWindow.once('ready-to-show', () => {
-      browserWindow.show();
-      if (this.#openDevTools) {
-        // Comment out automatic DevTools opening - users can right-click to open DevTools manually
-        // browserWindow.webContents.openDevTools();
+    const showWindow = () => {
+      if (!browserWindow.isDestroyed()) {
+        browserWindow.show();
       }
+      if (this.#openDevTools) {
+        browserWindow.webContents.openDevTools();
+      }
+    };
+
+    // In createWindow method, after loadURL/loadFile
+    const showTimeout = setTimeout(() => {
+      console.warn(
+        `[WindowManager] ⚠️ Window ${windowName} taking too long to load, showing anyway`,
+      );
+      showWindow();
+    }, WINDOW_LOAD_TIMEOUT_MS);
+
+    browserWindow.once('ready-to-show', () => {
+      clearTimeout(showTimeout);
+      showWindow();
     });
+
+    // Also add error handling
+    browserWindow.webContents.on(
+      'did-fail-load',
+      (_event, _errorCode, errorDescription, validatedURL) => {
+        console.error(
+          `[WindowManager] Failed to load ${validatedURL}:`,
+          errorDescription,
+        );
+        clearTimeout(showTimeout);
+        // Still show the window so user can see the error
+        browserWindow.show();
+      },
+    );
 
     // Close all other windows when the main window is closed
     if (windowName === 'main') {

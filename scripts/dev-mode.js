@@ -7,6 +7,48 @@ import process from 'node:process';
 import { build, createServer } from 'vite';
 import PortManager from './port-manager.js';
 
+// Constants for server health checks
+const SERVER_READY_TIMEOUT = 10000;
+const SERVER_CHECK_INTERVAL = 100;
+
+/**
+ * Wait for all dev servers to be ready by checking their health endpoints
+ * @param {object} rendererServers - Object containing all renderer servers
+ * @param {number} timeout - Timeout in milliseconds
+ */
+async function waitForDevServers(rendererServers, timeout = SERVER_READY_TIMEOUT) {
+  const checks = Object.entries(rendererServers).map(async ([folder, server]) => {
+    const { port } = server.config.server;
+    const url = `http://localhost:${port}`;
+    await waitForServer(url, timeout);
+    console.log(`✅ ${folder} dev server ready at ${url}`);
+  });
+
+  await Promise.all(checks);
+  console.log('🎉 All dev servers are ready!');
+}
+
+/**
+ * Wait for a single server to respond with a successful HTTP status
+ * @param {string} url - Server URL to check
+ * @param {number} timeout - Timeout in milliseconds
+ */
+async function waitForServer(url, timeout = SERVER_READY_TIMEOUT) {
+  const start = Date.now();
+  while (Date.now() - start < timeout) {
+    try {
+      const response = await fetch(url);
+      if (response.ok) return;
+    } catch {
+      // Server not ready yet, continue waiting
+    }
+    await new Promise((resolve) => {
+      setTimeout(resolve, SERVER_CHECK_INTERVAL);
+    });
+  }
+  throw new Error(`Server at ${url} did not become ready within ${timeout}ms`);
+}
+
 /**
  * This script is designed to run multiple packages of your application in a special development mode.
  * To do this, you need to follow a few steps:
@@ -95,6 +137,13 @@ async function main() {
   };
 
   /**
+   * 3.5. Wait for dev servers to be ready before building
+   * This prevents race conditions where Electron launches before renderers are available
+   */
+  console.log('⏳ Waiting for dev servers to be ready...');
+  await waitForDevServers(rendererServers);
+
+  /**
    * 4. Start building all other packages in watch mode.
    * For each of them, we add a plugin provider so that each package can implement its own hot update mechanism.
    * Note: We no longer need to build non-main renderers since they use dev servers now.
@@ -126,47 +175,17 @@ async function main() {
     },
   });
 
-  // Start Electron after all dev servers and builds are ready
-  const { spawn } = await import('node:child_process');
-
-  console.log('\n🚀 Starting Electron application...');
+  console.log(
+    '\n🚀 Electron will be launched by @app/main-process-hot-reload plugin after first main build.',
+  );
   console.log('📦 Dev servers running:');
-
   Object.entries(rendererServers).forEach(([folder, server]) => {
     console.log(`  - ${folder}: http://localhost:${server.config.server.port}`);
   });
 
-  // Use the correct command for Windows
-  const isWindows = process.platform === 'win32';
-  const electronCommand = isWindows ? 'npx.cmd' : 'npx';
-
-  const electronProcess = spawn(
-    electronCommand,
-    ['electron', 'scripts/electron-entry.mjs'],
-    {
-      stdio: 'inherit',
-      shell: isWindows, // Use shell on Windows
-      env: { ...process.env }, // Pass all environment variables including our dev server URLs
-    },
-  );
-
-  electronProcess.on('close', (code) => {
-    console.log(`\n🔚 Electron process exited with code ${code}`);
-    // Close all dev servers and release ports
-    console.log('🧹 Cleaning up dev servers and releasing ports...');
-    Object.values(rendererServers).forEach((server) => {
-      const { port } = server.config.server;
-      server.close();
-      portManager.releasePort(port);
-    });
-    process.exit(code);
-  });
-
-  // Handle Ctrl+C gracefully
+  // Handle Ctrl+C gracefully (close dev servers & release ports)
   process.on('SIGINT', () => {
     console.log('\n🛑 Shutting down development servers...');
-    electronProcess.kill('SIGTERM');
-    // Close all dev servers and release ports
     Object.values(rendererServers).forEach((server) => {
       const { port } = server.config.server;
       server.close();

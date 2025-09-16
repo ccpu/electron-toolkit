@@ -89,8 +89,12 @@ function handleHotReload() {
         return;
       }
 
+      console.log('🚀 Starting main process');
+      console.log('VITE_DEV_SERVER_URL:', process.env.VITE_DEV_SERVER_URL);
+
       /** Kill electron if a process already exists */
       if (electronApp !== null) {
+        console.log('🔁 Restarting Electron app...');
         electronApp.removeListener('exit', process.exit);
         electronApp.kill('SIGINT');
         electronApp = null;
@@ -103,6 +107,14 @@ function handleHotReload() {
 
       /** Stops the watch script when the application has been quit */
       electronApp.addListener('exit', process.exit);
+
+      electronApp.on('error', (error) => {
+        console.error('Electron process error:', error);
+      });
+
+      electronApp.on('exit', (code, signal) => {
+        console.log(`Electron process exited with code ${code} and signal ${signal}`);
+      });
     },
   };
 }
