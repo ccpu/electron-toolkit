@@ -1,14 +1,26 @@
-# @internal/ipc
+# electron-ipc-bridge
 
 A type-safe IPC (Inter-Process Communication) library for Electron applications. This package provides a clean, modular approach to handle both renderer-to-main and main-to-renderer communication with **flexible handler registration**.
 
-## 🚀 Quick Start (Recommended: Schema-Based Approach)
+## 🚀 Quick Start
 
-### 1. Define Your API Schema (Main Process Only)
+### 1. Install the Package
+
+First, install the `electron-ipc-bridge` package:
+
+```bash
+npm install electron-ipc-bridge
+# or
+pnpm add electron-ipc-bridge
+# or
+yarn add electron-ipc-bridge
+```
+
+### 2. Define Your API Schema
 
 ```typescript
-// main-process-api.ts
-import { createIpcSchema, defineArguments, defineHandler } from '@internal/ipc';
+// api-schema.ts
+import { createIpcSchema, defineEvent, defineHandler } from 'electron-ipc-bridge';
 
 export const myApi = createIpcSchema({
   apiKey: 'myApp',
@@ -17,17 +29,17 @@ export const myApi = createIpcSchema({
     'save-settings': defineHandler<[settings: object], { success: boolean }>(),
   },
   events: {
-    'user-updated': defineArguments<[userId: string, userData: object]>(),
-    'settings-changed': defineArguments<[newSettings: object]>(),
+    'user-updated': defineEvent<[userId: string, userData: object]>(),
+    'settings-changed': defineEvent<[newSettings: object]>(),
   },
 });
 ```
 
-### 2. Register Handlers in Different Modules
+### 3. Register Handlers in Different Modules
 
 ```typescript
 // user-service.ts
-import { myApi } from './main-process-api';
+import { myApi } from './api-schema';
 
 myApi.registerHandler(
   'get-user-data',
@@ -41,12 +53,12 @@ myApi.registerHandler(
 );
 ```
 
-### 3. Register in Main Process
+### 4. Setup Main Process
 
 ```typescript
 // main.ts
 import { ipcMain } from 'electron';
-import { myApi } from './main-process-api';
+import { myApi } from './api-schema';
 
 // Import your services to register handlers
 import './user-service';
@@ -59,40 +71,25 @@ myApi.registerMainHandlers(ipcMain);
 myApi.send.userUpdated(browserWindow, 'user123', { name: 'Jane Doe' });
 ```
 
-### 4. Setup Preload Script
+### 5. Setup Preload Script
 
 ```typescript
 // preload.ts
 import { contextBridge, ipcRenderer } from 'electron';
-import { myApi } from './main-process-api';
+import { myApi } from './api-schema';
 
 const api = myApi.exposeInPreload(ipcRenderer);
 contextBridge.exposeInMainWorld('myApp', api);
 ```
 
-### 5. Add Type Definitions for Renderer
-
-Create `global.d.ts` in your renderer source directory:
-
-```typescript
-// global.d.ts
-import type { myApi } from './path/to/main-process-api';
-
-declare global {
-  interface Window {
-    myApp: ReturnType<typeof myApi.exposeInPreload>;
-  }
-}
-
-export {};
-```
-
-### 6. Use in Renderer (Window API Only!)
+### 6. Use in Renderer (Direct Import)
 
 ```typescript
 // renderer component
-const result = await window.myApp.getUserData('user123');
-const unsubscribe = window.myApp.onUserUpdated((userId, userData) => {
+import { myApi } from './api-schema';
+
+const result = await myApi.invoke.getUserData('user123');
+const unsubscribe = myApi.events.onUserUpdated((userId, userData) => {
   console.log('User updated:', userId, userData);
 });
 
@@ -100,160 +97,51 @@ const unsubscribe = window.myApp.onUserUpdated((userId, userData) => {
 useEffect(() => unsubscribe, []);
 ```
 
-## 📊 **Why Use `createIpcSchema` (Recommended)**
-
-### ✅ **Best Practices**
+## 📊 **Why Use `createIpcSchema`**
 
 - **Modular**: Handlers can be registered from different modules
 - **Separation of concerns**: Handler logic lives with related business logic
 - **Testable**: Individual handlers can be easily unit tested
 - **Scalable**: Perfect for large applications with many IPC handlers
 - **Type-safe**: Full TypeScript support with schema definitions
-
-### 🔧 **Legacy Support: `createIpcBridge`**
-
-> ⚠️ **Use with caution in large applications**
-
-```typescript
-import { createIpcBridge, defineArguments } from '@internal/ipc';
-
-export const myApi = createIpcBridge({
-  apiKey: 'myApp',
-  handlers: {
-    'get-user-data': (_event, userId: string) => ({ id: userId, name: 'John Doe' }),
-    'save-settings': (_event, settings: object) => ({ success: true }),
-  },
-  events: {
-    'user-updated': defineArguments<[userId: string, userData: object]>(),
-  },
-});
-```
-
-**Limitations of `createIpcBridge`:**
-
-- ❌ Poor separation of concerns (all handler logic in one file)
-- ❌ Difficult to maintain in large applications
-- ❌ No modular registration capabilities
-- ❌ Handler logic can't live with related business logic
-- ❌ Makes testing individual handlers more complex
-
-## ⚠️ **CRITICAL: Renderer Usage Warning**
-
-**DO NOT import `myApi` directly in renderer processes unless you are not using any Node.js APIs!**
-
-```typescript
-// ❌ NEVER do this in renderer if using Node.js APIs - will cause errors
-import { myApi } from '@internal/ipc';
-
-const result = await myApi.invoke.getUserData('user123');
-```
-
-**✅ Always use `window.apiName` in renderer processes:**
-
-```typescript
-// ✅ CORRECT - Use window API exposed by preload
-const result = await window.myApi.getUserData('user123');
-const unsubscribe = window.myApi.onUserUpdated((userId, userData) => {
-  console.log('User updated:', userId, userData);
-});
-```
+- **Flexible**: Use direct imports or window-based API access
 
 ## API Reference
 
-### `createIpcSchema` (Recommended)
+### `createIpcSchema(config)`
 
-Creates a schema-based IPC API with flexible handler registration.
+Creates a type-safe IPC API with flexible handler registration.
 
 ```typescript
-interface IpcSchemaConfig {
-  apiKey: string;
-  handlers?: Record<string, HandlerSchema>;
-  events?: Record<string, EventSchema>;
-}
-
-const api = createIpcSchema(config);
-api.registerHandler(channel, handler); // Register handlers dynamically
-api.registerMainHandlers(ipcMain); // Register all handlers with IpcMain
+const api = createIpcSchema({
+  apiKey: 'myApp',
+  handlers: {
+    /* handler definitions */
+  },
+  events: {
+    /* event definitions */
+  },
+});
 ```
 
-### `defineHandler`
+### `defineHandler<Args, Return>()`
 
-Define handler argument and return types for schema-based APIs.
+Define handler argument and return types.
 
 ```typescript
-import { defineHandler } from '@internal/ipc';
-
 const handlers = {
   'get-user': defineHandler<[userId: string], { id: string; name: string }>(),
-  'save-file': defineHandler<[path: string, data: Uint8Array], boolean>(),
-  'get-settings': defineHandler<[], Settings>(),
 };
 ```
 
-### `defineArguments`
+### `defineEvent<Args>()`
 
 Define event argument types.
 
 ```typescript
-import { defineArguments } from '@internal/ipc';
-
 const events = {
-  'user-updated': defineArguments<[userId: string, userData: object]>(),
-  'file-saved': defineArguments<[path: string, success: boolean]>(),
+  'user-updated': defineEvent<[userId: string, userData: object]>(),
 };
-```
-
-### `createIpcBridge` (Legacy)
-
-Creates an IPC bridge with immediate handler registration.
-
-```typescript
-interface IpcBridgeConfig {
-  apiKey: string;
-  handlers?: Record<string, Handler>;
-  events?: Record<string, EventSchema>;
-}
-
-type Handler = (event: IpcMainInvokeEvent, ...args: any[]) => any;
-```
-
-## 🔄 Migration from `createIpcBridge` to `createIpcSchema`
-
-### Before (createIpcBridge)
-
-```typescript
-// ❌ Old way - everything in one place
-export const api = createIpcBridge({
-  apiKey: 'myApp',
-  handlers: {
-    'get-user': (_event, id: string) => userService.getUser(id),
-    'get-settings': (_event) => settingsService.getAll(),
-    'save-file': (_event, path: string, data: Uint8Array) => fileService.save(path, data),
-  },
-});
-```
-
-### After (createIpcSchema)
-
-```typescript
-// ✅ New way - modular and scalable
-export const api = createIpcSchema({
-  apiKey: 'myApp',
-  handlers: {
-    'get-user': defineHandler<[id: string], User>(),
-    'get-settings': defineHandler<[], Settings>(),
-    'save-file': defineHandler<[path: string, data: Uint8Array], boolean>(),
-  },
-});
-
-// user-module.ts
-api.registerHandler('get-user', (_event, id) => userService.getUser(id));
-
-// settings-module.ts
-api.registerHandler('get-settings', (_event) => settingsService.getAll());
-
-// file-module.ts
-api.registerHandler('save-file', (_event, path, data) => fileService.save(path, data));
 ```
 
 ## 📝 Common Patterns
@@ -262,9 +150,6 @@ api.registerHandler('save-file', (_event, path, data) => fileService.save(path, 
 
 ```typescript
 // api-schema.ts
-// modules/user-service.ts
-import { appApi } from '../api-schema';
-
 export const appApi = createIpcSchema({
   apiKey: 'myApp',
   handlers: {
@@ -282,11 +167,16 @@ export const appApi = createIpcSchema({
     'settings.set': defineHandler<[key: string, value: any], boolean>(),
   },
   events: {
-    'user.updated': defineArguments<[user: User]>(),
-    'file.changed': defineArguments<[path: string]>(),
-    'settings.changed': defineArguments<[key: string, value: any]>(),
+    'user.updated': defineEvent<[user: User]>(),
+    'file.changed': defineEvent<[path: string]>(),
+    'settings.changed': defineEvent<[key: string, value: any]>(),
   },
 });
+```
+
+```typescript
+// modules/user-service.ts
+import { appApi } from '../api-schema';
 
 appApi.registerHandler(
   'user.get',
@@ -298,18 +188,56 @@ appApi.registerHandler('user.create', async (_event, userData) => {
   appApi.send.userUpdated(mainWindow, user);
   return user;
 });
+```
 
+```typescript
 // modules/file-service.ts
+import { appApi } from '../api-schema';
+
 appApi.registerHandler('file.read', (_event, path) => fs.readFileSync(path, 'utf8'));
 ```
 
 ## Best Practices
 
-1. **Never import IPC bridges in renderer** - always use `window.apiName`
-2. **Create separate API files** - keep IPC definitions in main process files
-3. **Use descriptive API keys** - avoid conflicts between different bridges
-4. **Always cleanup event listeners** - call unsubscribe functions
-5. **Use kebab-case for channel names** - auto-converted to camelCase
+1. **Use descriptive API keys** - avoid conflicts between different bridges
+2. **Create separate API files** - keep IPC definitions in shared files
+3. **Always cleanup event listeners** - call unsubscribe functions
+4. **Use kebab-case for channel names** - auto-converted to camelCase
+5. **Modular handler registration** - register handlers where business logic lives
+
+## Alternative: Window-Based API Access (Optional)
+
+If you prefer to use window-based API access instead of direct imports:
+
+### Add Type Definitions for Renderer
+
+Create `global.d.ts` in your renderer source directory:
+
+```typescript
+// global.d.ts
+import type { myApi } from './path/to/api-schema';
+
+declare global {
+  interface Window {
+    myApp: ReturnType<typeof myApi.exposeInPreload>;
+  }
+}
+
+export {};
+```
+
+### Use Window API in Renderer
+
+```typescript
+// renderer component
+const result = await window.myApp.getUserData('user123');
+const unsubscribe = window.myApp.events.onUserUpdated((userId, userData) => {
+  console.log('User updated:', userId, userData);
+});
+
+// Don't forget to cleanup
+useEffect(() => unsubscribe, []);
+```
 
 ## Testing
 

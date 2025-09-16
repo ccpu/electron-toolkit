@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ccpu/electron-vite-tailwind-monorepo-template.git",
+    "url": "https://github.com/ccpu/electron-toolkit.git",
     "directory": "packages/electron-ipc-bridge"
   },
   "keywords": [],

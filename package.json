@@ -1,5 +1,5 @@
 {
-  "name": "react-electron-vite-monorepo-template",
+  "name": "electron-toolkit",
   "version": "1.0.0",
   "private": true,
   "packageManager": "pnpm@10.15.0",
@@ -9,13 +9,13 @@
     "name": "Your Name",
     "url": "https://github.com/ccpu"
   },
-  "homepage": "https://github.com/ccpu/electron-vite-tailwind-monorepo-template",
+  "homepage": "https://github.com/ccpu/electron-toolkit",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ccpu/electron-vite-tailwind-monorepo-template.git"
+    "url": "https://github.com/ccpu/electron-toolkit.git"
   },
   "bugs": {
-    "url": "https://github.com/ccpu/electron-vite-tailwind-monorepo-template/issues"
+    "url": "https://github.com/ccpu/electron-toolkit/issues"
   },
   "keywords": [
     "electron",
@@ -43,7 +43,6 @@
     "create-window": "node scripts/create-new-window.js",
     "compile": "turbo run build && electron-builder build --config electron-builder.mjs",
     "test": "turbo run test",
-    "test:e2e": "pnpm run compile && npx playwright test ./tests/e2e.spec.ts",
     "typecheck": "turbo run typecheck",
     "tsc:watch": "tsc --noEmit --watch --project tsconfig.json",
     "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",

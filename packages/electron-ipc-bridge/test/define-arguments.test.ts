@@ -1,18 +1,18 @@
 import { describe, expect, it } from 'vitest';
 
-import { defineArguments } from '../src/define-arguments';
+import { defineEvent } from '../src/define-event';
 
-describe('defineArguments', () => {
+describe('defineEvent', () => {
   it('should return undefined', () => {
-    const result = defineArguments<[string, number]>();
+    const result = defineEvent<[string, number]>();
     expect(result).toBeUndefined();
   });
 
   it('should work with different tuple types', () => {
-    const stringArgs = defineArguments<[string]>();
-    const numberArgs = defineArguments<[number, boolean]>();
-    const objectArgs = defineArguments<[{ name: string }, number[]]>();
-    const emptyArgs = defineArguments<[]>();
+    const stringArgs = defineEvent<[string]>();
+    const numberArgs = defineEvent<[number, boolean]>();
+    const objectArgs = defineEvent<[{ name: string }, number[]]>();
+    const emptyArgs = defineEvent<[]>();
 
     expect(stringArgs).toBeUndefined();
     expect(numberArgs).toBeUndefined();
@@ -22,9 +22,9 @@ describe('defineArguments', () => {
 
   it('should maintain type information for TypeScript', () => {
     // This test verifies that TypeScript can infer the correct types
-    const args1 = defineArguments<[string, number]>();
-    const args2 = defineArguments<[boolean, { id: number }]>();
-    const args3 = defineArguments<[string[], Record<string, any>]>();
+    const args1 = defineEvent<[string, number]>();
+    const args2 = defineEvent<[boolean, { id: number }]>();
+    const args3 = defineEvent<[string[], Record<string, any>]>();
 
     // The actual values are undefined, but TypeScript knows the intended types
     expectTypeOf(args1).toBeUndefined();
@@ -33,12 +33,12 @@ describe('defineArguments', () => {
   });
 
   it('should work in event schema definition context', () => {
-    // Example of how defineArguments would be used in real code
+    // Example of how defineEvent would be used in real code
     const eventSchema = {
-      'user-login': defineArguments<[string, { timestamp: number }]>(),
-      'data-update': defineArguments<[any[], boolean]>(),
-      'error-occurred': defineArguments<[Error]>(),
-      'simple-notification': defineArguments<[string]>(),
+      'user-login': defineEvent<[string, { timestamp: number }]>(),
+      'data-update': defineEvent<[any[], boolean]>(),
+      'error-occurred': defineEvent<[Error]>(),
+      'simple-notification': defineEvent<[string]>(),
     };
 
     expect(eventSchema['user-login']).toBeUndefined();
@@ -66,12 +66,12 @@ describe('defineArguments', () => {
 
     type ComplexEventData = [User, string[], { metadata: Record<string, unknown> }];
 
-    const complexArgs = defineArguments<ComplexEventData>();
+    const complexArgs = defineEvent<ComplexEventData>();
     expect(complexArgs).toBeUndefined();
   });
 
   it('should work with readonly arrays', () => {
-    const readonlyArgs = defineArguments<readonly [string, number]>();
+    const readonlyArgs = defineEvent<readonly [string, number]>();
     expect(readonlyArgs).toBeUndefined();
   });
 });

@@ -1,24 +1,12 @@
-import type { IpcMainInvokeEvent, IpcRenderer } from 'electron';
+import type { IpcRenderer } from 'electron';
 import { describe, expect, it, vi } from 'vitest';
 
-import { createIpcBridge } from '../src/create-ipc-bridge';
 import { createIpcSchema } from '../src/create-ipc-schema';
 import { defineHandler } from '../src/define-handler';
 
 describe('iPC Enhancement Integration Tests', () => {
   it('should demonstrate the dual API approach working together', () => {
-    // 1. Simple approach with createIpcBridge (existing functionality)
-    const simpleApi = createIpcBridge({
-      apiKey: 'simple',
-      handlers: {
-        'get-data': (_event: IpcMainInvokeEvent, id: string) => ({ id, data: 'test' }),
-      },
-      events: {
-        'data-updated': ['object'] as const,
-      },
-    });
-
-    // 2. New flexible approach with createIpcSchema
+    // New flexible approach with createIpcSchema
     const complexApi = createIpcSchema({
       apiKey: 'complex',
       handlers: {
@@ -31,20 +19,11 @@ describe('iPC Enhancement Integration Tests', () => {
       },
     });
 
-    // Both APIs should have similar properties, but different capabilities
-    expect(simpleApi).toHaveProperty('registerMainHandlers');
-    expect(simpleApi).toHaveProperty('exposeInPreload');
-    expect(simpleApi).toHaveProperty('invoke');
-    expect(simpleApi).toHaveProperty('send');
-
     expect(complexApi).toHaveProperty('registerHandler'); // New capability
     expect(complexApi).toHaveProperty('registerMainHandlers');
     expect(complexApi).toHaveProperty('exposeInPreload');
     expect(complexApi).toHaveProperty('invoke');
     expect(complexApi).toHaveProperty('send');
-
-    // Simple API handlers are already registered
-    expect(typeof simpleApi.invoke.getData).toBe('function');
 
     // Complex API requires handler registration
     expect(typeof complexApi.registerHandler).toBe('function');
@@ -140,14 +119,6 @@ describe('iPC Enhancement Integration Tests', () => {
   });
 
   it('should maintain type safety across both APIs', () => {
-    // Type safety test - these should compile without errors
-    const bridgeApi = createIpcBridge({
-      apiKey: 'bridge-types',
-      handlers: {
-        'get-user': (_event: IpcMainInvokeEvent, id: number) => ({ id, name: 'John' }),
-      },
-    });
-
     const schemaApi = createIpcSchema({
       apiKey: 'schema-types',
       handlers: {
@@ -155,15 +126,10 @@ describe('iPC Enhancement Integration Tests', () => {
       },
     });
 
-    // Both should have properly typed invoke methods
-    type BridgeInvoker = typeof bridgeApi.invoke.getUser;
     type SchemaInvoker = typeof schemaApi.invoke.getUser;
 
-    // Type assertions - should compile
-    const bridgeInvoker: BridgeInvoker = bridgeApi.invoke.getUser;
     const schemaInvoker: SchemaInvoker = schemaApi.invoke.getUser;
 
-    expect(typeof bridgeInvoker).toBe('function');
     expect(typeof schemaInvoker).toBe('function');
 
     // Register the schema handler
@@ -172,62 +138,12 @@ describe('iPC Enhancement Integration Tests', () => {
     expect(typeof schemaApi.registerHandler).toBe('function');
   });
 
-  it('should provide backward compatibility for existing createIpcBridge usage', () => {
-    // All existing patterns should continue to work
-    const handlersOnly = createIpcBridge({
-      apiKey: 'handlers-only',
-      handlers: {
-        'test-handler': (_event: IpcMainInvokeEvent, data: string) => data.toUpperCase(),
-      },
-    });
-
-    const eventsOnly = createIpcBridge({
-      apiKey: 'events-only',
-      events: {
-        'test-event': ['string'] as const,
-      },
-    });
-
-    const combined = createIpcBridge({
-      apiKey: 'combined',
-      handlers: {
-        'test-handler': (_event: IpcMainInvokeEvent, data: string) => data,
-      },
-      events: {
-        'test-event': ['string'] as const,
-      },
-    });
-
-    // All should have the expected properties
-    expect(handlersOnly).toHaveProperty('registerMainHandlers');
-    expect(handlersOnly).toHaveProperty('invoke');
-    expect(handlersOnly.invoke).toHaveProperty('testHandler');
-
-    expect(eventsOnly).toHaveProperty('registerMainHandlers'); // no-op for backward compatibility
-    expect(eventsOnly).toHaveProperty('send');
-    expect(eventsOnly).not.toHaveProperty('invoke'); // events-only shouldn't have invoke
-
-    expect(combined).toHaveProperty('registerMainHandlers');
-    expect(combined).toHaveProperty('invoke');
-    expect(combined).toHaveProperty('send');
-  });
-
   it('should allow preload exposure to work identically', () => {
     const mockIpcRenderer: IpcRenderer = {
       invoke: vi.fn(),
       on: vi.fn(),
       removeListener: vi.fn(),
     } as any;
-
-    const bridgeApi = createIpcBridge({
-      apiKey: 'preload-bridge',
-      handlers: {
-        'get-data': (_event: IpcMainInvokeEvent, id: string) => ({ id }),
-      },
-      events: {
-        'data-changed': ['string'] as const,
-      },
-    });
 
     const schemaApi = createIpcSchema({
       apiKey: 'preload-schema',
@@ -242,25 +158,15 @@ describe('iPC Enhancement Integration Tests', () => {
     // Register schema handler
     schemaApi.registerHandler('get-data', (_event, id) => ({ id }));
 
-    // Both should expose identical APIs for preload
-    const bridgePreload = bridgeApi.exposeInPreload(mockIpcRenderer);
     const schemaPreload = schemaApi.exposeInPreload(mockIpcRenderer);
-
-    // Both should have the same structure
-    expect(bridgePreload).toHaveProperty('getData');
-    expect(bridgePreload).toHaveProperty('invoke');
-    expect(bridgePreload.invoke).toHaveProperty('getData');
-    expect(bridgePreload).toHaveProperty('onDataChanged');
 
     expect(schemaPreload).toHaveProperty('getData');
     expect(schemaPreload).toHaveProperty('invoke');
     expect(schemaPreload.invoke).toHaveProperty('getData');
-    expect(schemaPreload).toHaveProperty('onDataChanged');
+    expect(schemaPreload.events).toHaveProperty('onDataChanged');
 
     // Both should be functions
-    expect(typeof bridgePreload.getData).toBe('function');
     expect(typeof schemaPreload.getData).toBe('function');
-    expect(typeof bridgePreload.invoke.getData).toBe('function');
     expect(typeof schemaPreload.invoke.getData).toBe('function');
   });
 });

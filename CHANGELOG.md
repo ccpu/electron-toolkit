@@ -140,4 +140,4 @@ This template is based on the excellent [vite-electron-builder](https://github.c
 
 ---
 
-**Full Changelog**: https://github.com/ccpu/electron-vite-tailwind-monorepo-template/commits/main
+**Full Changelog**: https://github.com/ccpu/electron-toolkit/commits/main

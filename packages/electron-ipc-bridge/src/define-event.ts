@@ -4,6 +4,6 @@
  * without providing actual values.
  */
 
-export function defineArguments<T extends readonly any[]>(): T {
+export function defineEvent<T extends readonly any[]>(): T {
   return undefined as unknown as T;
 }

@@ -1,6 +1,6 @@
 // Part 5: Your API definition
 
-import { createIpcSchema, defineHandler } from 'electron-ipc-bridge';
+import { createIpcSchema, defineEvent, defineHandler } from 'electron-ipc-bridge';
 
 export const appApi = createIpcSchema({
   apiKey: 'appApi',
@@ -14,5 +14,9 @@ export const appApi = createIpcSchema({
       { success: true; message: string }
     >(),
     'notify-info': defineHandler<[info: string], { success: true; message: string }>(),
+  },
+  events: {
+    'user-updated': defineEvent<[userId: string, userData: object]>(),
+    'settings-changed': defineEvent<[newSettings: object]>(),
   },
 });

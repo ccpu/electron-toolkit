@@ -1,5 +1,5 @@
 import type { IpcMainInvokeEvent } from 'electron';
-import type { RemoveFirstParameter, ToCamelCase } from './ipc-common';
+import type { ToCamelCase } from './ipc-common';
 
 // Handler-related types
 export interface IpcHandlers {
@@ -7,14 +7,6 @@ export interface IpcHandlers {
 }
 
 export type IpcInvoker = (...data: any[]) => Promise<any>;
-
-export interface IpcInvokers {
-  [EventName: string]: IpcInvoker;
-}
-
-export type TransformHandlersToInvokers<T extends IpcHandlers> = {
-  [K in keyof T as ToCamelCase<K & string>]: RemoveFirstParameter<T[K]>;
-};
 
 // Schema-based handler types
 export interface HandlerSchema<
@@ -34,11 +26,6 @@ export type SchemaToHandler<T extends HandlerSchema> = (
   event: IpcMainInvokeEvent,
   ...args: T['args']
 ) => T['return'] | Promise<T['return']>;
-
-// Convert handler schemas to actual handlers object
-export type TransformSchemasToHandlers<T extends IpcHandlerSchemas> = {
-  [K in keyof T]: SchemaToHandler<T[K]>;
-};
 
 // Convert handler schemas to invokers
 export type TransformSchemasToInvokers<T extends IpcHandlerSchemas> = {

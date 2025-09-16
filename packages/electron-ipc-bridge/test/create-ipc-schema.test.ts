@@ -54,7 +54,7 @@ describe('createIpcSchema', () => {
     expect(schema).toHaveProperty('exposeInPreload');
     expect(schema).toHaveProperty('send');
     expect(schema).not.toHaveProperty('registerHandler');
-    // createIpcSchema provides these for consistency, unlike createIpcBridge which removes them
+    // createIpcSchema provides these for consistency
     expect(schema).toHaveProperty('registerMainHandlers');
     expect(schema).toHaveProperty('registerInvokers');
     expect(schema).not.toHaveProperty('invoke'); // No invoke for events-only
@@ -80,7 +80,7 @@ describe('createIpcSchema', () => {
     expect(schema).toHaveProperty('exposeInPreload');
     expect(schema).toHaveProperty('invoke');
     expect(schema).toHaveProperty('send');
-    expect(schema).toHaveProperty('onUserUpdated');
+    expect(schema.events).toHaveProperty('onUserUpdated');
   });
 
   it('should allow registering handlers after creation', () => {
