@@ -1,16 +1,26 @@
 {
-  "name": "electron-ipc-bridge",
+  "name": "electron-ipc-typesafe",
   "type": "module",
   "version": "0.0.0",
   "packageManager": "pnpm@10.12.2",
+  "description": "A type-safe IPC (Inter-Process Communication) library for Electron applications with flexible handler registration",
   "author": "",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/ccpu/electron-toolkit.git",
-    "directory": "packages/electron-ipc-bridge"
+    "directory": "packages/electron-ipc-typesafe"
   },
-  "keywords": [],
+  "keywords": [
+    "electron",
+    "ipc",
+    "inter-process-communication",
+    "type-safe",
+    "bridge",
+    "electron-toolkit",
+    "renderer",
+    "main-process"
+  ],
   "exports": "./src/index.ts",
   "files": [
     "dist"

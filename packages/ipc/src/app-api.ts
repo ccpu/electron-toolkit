@@ -1,6 +1,6 @@
 // Part 5: Your API definition
 
-import { createIpcSchema, defineEvent, defineHandler } from 'electron-ipc-bridge';
+import { createIpcSchema, defineEvent, defineHandler } from 'electron-ipc-typesafe';
 
 export const appApi = createIpcSchema({
   apiKey: 'appApi',

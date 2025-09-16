@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "change-case": "^5.4.4",
-    "electron-ipc-bridge": "workspace:*"
+    "electron-ipc-typesafe": "workspace:*"
   },
   "devDependencies": {
     "@internal/eslint-config": "workspace:*",

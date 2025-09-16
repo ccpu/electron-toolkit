@@ -1,4 +1,4 @@
-# electron-ipc-bridge
+# electron-ipc-typesafe
 
 A type-safe IPC (Inter-Process Communication) library for Electron applications. This package provides a clean, modular approach to handle both renderer-to-main and main-to-renderer communication with **flexible handler registration**.
 
@@ -6,21 +6,21 @@ A type-safe IPC (Inter-Process Communication) library for Electron applications.
 
 ### 1. Install the Package
 
-First, install the `electron-ipc-bridge` package:
+First, install the `electron-ipc-typesafe` package:
 
 ```bash
-npm install electron-ipc-bridge
+npm install electron-ipc-typesafe
 # or
-pnpm add electron-ipc-bridge
+pnpm add electron-ipc-typesafe
 # or
-yarn add electron-ipc-bridge
+yarn add electron-ipc-typesafe
 ```
 
 ### 2. Define Your API Schema
 
 ```typescript
 // api-schema.ts
-import { createIpcSchema, defineEvent, defineHandler } from 'electron-ipc-bridge';
+import { createIpcSchema, defineEvent, defineHandler } from 'electron-ipc-typesafe';
 
 export const myApi = createIpcSchema({
   apiKey: 'myApp',

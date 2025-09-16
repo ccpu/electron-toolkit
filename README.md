@@ -6,7 +6,7 @@ A collection of packages to help Electron developers build better applications.
 
 ### Public Package
 
-- **`electron-ipc-bridge`** - Type-safe IPC communication library for Electron applications
+- **`electron-ipc-typesafe`** - Type-safe IPC communication library for Electron applications
 
 ## Release Workflow
 

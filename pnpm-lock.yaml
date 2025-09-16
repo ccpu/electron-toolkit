@@ -490,7 +490,7 @@ importers:
         specifier: catalog:dev
         version: 5.9.2
 
-  packages/electron-ipc-bridge:
+  packages/electron-ipc-typesafe:
     dependencies:
       change-case:
         specifier: ^5.4.4
@@ -547,9 +547,9 @@ importers:
       change-case:
         specifier: ^5.4.4
         version: 5.4.4
-      electron-ipc-bridge:
+      electron-ipc-typesafe:
         specifier: workspace:*
-        version: link:../electron-ipc-bridge
+        version: link:../electron-ipc-typesafe
     devDependencies:
       '@internal/eslint-config':
         specifier: workspace:*

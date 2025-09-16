@@ -1,5 +1,5 @@
 ---
-'electron-ipc-bridge': major
+'electron-ipc-typesafe': major
 ---
 
 new release
