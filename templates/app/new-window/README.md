@@ -4,7 +4,7 @@ This template provides the basic structure for creating a new window in your Ele
 
 ## Quick Start
 
-1. Copy this entire `templates/new-window` directory to `app/windows/[your-window-name]`
+1. Copy this entire `templates/app/new-window` directory to `app/windows/[your-window-name]`
 2. Update the window name in the files (replace `window-name-` placeholders)
 3. Customize the React content in `renderer/src/App.tsx`
 4. The window will be automatically detected and available via IPC
