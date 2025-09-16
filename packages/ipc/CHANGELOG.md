@@ -1,5 +1,12 @@
 # @internal/ipc
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies
+  - electron-ipc-typesafe@1.2.0
+
 ## 0.0.2
 
 ### Patch Changes

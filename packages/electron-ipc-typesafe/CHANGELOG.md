@@ -1,5 +1,11 @@
 # electron-ipc-bridge
 
+## 1.2.0
+
+### Minor Changes
+
+- deleted exports for `create-ipc-events` and `create-ipc-handlers`
+
 ## 1.1.0
 
 ### Minor Changes
