@@ -1,29 +1,34 @@
-import type { AppInitConfig } from '../AppInitConfig.js';
-import type { AppModule } from '../AppModule.js';
-import type { ModuleContext } from '../ModuleContext.js';
+import type { ModuleContext, WindowConfig } from './types/common';
+import type { ZoomManager } from './ZoomManager';
 
-import type { WindowConfig } from '../types/common.js';
 import process from 'node:process';
 
-import { appApi } from '@internal/ipc';
-import { BrowserWindow, ipcMain, Menu, MenuItem, shell } from 'electron';
+import { BrowserWindow } from 'electron';
 import { WindowStateManager } from './WindowStateManager';
+import { createZoomManager } from './ZoomManager';
 
 const WINDOW_LOAD_TIMEOUT_MS = 1000; // 1 second timeout
 
 /**
  * The expected shape of the initConfig object for the WindowManager.
  */
-interface WindowManagerInitConfig extends AppInitConfig {
+interface WindowManagerInitConfig {
+  mainWindowName?: string;
   windows: Record<string, WindowConfig>;
 }
 
-class WindowManager implements AppModule {
+class WindowManager {
   /** Stores all available window configurations, keyed by name. */
   readonly #windowConfigs: Record<string, WindowConfig>;
   readonly #openDevTools: boolean;
   /** Stores WindowStateManager instances for each window type */
   readonly #windowStateManagers: Record<string, WindowStateManager> = {};
+  /** Registry of created windows, keyed by window name */
+  readonly #windowRegistry: Map<string, BrowserWindow> = new Map();
+  /** Handles zoom functionality for all windows */
+  readonly #zoomManager: ZoomManager;
+
+  readonly #mainWindowName: string;
 
   constructor({
     initConfig,
@@ -34,6 +39,8 @@ class WindowManager implements AppModule {
   }) {
     this.#windowConfigs = initConfig.windows;
     this.#openDevTools = openDevTools;
+    this.#zoomManager = createZoomManager();
+    this.#mainWindowName = initConfig.mainWindowName ?? 'main';
   }
 
   /**
@@ -46,14 +53,14 @@ class WindowManager implements AppModule {
         path: process.cwd(),
       });
     }
-    return this.#windowStateManagers[windowName];
+    return this.#windowStateManagers[windowName]!;
   }
 
-  async enable({ app }: ModuleContext): Promise<void> {
+  async init({ app }: ModuleContext): Promise<BrowserWindow> {
     await app.whenReady();
 
     // Create the main window on startup
-    await this.restoreOrCreateWindow(true);
+    const mainWindow = await this.restoreOrCreateWindow(true);
 
     // Re-create main window if app is activated and no windows are open (macOS)
     app.on('activate', () => this.restoreOrCreateWindow(true));
@@ -61,22 +68,30 @@ class WindowManager implements AppModule {
     // Focus existing main window if a second instance is started
     app.on('second-instance', () => this.restoreOrCreateWindow(true));
 
-    appApi.registerMainHandlers(ipcMain);
+    return mainWindow;
+  }
 
-    // Set up the IPC handler to listen for requests to open new windows
-    ipcMain.handle('open-window', async (_event, windowName: string) => {
-      if (this.#windowConfigs[windowName]) {
-        await this.createWindow(windowName);
-      } else {
-        console.error(
-          `[WindowManager] Error: Window configuration for "${windowName}" not found.`,
-        );
-      }
-    });
+  async getWindow(windowName: string): Promise<BrowserWindow | undefined> {
+    const registeredWindow = this.#windowRegistry.get(windowName);
 
-    // Create and set the application menu
-    const menu = Menu.buildFromTemplate(this.createMenuTemplate());
-    Menu.setApplicationMenu(menu);
+    // If we have a registered window and it's not destroyed, return it
+    if (registeredWindow && !registeredWindow.isDestroyed()) {
+      return registeredWindow;
+    }
+
+    // If the registered window was destroyed, clean it up from registry
+    if (registeredWindow && registeredWindow.isDestroyed()) {
+      this.#windowRegistry.delete(windowName);
+    }
+
+    return undefined;
+  }
+
+  async openWindow(name: string): Promise<BrowserWindow> {
+    const win = (await this.getWindow(name)) ?? (await this.createWindow(name));
+    win.show();
+    win.focus();
+    return win;
   }
 
   /**
@@ -109,31 +124,25 @@ class WindowManager implements AppModule {
         sandbox: false, // Required for preload scripts that use Node.js APIs
         webviewTag: false,
         preload: config.preload.path,
+        // Give each window its own session to prevent zoom sharing
+        partition: `window-${windowName}`,
+        zoomFactor: windowStateManager.zoomFactor ?? 1.0,
       },
     });
 
     // Manage window state (this will set up event listeners for state changes)
     windowStateManager.manage(browserWindow);
 
-    // Enable context menu for development (allows right-click -> Inspect Element)
-    if (this.#openDevTools) {
-      browserWindow.webContents.on('context-menu', (_event, params) => {
-        // In development mode, show context menu with DevTools option
-        const contextMenu = new Menu();
+    // Register window with zoom manager for zoom functionality
+    this.#zoomManager.registerWindow(browserWindow, windowName, windowStateManager);
 
-        // Add inspect element option
-        contextMenu.append(
-          new MenuItem({
-            label: 'Inspect Element',
-            click: () => {
-              browserWindow.webContents.inspectElement(params.x, params.y);
-            },
-          }),
-        );
+    // Register window in our registry for quick lookup
+    this.#windowRegistry.set(windowName, browserWindow);
 
-        contextMenu.popup({ window: browserWindow });
-      });
-    }
+    // Clean up registry when window is closed
+    browserWindow.on('closed', () => {
+      this.#windowRegistry.delete(windowName);
+    });
 
     // Load the renderer content
     if (config.renderer instanceof URL) {
@@ -179,7 +188,7 @@ class WindowManager implements AppModule {
     );
 
     // Close all other windows when the main window is closed
-    if (windowName === 'main') {
+    if (windowName === this.#mainWindowName) {
       browserWindow.on('closed', () => {
         const allWindows = BrowserWindow.getAllWindows();
         for (const win of allWindows) {
@@ -198,11 +207,11 @@ class WindowManager implements AppModule {
    * @param show - Whether to show and focus the window.
    */
   async restoreOrCreateWindow(show = false): Promise<BrowserWindow> {
-    // This logic is specific to the "main" window
-    let window = BrowserWindow.getAllWindows().find((w) => !w.isDestroyed());
+    // Try to get the main window from our registry first
+    let window = await this.getWindow(this.#mainWindowName);
 
     if (window === undefined) {
-      window = await this.createWindow('main');
+      window = await this.createWindow(this.#mainWindowName);
     }
 
     if (!show) {
@@ -217,75 +226,9 @@ class WindowManager implements AppModule {
     return window;
   }
 
-  /**
-   * Creates the menu template for the application.
-   */
-  private createMenuTemplate(): Electron.MenuItemConstructorOptions[] {
-    return [
-      {
-        label: 'File',
-        submenu: [
-          {
-            label: 'Settings',
-            accelerator: 'CmdOrCtrl+,',
-            click: () => {
-              this.createWindow('settings');
-            },
-          },
-          { type: 'separator' },
-          {
-            label: 'Quit',
-            role: 'quit',
-          },
-        ],
-      },
-      {
-        label: 'Edit',
-        submenu: [
-          { role: 'undo' },
-          { role: 'redo' },
-          { type: 'separator' },
-          { role: 'cut' },
-          { role: 'copy' },
-          { role: 'paste' },
-          { role: 'selectAll' },
-        ],
-      },
-      {
-        label: 'View',
-        submenu: [
-          { role: 'reload' },
-          { role: 'forceReload' },
-          { role: 'toggleDevTools' },
-          { type: 'separator' },
-          { role: 'resetZoom' },
-          { role: 'zoomIn' },
-          { role: 'zoomOut' },
-          { type: 'separator' },
-          { role: 'togglefullscreen' },
-        ],
-      },
-      {
-        label: 'Window',
-        submenu: [{ role: 'minimize' }, { role: 'close' }],
-      },
-      {
-        label: 'Help',
-        submenu: [
-          {
-            label: 'Learn More',
-            click: () => {
-              shell.openExternal('https://example.com');
-            },
-          },
-        ],
-      },
-    ];
+  getZoomMenuItems(): Electron.MenuItemConstructorOptions[] {
+    return this.#zoomManager.getZoomMenuItems();
   }
 }
 
-export function createWindowManagerModule(
-  ...args: ConstructorParameters<typeof WindowManager>
-): WindowManager {
-  return new WindowManager(...args);
-}
+export { WindowManager };

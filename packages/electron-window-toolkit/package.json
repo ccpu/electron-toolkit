@@ -1,0 +1,69 @@
+{
+  "name": "electron-window-toolkit",
+  "type": "module",
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.12.2",
+  "description": "A simple toolkit for managing Electron windows with state persistence and zoom functionality",
+  "author": "Mohamad Doaie <m.doaie@hotmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ccpu/electron-toolkit.git",
+    "directory": "packages/electron-window-toolkit"
+  },
+  "keywords": [
+    "electron",
+    "window",
+    "state",
+    "persistence",
+    "zoom",
+    "management",
+    "typescript"
+  ],
+  "exports": "./src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.cjs"
+      }
+    },
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts"
+  },
+  "scripts": {
+    "prepublishOnly": "pnpm run clean && pnpm run build",
+    "clean": "rimraf dist",
+    "build": "pnpm run clean && rollup -c",
+    "test": "vitest --run --passWithNoTests",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint",
+    "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore"
+  },
+  "peerDependencies": {
+    "electron": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@internal/eslint-config": "workspace:*",
+    "@internal/prettier-config": "workspace:*",
+    "@internal/rollup-config": "workspace:*",
+    "@internal/tsconfig": "workspace:*",
+    "@internal/vitest-config": "workspace:*",
+    "@types/node": "catalog:dev",
+    "@vitest/coverage-v8": "^3.2.4",
+    "eslint": "catalog:dev",
+    "rimraf": "catalog:dev",
+    "rollup": "catalog:dev",
+    "typescript": "catalog:dev"
+  },
+  "prettier": "@internal/prettier-config"
+}

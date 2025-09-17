@@ -54,6 +54,9 @@ catalogs:
     prettier-plugin-tailwindcss:
       specifier: ^0.6.14
       version: 0.6.14
+    rimraf:
+      specifier: ^5.0.5
+      version: 5.0.10
     rollup:
       specifier: ^4.46.2
       version: 4.50.0
@@ -127,6 +130,12 @@ importers:
       '@types/node':
         specifier: catalog:dev
         version: 24.3.1
+      '@vitest/coverage-v8':
+        specifier: catalog:dev
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: catalog:dev
+        version: 3.2.4(vitest@3.2.4)
       create-vite:
         specifier: 7.1.1
         version: 7.1.1
@@ -184,6 +193,9 @@ importers:
       '@internal/ipc':
         specifier: workspace:*
         version: link:../../packages/ipc
+      electron-window-toolkit:
+        specifier: workspace:*
+        version: link:../../packages/electron-window-toolkit
     devDependencies:
       '@internal/electron-versions':
         specifier: '*'
@@ -542,6 +554,42 @@ importers:
         specifier: catalog:dev
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.3.1)(@vitest/ui@3.2.4)(jiti@2.5.1)(jsdom@26.1.0)(lightningcss@1.30.1)(terser@5.44.0)(yaml@2.8.1)
 
+  packages/electron-window-toolkit:
+    devDependencies:
+      '@internal/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint
+      '@internal/prettier-config':
+        specifier: workspace:*
+        version: link:../../tooling/prettier
+      '@internal/rollup-config':
+        specifier: workspace:*
+        version: link:../../tooling/rollup
+      '@internal/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
+      '@internal/vitest-config':
+        specifier: workspace:*
+        version: link:../../tooling/vitest
+      '@types/node':
+        specifier: catalog:dev
+        version: 24.3.1
+      '@vitest/coverage-v8':
+        specifier: ^3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      eslint:
+        specifier: catalog:dev
+        version: 9.34.0(jiti@2.5.1)
+      rimraf:
+        specifier: catalog:dev
+        version: 5.0.10
+      rollup:
+        specifier: catalog:dev
+        version: 4.50.0
+      typescript:
+        specifier: catalog:dev
+        version: 5.9.2
+
   packages/ipc:
     dependencies:
       change-case:
@@ -652,6 +700,128 @@ importers:
       typescript:
         specifier: catalog:dev
         version: 5.9.2
+
+  templates/windows/new-window/preload:
+    dependencies:
+      '@internal/ipc':
+        specifier: workspace:*
+        version: link:../../../../packages/ipc
+    devDependencies:
+      '@internal/electron-versions':
+        specifier: workspace:*
+        version: link:../../../../packages/electron-versions
+      '@internal/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../tooling/eslint
+      '@internal/prettier-config':
+        specifier: workspace:*
+        version: link:../../../../tooling/prettier
+      '@internal/tsconfig':
+        specifier: workspace:*
+        version: link:../../../../tooling/typescript
+      '@internal/vite':
+        specifier: workspace:*
+        version: link:../../../../tooling/vite
+      '@internal/vitest-config':
+        specifier: workspace:*
+        version: link:../../../../tooling/vitest
+      mlly:
+        specifier: 1.8.0
+        version: 1.8.0
+      typescript:
+        specifier: catalog:dev
+        version: 5.9.2
+      vite:
+        specifier: catalog:dev
+        version: 7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(yaml@2.8.1)
+
+  templates/windows/new-window/renderer:
+    dependencies:
+      '@internal/configs':
+        specifier: workspace:*
+        version: link:../../../../packages/configs
+      '@internal/ipc':
+        specifier: workspace:*
+        version: link:../../../../packages/ipc
+      '@internal/ui':
+        specifier: workspace:*
+        version: link:../../../../packages/ui
+      '@internal/utils':
+        specifier: workspace:*
+        version: link:../../../../packages/utils
+      react:
+        specifier: catalog:prod
+        version: 19.1.1
+      react-dom:
+        specifier: catalog:prod
+        version: 19.1.1(react@19.1.1)
+    devDependencies:
+      '@internal/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../tooling/eslint
+      '@internal/prettier-config':
+        specifier: workspace:*
+        version: link:../../../../tooling/prettier
+      '@internal/tsconfig':
+        specifier: workspace:*
+        version: link:../../../../tooling/typescript
+      '@internal/vite':
+        specifier: workspace:*
+        version: link:../../../../tooling/vite
+      '@internal/vitest-config':
+        specifier: workspace:*
+        version: link:../../../../tooling/vitest
+      '@tailwindcss/vite':
+        specifier: catalog:dev
+        version: 4.1.13(vite@7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(yaml@2.8.1))
+      '@testing-library/jest-dom':
+        specifier: catalog:dev
+        version: 6.8.0
+      '@testing-library/react':
+        specifier: catalog:dev
+        version: 16.3.0(@testing-library/dom@10.4.1)(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      '@testing-library/user-event':
+        specifier: catalog:dev
+        version: 14.6.1(@testing-library/dom@10.4.1)
+      '@types/react':
+        specifier: catalog:dev
+        version: 19.1.12
+      '@types/react-dom':
+        specifier: catalog:dev
+        version: 19.1.9(@types/react@19.1.12)
+      '@vitejs/plugin-react':
+        specifier: catalog:dev
+        version: 5.0.2(vite@7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(yaml@2.8.1))
+      '@vitest/coverage-v8':
+        specifier: catalog:dev
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: catalog:dev
+        version: 3.2.4(vitest@3.2.4)
+      eslint:
+        specifier: catalog:dev
+        version: 9.34.0(jiti@2.5.1)
+      globals:
+        specifier: ^16.3.0
+        version: 16.3.0
+      jsdom:
+        specifier: catalog:dev
+        version: 26.1.0
+      minimatch:
+        specifier: ^10.0.3
+        version: 10.0.3
+      tailwindcss:
+        specifier: catalog:dev
+        version: 4.1.12
+      typescript:
+        specifier: catalog:dev
+        version: 5.9.2
+      vite:
+        specifier: catalog:dev
+        version: 7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.44.0)(yaml@2.8.1)
+      vitest:
+        specifier: catalog:dev
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@24.3.1)(@vitest/ui@3.2.4)(jiti@2.5.1)(jsdom@26.1.0)(lightningcss@1.30.1)(terser@5.44.0)(yaml@2.8.1)
 
   tooling/eslint:
     dependencies:
@@ -5241,6 +5411,10 @@ packages:
   rimraf@3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
     deprecated: Rimraf versions prior to v4 are no longer supported
+    hasBin: true
+
+  rimraf@5.0.10:
+    resolution: {integrity: sha512-l0OE8wL34P4nJH/H2ffoaniAokM2qSmrtXHmlpvYr5AVVX8msAyW0l8NVJFDxlSK4u3Uh/f41cQheDVdnYijwQ==}
     hasBin: true
 
   rimraf@6.0.1:
@@ -11551,6 +11725,10 @@ snapshots:
   rimraf@3.0.2:
     dependencies:
       glob: 7.2.3
+
+  rimraf@5.0.10:
+    dependencies:
+      glob: 10.4.5
 
   rimraf@6.0.1:
     dependencies:

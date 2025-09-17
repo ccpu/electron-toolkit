@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import process from 'node:process';
 import { getPackages } from '@manypkg/get-packages';
@@ -81,8 +81,16 @@ export default async () => {
     extraResources,
     generateUpdatesFilesForAllChannels: true,
     linux: {
+      icon: 'buildResources/icon.png',
       target: ['deb'],
     },
+    win: {
+      icon: 'buildResources/icon.ico',
+    },
+    mac: {
+      icon: 'buildResources/icon.icns',
+    },
+
     /**
      * It is recommended to avoid using non-standard characters such as spaces in artifact names,
      * as they can unpredictably change during deployment, making them impossible to locate and download for update.

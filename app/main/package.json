@@ -26,7 +26,8 @@
   "dependencies": {
     "@app/preload": "*",
     "@app/renderer": "*",
-    "@internal/ipc": "workspace:*"
+    "@internal/ipc": "workspace:*",
+    "electron-window-toolkit": "workspace:*"
   },
   "devDependencies": {
     "@internal/electron-versions": "*",

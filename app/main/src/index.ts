@@ -6,8 +6,8 @@ import { allowInternalOrigins } from './modules/BlockNotAllowdOrigins';
 import { allowExternalUrls } from './modules/ExternalUrls';
 import { hardwareAccelerationMode } from './modules/HardwareAccelerationModule';
 import { createIpcNotificationModule } from './modules/IpcNotification';
+import { createWindowManagerModule } from './modules/MainWindowManager';
 import { disallowMultipleAppInstance } from './modules/SingleInstanceApp';
-import { createWindowManagerModule } from './modules/WindowManager';
 
 export async function initApp(initConfig: AppInitConfig): Promise<void> {
   const moduleRunner = createModuleRunner()

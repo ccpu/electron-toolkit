@@ -15,6 +15,7 @@ interface WindowState {
   height: number;
   isMaximized?: boolean;
   isFullScreen?: boolean;
+  zoomFactor?: number; // Store zoom level for each window
   displayBounds?: {
     x: number;
     y: number;
@@ -31,10 +32,12 @@ interface WindowStateManagerOptions {
   fullScreen?: boolean;
   defaultWidth?: number;
   defaultHeight?: number;
+  defaultZoomFactor?: number;
 }
 
 const DEFAULT_WIDTH = 800;
 const DEFAULT_HEIGHT = 600;
+const DEFAULT_ZOOM_FACTOR = 1.0;
 const EVENT_HANDLING_DELAY = 100;
 const JSON_INDENT = 2;
 const DISPLAY_MARGIN = 100;
@@ -58,6 +61,7 @@ class WindowStateManager {
       fullScreen: options.fullScreen !== false,
       defaultWidth: options.defaultWidth || DEFAULT_WIDTH,
       defaultHeight: options.defaultHeight || DEFAULT_HEIGHT,
+      defaultZoomFactor: options.defaultZoomFactor || DEFAULT_ZOOM_FACTOR,
     };
 
     this.fullStoreFileName = path.join(this.config.path, this.config.file);
@@ -289,12 +293,17 @@ class WindowStateManager {
       this.state.isMaximized = targetWindow.isMaximized();
       this.state.isFullScreen = targetWindow.isFullScreen();
 
+      // Only update zoom factor if window is not destroyed and webContents is accessible
+      if (!targetWindow.isDestroyed() && targetWindow.webContents) {
+        this.state.zoomFactor = targetWindow.webContents.getZoomFactor();
+      }
+
       // Update display information
       const currentDisplay = screen.getDisplayMatching(winBounds);
       this.state.displayBounds = currentDisplay.bounds;
       this.state.displayId = currentDisplay.id;
     } catch {
-      // Ignore errors when window is closed
+      // Ignore errors when window is closed - preserve existing zoom factor
     }
   }
 
@@ -406,6 +415,13 @@ class WindowStateManager {
       win.setFullScreen(true);
     }
 
+    // Restore zoom factor
+    if (this.state.zoomFactor !== undefined) {
+      win.webContents.setZoomFactor(this.state.zoomFactor);
+    } else {
+      win.webContents.setZoomFactor(this.config.defaultZoomFactor);
+    }
+
     win.on('resize', this.stateChangeHandler);
     win.on('move', this.stateChangeHandler);
     win.on('close', this.closeHandler);
@@ -457,6 +473,21 @@ class WindowStateManager {
 
   public get isFullScreen(): boolean | undefined {
     return this.state.isFullScreen;
+  }
+
+  public get zoomFactor(): number {
+    return this.state.zoomFactor || this.config.defaultZoomFactor;
+  }
+
+  public setZoomFactor(zoomFactor: number): void {
+    this.state.zoomFactor = zoomFactor;
+    if (this.winRef && !this.winRef.isDestroyed()) {
+      this.winRef.webContents.setZoomFactor(zoomFactor);
+    }
+  }
+
+  public updateZoomFactorState(zoomFactor: number): void {
+    this.state.zoomFactor = zoomFactor;
   }
 
   public resetStateToDefaultPublic(): void {
