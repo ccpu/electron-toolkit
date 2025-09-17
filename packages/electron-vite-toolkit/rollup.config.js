@@ -39,6 +39,20 @@ const config = {
       preserveModulesRoot: 'src',
     },
   ],
+  external: [
+    // Node.js built-in modules
+    /^node:/u,
+    // Electron
+    'electron',
+    // Dependencies that should not be bundled
+    'vite',
+    '@vitejs/plugin-react',
+    '@tailwindcss/vite',
+    // Workspace dependencies
+    '@internal/electron-versions',
+    // Other runtime dependencies that should remain external
+    'mlly',
+  ],
   plugins: [
     typescript({
       tsconfig: './tsconfig.build.json',
