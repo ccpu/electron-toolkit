@@ -1,5 +1,5 @@
 {
   "extends": "@internal/tsconfig/tsconfig.app.json",
-  "include": ["src/**/*"],
+  "include": ["src", "test", "*.ts", "*.js"],
   "exclude": ["dist", "node_modules", "**/dist/**/*"]
 }
