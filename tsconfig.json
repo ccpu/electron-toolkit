@@ -21,6 +21,7 @@
     "**/metro.config.js",
     "**/zip.js",
     "coverage",
+    "dist",
     "**/dist/**",
     "**/*.js",
     "api/server/**/*",

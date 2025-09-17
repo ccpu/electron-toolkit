@@ -1,59 +1,25 @@
 /* eslint-disable no-await-in-loop */
-/* eslint-disable no-restricted-properties */
-
+import type { ViteDevServer } from 'vite';
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { build, createServer } from 'vite';
-import PortManager from './port-manager.js';
-
-// Constants for server health checks
-const SERVER_READY_TIMEOUT = 10000;
-const SERVER_CHECK_INTERVAL = 100;
+import { waitForDevServers } from './utils/dev-server-wait.js';
+import PortManager from './utils/port-manager.js';
 
 /**
- * Wait for all dev servers to be ready by checking their health endpoints
- * @param {object} rendererServers - Object containing all renderer servers
- * @param {number} timeout - Timeout in milliseconds
+ * Configuration options for development mode
  */
-async function waitForDevServers(rendererServers, timeout = SERVER_READY_TIMEOUT) {
-  const checks = Object.entries(rendererServers).map(async ([folder, server]) => {
-    const { port } = server.config.server;
-    const url = `http://localhost:${port}`;
-    await waitForServer(url, timeout);
-    console.log(`✅ ${folder} dev server ready at ${url}`);
-  });
-
-  await Promise.all(checks);
-  console.log('🎉 All dev servers are ready!');
-}
-
-/**
- * Wait for a single server to respond with a successful HTTP status
- * @param {string} url - Server URL to check
- * @param {number} timeout - Timeout in milliseconds
- */
-async function waitForServer(url, timeout = SERVER_READY_TIMEOUT) {
-  const start = Date.now();
-  while (Date.now() - start < timeout) {
-    try {
-      const response = await fetch(url);
-      if (response.ok) return;
-    } catch {
-      // Server not ready yet, continue waiting
-    }
-    await new Promise((resolve) => {
-      setTimeout(resolve, SERVER_CHECK_INTERVAL);
-    });
-  }
-  throw new Error(`Server at ${url} did not become ready within ${timeout}ms`);
+export interface DevModeOptions {
+  /** Path to the windows directory. Defaults to 'app/windows' */
+  windowsPath?: string;
 }
 
 /**
  * This script is designed to run multiple packages of your application in a special development mode.
  * To do this, you need to follow a few steps:
  */
-async function main() {
+async function main(options: DevModeOptions = {}): Promise<void> {
   /**
    * 1. We create a few flags to let everyone know that we are in development mode.
    */
@@ -65,13 +31,14 @@ async function main() {
    * 2. We create development servers for all renderer windows.
    * Each window gets its own dev server for hot reload.
    */
-  const windowsPath = path.resolve('app', 'windows');
+  const { windowsPath = path.resolve('app', 'windows') } = options;
   const windowsFolders = fs
     .readdirSync(windowsPath, { withFileTypes: true })
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => dirent.name);
 
-  const rendererServers = {};
+  /** @type {Record<string, ViteDevServer>} */
+  const rendererServers: Record<string, ViteDevServer> = {};
   const portManager = new PortManager();
 
   console.log('🔍 Discovering renderer windows and allocating ports...');
@@ -86,7 +53,6 @@ async function main() {
       // Use random ports if RANDOM_PORTS env var is set, otherwise use sequential ports
 
       const availablePort =
-        // eslint-disable-next-line turbo/no-undeclared-env-vars
         process.env.RANDOM_PORTS === 'true'
           ? await portManager.getRandomAvailablePort()
           : await portManager.findAvailablePort();
@@ -196,4 +162,5 @@ async function main() {
   });
 }
 
-main();
+// Export the main function but don't call it automatically
+export { main as startDevMode };

@@ -1,15 +1,5 @@
 import type { WindowConfig } from './types';
 
-export interface AppInitConfig {
-  preload: {
-    path: string;
-  };
-
-  renderer:
-    | {
-        path: string;
-      }
-    | URL;
-
+export interface AppInitConfig extends WindowConfig {
   windows: Record<string, WindowConfig>;
 }

@@ -29,6 +29,7 @@
     "@tailwindcss/vite": "catalog:dev",
     "@types/node": "catalog:dev",
     "@vitejs/plugin-react": "catalog:dev",
+    "electron-vite-toolkit": "workspace:*",
     "eslint": "catalog:dev",
     "mlly": "1.8.0",
     "rimraf": "^6.0.1",

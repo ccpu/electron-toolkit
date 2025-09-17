@@ -1,3 +1,4 @@
+import type { Plugin, ResolvedConfig } from 'vite';
 import { resolveModuleExportNames } from 'mlly';
 
 /**
@@ -16,10 +17,8 @@ import { resolveModuleExportNames } from 'mlly';
  * // _virtual_browser.mjs
  * export const someVar = globalThis[<hash>] // 'my-value'
  * ```
- *
- * @returns {import('vite').Plugin} - Vite plugin for mocking exposed preload APIs
  */
-export function electronPreloadExposer() {
+export function electronPreloadExposer(): Plugin {
   const virtualModuleId = 'virtual:browser.js';
   const resolvedVirtualModuleId = `\0${virtualModuleId}`;
   let projectRoot = '';
@@ -29,14 +28,14 @@ export function electronPreloadExposer() {
     /**
      * @param {import('vite').ResolvedConfig} config
      */
-    configResolved(config) {
+    configResolved(config: ResolvedConfig) {
       // Store the root directory for later use
       projectRoot = config.root;
     },
     /**
      * @param {string} id
      */
-    resolveId(id) {
+    resolveId(id: string): string | null {
       if (id.endsWith(virtualModuleId)) {
         return resolvedVirtualModuleId;
       }
@@ -45,7 +44,7 @@ export function electronPreloadExposer() {
     /**
      * @param {string} id
      */
-    async load(id) {
+    async load(id: string): Promise<string | null> {
       if (id === resolvedVirtualModuleId) {
         // Use the Vite project root to resolve the index.ts file
         const { pathToFileURL } = await import('node:url');

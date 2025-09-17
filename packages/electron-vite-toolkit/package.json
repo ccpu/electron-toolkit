@@ -1,0 +1,83 @@
+{
+  "name": "electron-vite-toolkit",
+  "type": "module",
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.12.2",
+  "description": "A comprehensive toolkit for building Electron applications with Vite, featuring multi-window support, hot reload, and TypeScript integration",
+  "author": "Mo doaie <m.doaie@hotmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/ccpu/electron-toolkit/tree/main/packages/electron-vite-toolkit#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ccpu/electron-toolkit.git",
+    "directory": "packages/electron-vite-toolkit"
+  },
+  "bugs": {
+    "url": "https://github.com/ccpu/electron-toolkit/issues"
+  },
+  "keywords": [
+    "electron",
+    "vite",
+    "toolkit",
+    "development",
+    "build-tool",
+    "hot-reload",
+    "dev-server",
+    "multi-window",
+    "typescript"
+  ],
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./vite": "./dist/vite/index.mjs",
+    "./windows-config": "./dist/build-windows-config.mjs",
+    "./vite/renderer": "./dist/vite/renderer.mjs",
+    "./vite/preload": "./dist/vite/preload.mjs",
+    "./vite/main": "./dist/vite/main.mjs"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "electron-vite-toolkit": "./bin/electron-vite-toolkit.js"
+  },
+  "files": [
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
+    "bin/**/*",
+    "dist/**/*"
+  ],
+  "scripts": {
+    "prepublishOnly": "pnpm run clean && pnpm run build",
+    "build": "rollup -c",
+    "clean": "git clean -xdf .cache .turbo dist",
+    "clean:all": "git clean -xdf .cache .turbo dist node_modules",
+    "test": "vitest --run --passWithNoTests",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint",
+    "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore"
+  },
+  "dependencies": {
+    "mlly": "1.8.0"
+  },
+  "devDependencies": {
+    "@internal/electron-versions": "workspace:*",
+    "@internal/eslint-config": "workspace:*",
+    "@internal/prettier-config": "workspace:*",
+    "@internal/rollup-config": "workspace:*",
+    "@internal/tsconfig": "workspace:*",
+    "@internal/vitest-config": "workspace:*",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.4",
+    "@tailwindcss/vite": "^4.1.13",
+    "@types/node": "catalog:dev",
+    "@vitejs/plugin-react": "^5.0.3",
+    "eslint": "catalog:dev",
+    "rollup": "catalog:dev",
+    "typescript": "catalog:dev"
+  },
+  "prettier": "@internal/prettier-config"
+}

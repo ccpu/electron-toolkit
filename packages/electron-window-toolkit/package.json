@@ -63,6 +63,7 @@
     "eslint": "catalog:dev",
     "rimraf": "catalog:dev",
     "rollup": "catalog:dev",
+    "tslib": "^2.8.1",
     "typescript": "catalog:dev"
   },
   "prettier": "@internal/prettier-config"

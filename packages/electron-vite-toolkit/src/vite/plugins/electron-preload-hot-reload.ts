@@ -1,19 +1,15 @@
+import type { ConfigEnv, Plugin, UserConfig, ViteDevServer } from 'vite';
+
 /**
  * Implement Electron webview reload when some file was changed
- * @returns {import('vite').Plugin} - Vite plugin for hot reload in Electron preload scripts
  */
-export function electronPreloadHotReload() {
-  /** @type {import('vite').ViteDevServer|null} */
-  let rendererWatchServer = null;
+export function electronPreloadHotReload(): Plugin {
+  let rendererWatchServer: ViteDevServer | null = null;
 
   return {
     name: 'electron-preload-hot-reload',
 
-    /**
-     * @param {import('vite').UserConfig} config
-     * @param {import('vite').ConfigEnv} env
-     */
-    config(config, env) {
+    config(config: UserConfig, env: ConfigEnv) {
       if (env.mode !== 'development') {
         return;
       }
@@ -23,7 +19,7 @@ export function electronPreloadHotReload() {
       }
 
       const rendererWatchServerProvider = config.plugins.find(
-        (p) =>
+        (p: any) =>
           p &&
           typeof p === 'object' &&
           'name' in p &&

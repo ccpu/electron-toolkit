@@ -38,7 +38,7 @@
     "pnpm": ">=9.6.0"
   },
   "scripts": {
-    "start": "node scripts/dev-mode.js",
+    "start": "turbo run build --filter=electron-vite-toolkit && electron-vite-toolkit",
     "build": "turbo run build",
     "create-window": "node scripts/create-new-window.js",
     "compile": "turbo run build && electron-builder build --config electron-builder.mjs",
@@ -55,7 +55,7 @@
     "lint:root:fix": "pnpm lint:root --fix",
     "lint:ws": "pnpm dlx sherif@latest",
     "fix:all": "pnpm format:fix && pnpm lint:fix",
-    "clean:workspaces": "turbo run clean:all",
+    "clean:workspaces": "turbo run clean:all && git clean -xdf .cache .turbo",
     "clean:workspaces:install": "pnpm clean:workspaces && pnpm install",
     "deps:update": "npx taze -r -w && pnpm install",
     "deps:update:major": "npx taze major -r -w && pnpm install",
@@ -84,6 +84,7 @@
     "create-vite": "7.1.1",
     "electron": "catalog:dev",
     "electron-builder": "26.0.12",
+    "electron-vite-toolkit": "workspace:*",
     "eslint": "catalog:dev",
     "glob": "11.0.3",
     "husky": "^9.1.7",
