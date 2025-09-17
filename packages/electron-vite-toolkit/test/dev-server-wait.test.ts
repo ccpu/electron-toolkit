@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { waitForDevServers, waitForServer } from '../src/utils/dev-server-wait';
 
 // Mock global fetch
@@ -17,6 +17,9 @@ describe('dev-server-wait', () => {
 
   afterEach(() => {
     vi.useRealTimers();
+    vi.restoreAllMocks();
+    // Clear any remaining timers to prevent unhandled rejections
+    vi.clearAllTimers();
   });
 
   describe('waitForServer', () => {
@@ -77,17 +80,21 @@ describe('dev-server-wait', () => {
     });
 
     it('should timeout when server never becomes ready', async () => {
+      // Temporarily use real timers for this test to avoid unhandled rejections
+      vi.useRealTimers();
+      
       // Arrange
       vi.mocked(fetch).mockRejectedValue(new Error('Connection refused'));
       const url = `http://localhost:${TEST_PORT}`;
+      const shortTimeout = 100; // Use a much shorter timeout for faster test execution
 
       // Act & Assert
-      const promise = waitForServer(url, TEST_TIMEOUT);
-      await vi.runAllTimersAsync();
-
-      await expect(promise).rejects.toThrow(
-        `Server at ${url} did not become ready within ${TEST_TIMEOUT}ms`,
+      await expect(waitForServer(url, shortTimeout)).rejects.toThrow(
+        `Server at ${url} did not become ready within ${shortTimeout}ms`,
       );
+      
+      // Restore fake timers for other tests
+      vi.useFakeTimers();
     });
   });
 
@@ -131,6 +138,9 @@ describe('dev-server-wait', () => {
     });
 
     it('should fail if any server fails to start', async () => {
+      // Temporarily use real timers for this test to avoid unhandled rejections
+      vi.useRealTimers();
+      
       // Arrange
       const mockSuccessResponse = { ok: true };
 
@@ -146,12 +156,14 @@ describe('dev-server-wait', () => {
           config: { server: { port: TEST_PORT + 1 } },
         },
       } as any;
+      
+      const shortTimeout = 100; // Use a much shorter timeout for faster test execution
 
       // Act & Assert
-      const promise = waitForDevServers(rendererServers, TEST_TIMEOUT);
-      await vi.runAllTimersAsync();
-
-      await expect(promise).rejects.toThrow();
+      await expect(waitForDevServers(rendererServers, shortTimeout)).rejects.toThrow();
+      
+      // Restore fake timers for other tests
+      vi.useFakeTimers();
     });
   });
 });
