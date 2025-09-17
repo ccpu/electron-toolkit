@@ -40,8 +40,8 @@ catalogs:
       specifier: ^3.2.4
       version: 3.2.4
     electron:
-      specifier: 38.0.0
-      version: 38.0.0
+      specifier: 38.1.1
+      version: 38.1.1
     eslint:
       specifier: ^9.34.0
       version: 9.34.0
@@ -141,7 +141,7 @@ importers:
         version: 7.1.1
       electron:
         specifier: catalog:dev
-        version: 38.0.0
+        version: 38.1.1
       electron-builder:
         specifier: 26.0.12
         version: 26.0.12(electron-builder-squirrel-windows@26.0.12)
@@ -214,7 +214,7 @@ importers:
         version: link:../../tooling/vitest
       electron:
         specifier: catalog:dev
-        version: 38.0.0
+        version: 38.1.1
       electron-devtools-installer:
         specifier: 4.0.0
         version: 4.0.0
@@ -3101,6 +3101,11 @@ packages:
 
   electron@38.0.0:
     resolution: {integrity: sha512-egljptiPJqbL/oamFCEY+g3RNeONWTVxZSGeyLqzK8xq106JhzuxnhJZ3sxt4DzJFaofbGyGJA37Oe9d+gVzYw==}
+    engines: {node: '>= 12.20.55'}
+    hasBin: true
+
+  electron@38.1.1:
+    resolution: {integrity: sha512-LTFGxXpbIdU07AwSHLoVYVLbZHDiauT1KgTX1fgCPgPDoQIAGnYft/ABx6PkA+9ulQfBEEqg0mYTWaoReHG8Ag==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
 
@@ -8965,6 +8970,14 @@ snapshots:
       - supports-color
 
   electron@38.0.0:
+    dependencies:
+      '@electron/get': 2.0.3
+      '@types/node': 22.18.1
+      extract-zip: 2.0.1
+    transitivePeerDependencies:
+      - supports-color
+
+  electron@38.1.1:
     dependencies:
       '@electron/get': 2.0.3
       '@types/node': 22.18.1
