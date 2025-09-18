@@ -1,5 +1,11 @@
 # electron-vite-toolkit
 
+## 0.2.0
+
+### Minor Changes
+
+- introduce electron-utilities package
+
 ## 0.1.0
 
 ### Minor Changes
