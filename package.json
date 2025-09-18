@@ -86,7 +86,7 @@
     "electron-builder": "26.0.12",
     "electron-vite-toolkit": "workspace:*",
     "eslint": "catalog:dev",
-    "glob": "11.0.3",
+    "glob": "catalog:dev",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.6",
     "playwright": "^1.55.0",

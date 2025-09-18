@@ -6,7 +6,7 @@ import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
-const scriptPath = path.resolve(currentDir, '../dist/cli.mjs');
+const scriptPath = path.resolve(currentDir, '../dist/cli.js');
 
 const CLI_ARGS_START_INDEX = 2;
 const child = spawn('node', [scriptPath, ...process.argv.slice(CLI_ARGS_START_INDEX)], {
