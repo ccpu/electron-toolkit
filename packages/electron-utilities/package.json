@@ -10,7 +10,13 @@
     "url": "https://github.com/ccpu/electron-toolkit.git",
     "directory": "packages/electron-utilities"
   },
-  "keywords": [],
+  "keywords": [
+    "electron",
+    "utilities",
+    "versions",
+    "chrome",
+    "node"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
