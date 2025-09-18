@@ -1,5 +1,11 @@
 # electron-window-toolkit
 
+## 1.4.0
+
+### Minor Changes
+
+- enhance WindowManager with options merging
+
 ## 1.3.0
 
 ### Minor Changes
