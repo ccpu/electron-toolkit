@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildWindowsConfig } from '../src/build-windows-config';
 
@@ -164,10 +165,10 @@ describe('build-windows-config', () => {
       // Assert
       expect(mockLoadBrowserWindowOptions).toHaveBeenCalledTimes(expectedWindowCount);
       expect(mockLoadBrowserWindowOptions).toHaveBeenCalledWith(
-        'Z:\\test\\windows\\main\\browser-window-options.mjs',
+        path.resolve(windowsPath, 'main/browser-window-options.mjs'),
       );
       expect(mockLoadBrowserWindowOptions).toHaveBeenCalledWith(
-        'Z:\\test\\windows\\settings\\browser-window-options.mjs',
+        path.resolve(windowsPath, 'settings/browser-window-options.mjs'),
       );
       expect(config.windows.main!.options).toEqual(mockOptions);
       expect(config.windows.settings!.options).toEqual(mockOptions);
