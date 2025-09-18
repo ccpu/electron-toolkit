@@ -119,6 +119,35 @@ describe('windowManager', () => {
       });
       expect(wm).toBeInstanceOf(WindowManager);
     });
+
+    it('should initialize with mainWindowOptions', () => {
+      const mainWindowOptions = { width: 1200, height: 800 };
+      const wm = new WindowManager({
+        initConfig: mockConfig,
+        mainWindowOptions,
+      });
+      expect(wm).toBeInstanceOf(WindowManager);
+    });
+
+    it('should initialize with defaultWindowOptions', () => {
+      const defaultWindowOptions = { webPreferences: { contextIsolation: true } };
+      const wm = new WindowManager({
+        initConfig: mockConfig,
+        defaultWindowOptions,
+      });
+      expect(wm).toBeInstanceOf(WindowManager);
+    });
+
+    it('should initialize with both mainWindowOptions and defaultWindowOptions', () => {
+      const mainWindowOptions = { width: 1200, height: 800 };
+      const defaultWindowOptions = { webPreferences: { contextIsolation: true } };
+      const wm = new WindowManager({
+        initConfig: mockConfig,
+        mainWindowOptions,
+        defaultWindowOptions,
+      });
+      expect(wm).toBeInstanceOf(WindowManager);
+    });
   });
 
   describe('init', () => {
@@ -216,6 +245,143 @@ describe('windowManager', () => {
 
       expect(mockWindow.loadURL).toHaveBeenCalledWith('http://localhost:3000/settings');
       expect(window).toBe(mockWindow);
+    });
+
+    it('should merge defaultWindowOptions with base options', async () => {
+      const defaultWindowOptions = {
+        webPreferences: { contextIsolation: false },
+        titleBarStyle: 'hidden' as const,
+      };
+      const wm = new WindowManager({
+        initConfig: mockConfig,
+        defaultWindowOptions,
+      });
+
+      await wm.createWindow('main');
+
+      expect(BrowserWindow).toHaveBeenCalledWith({
+        show: false,
+        x: 100,
+        y: 100,
+        width: 800,
+        height: 600,
+        titleBarStyle: 'hidden',
+        webPreferences: {
+          nodeIntegration: false,
+          contextIsolation: false, // Overridden by defaultWindowOptions
+          sandbox: false,
+          webviewTag: false,
+          preload: '/path/to/preload.js',
+          partition: 'window-main',
+          zoomFactor: 1.0,
+        },
+      });
+    });
+
+    it('should merge mainWindowOptions for main window', async () => {
+      const mainWindowOptions = {
+        width: 1200,
+        height: 800,
+        webPreferences: { nodeIntegration: true },
+      };
+      const wm = new WindowManager({
+        initConfig: mockConfig,
+        mainWindowOptions,
+      });
+
+      await wm.restoreOrCreateWindow();
+
+      expect(BrowserWindow).toHaveBeenCalledWith({
+        show: false,
+        x: 100,
+        y: 100,
+        width: 800, // State manager takes precedence
+        height: 600, // State manager takes precedence
+        webPreferences: {
+          nodeIntegration: true, // From mainWindowOptions
+          contextIsolation: true,
+          sandbox: false,
+          webviewTag: false,
+          preload: '/path/to/preload.js',
+          partition: 'window-main',
+          zoomFactor: 1.0,
+        },
+      });
+    });
+
+    it('should merge options in correct order: base -> default -> specific', async () => {
+      const defaultWindowOptions = {
+        webPreferences: { contextIsolation: false, nodeIntegration: false },
+        width: 1000,
+      };
+      const specificOptions = {
+        webPreferences: { nodeIntegration: true },
+        height: 900,
+      };
+      const wm = new WindowManager({
+        initConfig: mockConfig,
+        defaultWindowOptions,
+      });
+
+      await wm.createWindow('main', specificOptions);
+
+      expect(BrowserWindow).toHaveBeenCalledWith({
+        show: false,
+        x: 100,
+        y: 100,
+        width: 800, // State manager takes precedence over merged options
+        height: 600, // State manager takes precedence over specific options
+        webPreferences: {
+          nodeIntegration: true, // From specific options (overrides default)
+          contextIsolation: false, // From defaultWindowOptions
+          sandbox: false,
+          webviewTag: false,
+          preload: '/path/to/preload.js',
+          partition: 'window-main',
+          zoomFactor: 1.0,
+        },
+      });
+    });
+
+    it('should handle deep merging of nested webPreferences', async () => {
+      const defaultWindowOptions = {
+        webPreferences: {
+          additionalArguments: ['--arg1=value1'],
+          experimentalFeatures: true,
+        },
+      };
+      const specificOptions = {
+        webPreferences: {
+          additionalArguments: ['--arg2=value2'],
+          webSecurity: false,
+        },
+      };
+      const wm = new WindowManager({
+        initConfig: mockConfig,
+        defaultWindowOptions,
+      });
+
+      await wm.createWindow('main', specificOptions);
+
+      expect(BrowserWindow).toHaveBeenCalledWith({
+        show: false,
+        x: 100,
+        y: 100,
+        width: 800,
+        height: 600,
+        webPreferences: {
+          nodeIntegration: false,
+          contextIsolation: true,
+          sandbox: false,
+          webviewTag: false,
+          preload: '/path/to/preload.js',
+          partition: 'window-main',
+          zoomFactor: 1.0,
+          additionalArguments: ['--arg1=value1', '--arg2=value2'], // Arrays are merged by deepmerge
+          experimentalFeatures: true, // From defaultWindowOptions
+          webSecurity: false, // From specific options
+        },
+      });
     });
 
     it('should show window and register event listeners', async () => {
@@ -331,6 +497,73 @@ describe('windowManager', () => {
       expect(mockWindow.restore).not.toHaveBeenCalled();
       expect(mockWindow.focus).toHaveBeenCalled();
       expect(window).toBe(mockWindow);
+    });
+
+    it('should use mainWindowOptions when creating main window', async () => {
+      const mainWindowOptions = {
+        width: 1200,
+        height: 800,
+        webPreferences: { nodeIntegration: true },
+      };
+      const wm = new WindowManager({
+        initConfig: mockConfig,
+        mainWindowOptions,
+      });
+
+      await wm.restoreOrCreateWindow();
+
+      expect(BrowserWindow).toHaveBeenCalledWith({
+        show: false,
+        x: 100,
+        y: 100,
+        width: 800, // State manager takes precedence
+        height: 600, // State manager takes precedence
+        webPreferences: {
+          nodeIntegration: true, // From mainWindowOptions
+          contextIsolation: true,
+          sandbox: false,
+          webviewTag: false,
+          preload: '/path/to/preload.js',
+          partition: 'window-main',
+          zoomFactor: 1.0,
+        },
+      });
+    });
+
+    it('should combine defaultWindowOptions and mainWindowOptions for main window', async () => {
+      const defaultWindowOptions = {
+        webPreferences: { contextIsolation: false },
+        titleBarStyle: 'hidden' as const,
+      };
+      const mainWindowOptions = {
+        width: 1200,
+        webPreferences: { nodeIntegration: true },
+      };
+      const wm = new WindowManager({
+        initConfig: mockConfig,
+        defaultWindowOptions,
+        mainWindowOptions,
+      });
+
+      await wm.restoreOrCreateWindow();
+
+      expect(BrowserWindow).toHaveBeenCalledWith({
+        show: false,
+        x: 100,
+        y: 100,
+        width: 800, // State manager takes precedence
+        height: 600,
+        titleBarStyle: 'hidden', // From defaultWindowOptions
+        webPreferences: {
+          nodeIntegration: true, // From mainWindowOptions
+          contextIsolation: false, // From defaultWindowOptions
+          sandbox: false,
+          webviewTag: false,
+          preload: '/path/to/preload.js',
+          partition: 'window-main',
+          zoomFactor: 1.0,
+        },
+      });
     });
   });
 

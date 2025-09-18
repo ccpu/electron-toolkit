@@ -16,3 +16,5 @@ export interface ModuleContext {
 export interface WindowManagerInitConfig {
   windows: Record<string, WindowConfig>;
 }
+
+export interface WindowOptions extends Electron.BrowserWindowConstructorOptions {}

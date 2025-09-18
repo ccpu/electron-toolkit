@@ -1,7 +1,8 @@
-import type { ModuleContext, WindowConfig } from './types/common';
+import type { ModuleContext, WindowConfig, WindowOptions } from './types/common';
 import type { ZoomManager } from './ZoomManager';
 
 import process from 'node:process';
+import deepmerge from '@fastify/deepmerge';
 
 import { BrowserWindow } from 'electron';
 import { WindowStateManager } from './WindowStateManager';
@@ -29,18 +30,26 @@ class WindowManager {
   readonly #zoomManager: ZoomManager;
 
   readonly #mainWindowName: string;
+  readonly #mainWindowOptions: WindowOptions | undefined;
+  readonly #defaultWindowOptions: WindowOptions | undefined;
 
   constructor({
     initConfig,
     openDevTools = false,
+    mainWindowOptions,
+    defaultWindowOptions,
   }: {
     initConfig: WindowManagerInitConfig;
     openDevTools?: boolean;
+    mainWindowOptions?: WindowOptions;
+    defaultWindowOptions?: WindowOptions;
   }) {
     this.#windowConfigs = initConfig.windows;
     this.#openDevTools = openDevTools;
     this.#zoomManager = createZoomManager();
     this.#mainWindowName = initConfig.mainWindowName ?? 'main';
+    this.#mainWindowOptions = mainWindowOptions;
+    this.#defaultWindowOptions = defaultWindowOptions;
   }
 
   /**
@@ -87,8 +96,8 @@ class WindowManager {
     return undefined;
   }
 
-  async openWindow(name: string): Promise<BrowserWindow> {
-    const win = (await this.getWindow(name)) ?? (await this.createWindow(name));
+  async openWindow(name: string, options?: WindowOptions): Promise<BrowserWindow> {
+    const win = (await this.getWindow(name)) ?? (await this.createWindow(name, options));
     win.show();
     win.focus();
     return win;
@@ -98,7 +107,10 @@ class WindowManager {
    * Creates a new BrowserWindow based on a named configuration.
    * @param windowName The key for the window configuration (e.g., 'main', 'settings').
    */
-  async createWindow(windowName: string): Promise<BrowserWindow> {
+  async createWindow(
+    windowName: string,
+    options?: WindowOptions,
+  ): Promise<BrowserWindow> {
     const config = this.#windowConfigs[windowName];
     if (!config) {
       throw new Error(
@@ -112,12 +124,12 @@ class WindowManager {
      */
     const windowStateManager = this.getWindowStateManager(windowName);
 
-    const browserWindow = new BrowserWindow({
+    // Create a deepmerge function for merging options
+    const merge = deepmerge();
+
+    // Base options for all windows
+    const baseOptions: WindowOptions = {
       show: false, // Use 'ready-to-show' event to show the window gracefully
-      x: windowStateManager.x,
-      y: windowStateManager.y,
-      width: windowStateManager.width,
-      height: windowStateManager.height,
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,
@@ -126,7 +138,23 @@ class WindowManager {
         preload: config.preload.path,
         // Give each window its own session to prevent zoom sharing
         partition: `window-${windowName}`,
-        zoomFactor: windowStateManager.zoomFactor ?? 1.0,
+      },
+    };
+
+    // Merge options in steps: base -> default -> specific
+    const withDefaults = merge(baseOptions, this.#defaultWindowOptions || {});
+    const mergedOptions = merge(withDefaults, options || {});
+
+    const browserWindow = new BrowserWindow({
+      ...mergedOptions,
+      x: windowStateManager.x || mergedOptions.x,
+      y: windowStateManager.y || mergedOptions.y,
+      width: windowStateManager.width || mergedOptions.width,
+      height: windowStateManager.height || mergedOptions.height,
+      webPreferences: {
+        ...mergedOptions.webPreferences,
+        zoomFactor:
+          windowStateManager.zoomFactor ?? mergedOptions.webPreferences?.zoomFactor,
       },
     });
 
@@ -211,7 +239,7 @@ class WindowManager {
     let window = await this.getWindow(this.#mainWindowName);
 
     if (window === undefined) {
-      window = await this.createWindow(this.#mainWindowName);
+      window = await this.createWindow(this.#mainWindowName, this.#mainWindowOptions);
     }
 
     if (!show) {

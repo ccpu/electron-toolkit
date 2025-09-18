@@ -6,7 +6,8 @@
       "request": "launch",
       "name": "Debug Main Process",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/scripts/dev-mode.js",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd",
+      "program": "${workspaceFolder}/scripts/electron-entry.mjs",
       "autoAttachChildProcesses": true
     }
   ]
