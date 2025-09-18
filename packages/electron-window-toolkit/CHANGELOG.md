@@ -1,5 +1,11 @@
 # electron-window-toolkit
 
+## 1.4.1
+
+### Patch Changes
+
+- update paths for loading browser window options
+
 ## 1.4.0
 
 ### Minor Changes
