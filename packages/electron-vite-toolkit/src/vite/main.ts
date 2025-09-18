@@ -3,7 +3,7 @@ import { spawn } from 'node:child_process';
 import process from 'node:process';
 import electronPath from 'electron';
 
-import { getNodeMajorVersion } from '../utils/electron-versions';
+import { getNodeMajorVersion } from 'electron-utilities';
 
 /**
  * Returns a Vite config for the Electron main process.

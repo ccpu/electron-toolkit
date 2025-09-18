@@ -30,7 +30,6 @@
     "electron-window-toolkit": "workspace:*"
   },
   "devDependencies": {
-    "@internal/electron-versions": "workspace:*",
     "@internal/eslint-config": "workspace:*",
     "@internal/prettier-config": "workspace:*",
     "@internal/tsconfig": "workspace:*",

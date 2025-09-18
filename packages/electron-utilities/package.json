@@ -1,37 +1,55 @@
 {
-  "name": "@internal/vite",
+  "name": "electron-utilities",
   "type": "module",
   "version": "0.0.0",
-  "private": true,
   "packageManager": "pnpm@10.12.2",
-  "author": "",
+  "author": "Mo doaie <m.doaie@hotmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ccpu/electron-toolkit.git",
+    "directory": "packages/electron-utilities"
+  },
+  "keywords": [],
   "exports": {
-    "./renderer": "./renderer.mjs",
-    "./preload": "./preload.mjs"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
+    "prepublishOnly": "pnpm run clean && pnpm run build",
+    "clean": "git clean -xdf .cache .turbo dist",
     "clean:all": "git clean -xdf .cache .turbo dist node_modules",
+    "build": "pnpm run clean && rollup -c",
+    "dev": "rollup -c --watch",
     "test": "vitest --run --passWithNoTests",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint",
     "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore"
   },
   "devDependencies": {
     "@internal/eslint-config": "workspace:*",
     "@internal/prettier-config": "workspace:*",
+    "@internal/rollup-config": "workspace:*",
     "@internal/tsconfig": "workspace:*",
     "@internal/vitest-config": "workspace:*",
-    "@tailwindcss/vite": "catalog:dev",
     "@types/node": "catalog:dev",
-    "@vitejs/plugin-react": "catalog:dev",
-    "electron-vite-toolkit": "workspace:*",
     "eslint": "catalog:dev",
-    "mlly": "1.8.0",
-    "rimraf": "^6.0.1",
+    "rollup": "catalog:dev",
     "typescript": "catalog:dev"
   },
   "prettier": "@internal/prettier-config"

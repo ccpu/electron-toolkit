@@ -24,7 +24,7 @@ Monorepo using pnpm workspaces and Turbo:
 
 - `app/main/`: Electron main process
 - `app/windows/`: Electron windows (main, settings, etc.)
-- `packages/`: Shared packages (@internal/electron-versions, @internal/ui, @internal/utils, etc.)
+- `packages/`: Shared packages (electron-utilities, @internal/ui, @internal/utils, etc.)
 - `packages/electron-ipc-typesafe/`: Public IPC library
 - `tooling/`: Shared dev tools (ESLint, Prettier, TypeScript, Vite, etc.)
 - `templates/`: Window templates for creating new windows

@@ -53,6 +53,7 @@
   "scripts": {
     "prepublishOnly": "pnpm run clean && pnpm run build",
     "build": "rollup -c",
+    "dev": "rollup -c --watch",
     "clean": "git clean -xdf .cache .turbo dist",
     "clean:all": "git clean -xdf .cache .turbo dist node_modules",
     "test": "vitest --run --passWithNoTests",
@@ -64,6 +65,7 @@
     "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore"
   },
   "dependencies": {
+    "electron-utilities": "workspace:*",
     "mlly": "1.8.0"
   },
   "devDependencies": {
