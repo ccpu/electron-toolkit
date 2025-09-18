@@ -1,5 +1,11 @@
 # electron-window-toolkit
 
+## 1.3.0
+
+### Minor Changes
+
+- update package dependencies across multiple modules
+
 ## 1.2.0
 
 ### Minor Changes

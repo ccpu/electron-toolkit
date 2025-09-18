@@ -1,5 +1,11 @@
 # electron-ipc-bridge
 
+## 1.3.0
+
+### Minor Changes
+
+- update package dependencies across multiple modules
+
 ## 1.2.1
 
 ### Patch Changes
