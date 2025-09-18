@@ -1,7 +1,7 @@
 {
   "name": "electron-vite-toolkit",
   "type": "module",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "packageManager": "pnpm@10.12.2",
   "description": "A comprehensive toolkit for building Electron applications with Vite, featuring multi-window support, hot reload, and TypeScript integration",
   "author": "Mo doaie <m.doaie@hotmail.com>",

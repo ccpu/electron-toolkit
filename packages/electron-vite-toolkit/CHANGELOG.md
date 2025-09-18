@@ -1,5 +1,11 @@
 # electron-vite-toolkit
 
+## 0.3.0
+
+### Minor Changes
+
+- update start script and improve README
+
 ## 0.2.1
 
 ### Patch Changes
