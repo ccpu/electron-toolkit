@@ -2,7 +2,7 @@
   "name": "electron-window-toolkit",
   "type": "module",
   "version": "1.2.0",
-  "packageManager": "pnpm@10.12.2",
+  "packageManager": "pnpm@10.17.0",
   "description": "A simple toolkit for managing Electron windows with state persistence and zoom functionality",
   "author": "Mohamad Doaie <m.doaie@hotmail.com>",
   "license": "MIT",

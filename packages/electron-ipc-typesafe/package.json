@@ -2,7 +2,7 @@
   "name": "electron-ipc-typesafe",
   "type": "module",
   "version": "1.2.1",
-  "packageManager": "pnpm@10.12.2",
+  "packageManager": "pnpm@10.17.0",
   "description": "A type-safe IPC (Inter-Process Communication) library for Electron applications with flexible handler registration",
   "author": "",
   "license": "MIT",

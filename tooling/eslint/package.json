@@ -20,9 +20,9 @@
   },
   "dependencies": {
     "@pixpilot/antfu-eslint-config": "^4.0.3",
-    "@pixpilot/eslint-config": "^2.7.3",
+    "@pixpilot/eslint-config": "^2.8.0",
     "@pixpilot/eslint-config-next": "^0.0.24",
-    "@pixpilot/eslint-config-react": "^0.4.5",
+    "@pixpilot/eslint-config-react": "^0.4.6",
     "eslint-plugin-turbo": "^2.5.6",
     "prettier-plugin-tailwindcss": "catalog:dev",
     "typescript-eslint": "catalog:dev"
