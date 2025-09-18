@@ -880,16 +880,16 @@ importers:
     dependencies:
       '@pixpilot/antfu-eslint-config':
         specifier: ^4.0.3
-        version: 4.0.3(@eslint-react/eslint-plugin@1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2))(@next/eslint-plugin-next@15.5.2)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-hooks@5.2.0(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-refresh@0.4.20(eslint@9.35.0(jiti@2.5.1)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2)(vitest@3.2.4)
+        version: 4.0.3(@eslint-react/eslint-plugin@1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2))(@next/eslint-plugin-next@15.5.3)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-hooks@5.2.0(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-refresh@0.4.20(eslint@9.35.0(jiti@2.5.1)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2)(vitest@3.2.4)
       '@pixpilot/eslint-config':
         specifier: ^2.8.0
-        version: 2.8.0(@eslint-react/eslint-plugin@1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2))(@next/eslint-plugin-next@15.5.2)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-hooks@5.2.0(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-refresh@0.4.20(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2)(vitest@3.2.4)
+        version: 2.8.0(@eslint-react/eslint-plugin@1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2))(@next/eslint-plugin-next@15.5.3)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-hooks@5.2.0(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-refresh@0.4.20(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2)(vitest@3.2.4)
       '@pixpilot/eslint-config-next':
-        specifier: ^0.0.24
-        version: 0.0.24(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)(vitest@3.2.4)
+        specifier: ^0.0.25
+        version: 0.0.25(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)(vitest@3.2.4)
       '@pixpilot/eslint-config-react':
         specifier: ^0.4.6
-        version: 0.4.6(@next/eslint-plugin-next@15.5.2)(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)(vitest@3.2.4)
+        version: 0.4.6(@next/eslint-plugin-next@15.5.3)(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)(vitest@3.2.4)
       eslint-plugin-turbo:
         specifier: ^2.5.6
         version: 2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6)
@@ -1152,6 +1152,10 @@ packages:
 
   '@babel/runtime@7.28.3':
     resolution: {integrity: sha512-9uIQ10o0WGdpP6GDhXcdOJPJuDgFtIDtN/9+ArJQ2NAfAmiuhTQdzkaTGR33v43GYS2UrSA0eX2pPPHoFVvpxA==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/runtime@7.28.4':
+    resolution: {integrity: sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.27.2':
@@ -1741,8 +1745,8 @@ packages:
     resolution: {integrity: sha512-0FOIepYR4ugPYaHwK7hDeHDkfPOBVvayt9QpvRbi2LT/h2b0GaE/gM9Gag7fsnyYyNaTZ2IGyOuVg07IYepvYQ==}
     engines: {node: '>=20.0.0'}
 
-  '@next/eslint-plugin-next@15.5.2':
-    resolution: {integrity: sha512-lkLrRVxcftuOsJNhWatf1P2hNVfh98k/omQHrCEPPriUypR6RcS13IvLdIrEvkm9AH2Nu2YpR5vLqBuy6twH3Q==}
+  '@next/eslint-plugin-next@15.5.3':
+    resolution: {integrity: sha512-SdhaKdko6dpsSr0DldkESItVrnPYB1NS2NpShCSX5lc7SSQmLZt5Mug6t2xbiuVWEVDLZSuIAoQyYVBYp0dR5g==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1836,27 +1840,13 @@ packages:
       prettier: '>=3.6.0'
       typescript: '>=5.0.0'
 
-  '@pixpilot/eslint-config-next@0.0.24':
-    resolution: {integrity: sha512-fOHkzJKzgDSRM1BAwgT7Viy2U5d/D+Aq9ZsONXOn9kc8BDXrav8it6Jo7PHBEqrJ+HfItyYWfxfwtqSgdw1DCg==}
-
-  '@pixpilot/eslint-config-react@0.4.5':
-    resolution: {integrity: sha512-9FV6RKrU9NcKYKa7nnb4uXi5of4BgV4r5nQWKEvRPo6K96DiDpG4C07kv+6TQ68r6B7GYiLOBuZXi1GCk994eA==}
-    peerDependencies:
-      eslint: ^9.10.0
+  '@pixpilot/eslint-config-next@0.0.25':
+    resolution: {integrity: sha512-3VhoY/KadvcxCNCbkqjavZxBMrnLwBqU4vdHgmBHocab41HP8JYKvKPNPQuArM6DNGWjtYt3hT7KxzCzpdo6Qg==}
 
   '@pixpilot/eslint-config-react@0.4.6':
     resolution: {integrity: sha512-9U25vL/4obluAr5FghRaoYA/W0gjSm4sMt3DhSTVdTUmQ4uxgPfPA6hiGdzPhR0ivrKgAdtpS/SMmRINfacX6w==}
     peerDependencies:
       eslint: ^9.10.0
-
-  '@pixpilot/eslint-config@2.7.3':
-    resolution: {integrity: sha512-DZoT8cFF7+KHL9AQZ+D/Kdd9n6sqpMVzGRFQo7LUjpM+ryV8UmrKb/T8JU5UYYPybJ3927MwwDOdNr5nuqESBg==}
-    peerDependencies:
-      eslint: ^9.10.0
-      eslint-plugin-turbo: ^2.5.5
-    peerDependenciesMeta:
-      eslint-plugin-turbo:
-        optional: true
 
   '@pixpilot/eslint-config@2.8.0':
     resolution: {integrity: sha512-icHsEWfhGyGxLCeASEL6LaJYRAXQukETqxaY0BQ74KHXUVZiPR99nBuXaMlClfpWJHw0IghIEDDRcN2mUZU2aQ==}
@@ -3172,6 +3162,15 @@ packages:
       supports-color:
         optional: true
 
+  debug@4.4.3:
+    resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+
   decimal.js@10.6.0:
     resolution: {integrity: sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg==}
 
@@ -3844,6 +3843,10 @@ packages:
 
   fs-extra@11.3.1:
     resolution: {integrity: sha512-eXvGGwZ5CL17ZSwHWd3bbgk7UUpF6IFHtP57NYYakPvHOs8GDgDe5KJI36jIJzDkJ6eJjuzRA8eBQb6SkKue0g==}
+    engines: {node: '>=14.14'}
+
+  fs-extra@11.3.2:
+    resolution: {integrity: sha512-Xr9F6z6up6Ws+NjzMCZc6WXg2YFRlrLP9NQDO3VQrWrfiojdhS56TzueT88ze0uBdCTwEIhQ3ptnmKeWGFAe0A==}
     engines: {node: '>=14.14'}
 
   fs-extra@7.0.1:
@@ -6712,6 +6715,8 @@ snapshots:
 
   '@babel/runtime@7.28.3': {}
 
+  '@babel/runtime@7.28.4': {}
+
   '@babel/template@7.27.2':
     dependencies:
       '@babel/code-frame': 7.27.1
@@ -7138,8 +7143,8 @@ snapshots:
   '@electron/windows-sign@1.2.2':
     dependencies:
       cross-dirname: 0.1.0
-      debug: 4.4.1
-      fs-extra: 11.3.1
+      debug: 4.4.3
+      fs-extra: 11.3.2
       minimist: 1.2.8
       postject: 1.0.0-alpha.6
     transitivePeerDependencies:
@@ -7516,7 +7521,7 @@ snapshots:
       js-yaml: 4.1.0
       tinyglobby: 0.2.14
 
-  '@next/eslint-plugin-next@15.5.2':
+  '@next/eslint-plugin-next@15.5.3':
     dependencies:
       fast-glob: 3.3.1
 
@@ -7542,7 +7547,7 @@ snapshots:
       mkdirp: 1.0.4
       rimraf: 3.0.2
 
-  '@pixpilot/antfu-eslint-config@4.0.3(@eslint-react/eslint-plugin@1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2))(@next/eslint-plugin-next@15.5.2)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-hooks@5.2.0(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-refresh@0.4.20(eslint@9.35.0(jiti@2.5.1)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2)(vitest@3.2.4)':
+  '@pixpilot/antfu-eslint-config@4.0.3(@eslint-react/eslint-plugin@1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2))(@next/eslint-plugin-next@15.5.3)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-hooks@5.2.0(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-refresh@0.4.20(eslint@9.35.0(jiti@2.5.1)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2)(vitest@3.2.4)':
     dependencies:
       '@antfu/install-pkg': 1.1.0
       '@clack/prompts': 0.11.0
@@ -7580,7 +7585,7 @@ snapshots:
       yaml-eslint-parser: 1.3.0
     optionalDependencies:
       '@eslint-react/eslint-plugin': 1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)
-      '@next/eslint-plugin-next': 15.5.2
+      '@next/eslint-plugin-next': 15.5.3
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.35.0(jiti@2.5.1))
       eslint-plugin-react-hooks: 5.2.0(eslint@9.35.0(jiti@2.5.1))
       eslint-plugin-react-refresh: 0.4.20(eslint@9.35.0(jiti@2.5.1))
@@ -7602,10 +7607,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@pixpilot/eslint-config-next@0.0.24(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)(vitest@3.2.4)':
+  '@pixpilot/eslint-config-next@0.0.25(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)(vitest@3.2.4)':
     dependencies:
-      '@next/eslint-plugin-next': 15.5.2
-      '@pixpilot/eslint-config-react': 0.4.5(@next/eslint-plugin-next@15.5.2)(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)(vitest@3.2.4)
+      '@next/eslint-plugin-next': 15.5.3
+      '@pixpilot/eslint-config-react': 0.4.6(@next/eslint-plugin-next@15.5.3)(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)(vitest@3.2.4)
     transitivePeerDependencies:
       - '@eslint/json'
       - '@prettier/plugin-xml'
@@ -7629,10 +7634,10 @@ snapshots:
       - vitest
       - vue-eslint-parser
 
-  '@pixpilot/eslint-config-react@0.4.5(@next/eslint-plugin-next@15.5.2)(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)(vitest@3.2.4)':
+  '@pixpilot/eslint-config-react@0.4.6(@next/eslint-plugin-next@15.5.3)(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)(vitest@3.2.4)':
     dependencies:
       '@eslint-react/eslint-plugin': 1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)
-      '@pixpilot/eslint-config': 2.7.3(@eslint-react/eslint-plugin@1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2))(@next/eslint-plugin-next@15.5.2)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-hooks@5.2.0(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-refresh@0.4.20(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2)(vitest@3.2.4)
+      '@pixpilot/eslint-config': 2.8.0(@eslint-react/eslint-plugin@1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2))(@next/eslint-plugin-next@15.5.3)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-hooks@5.2.0(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-refresh@0.4.20(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2)(vitest@3.2.4)
       eslint: 9.35.0(jiti@2.5.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.35.0(jiti@2.5.1))
       eslint-plugin-react-hooks: 5.2.0(eslint@9.35.0(jiti@2.5.1))
@@ -7660,75 +7665,10 @@ snapshots:
       - vitest
       - vue-eslint-parser
 
-  '@pixpilot/eslint-config-react@0.4.6(@next/eslint-plugin-next@15.5.2)(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)(vitest@3.2.4)':
-    dependencies:
-      '@eslint-react/eslint-plugin': 1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2)
-      '@pixpilot/eslint-config': 2.8.0(@eslint-react/eslint-plugin@1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2))(@next/eslint-plugin-next@15.5.2)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-hooks@5.2.0(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-refresh@0.4.20(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2)(vitest@3.2.4)
-      eslint: 9.35.0(jiti@2.5.1)
-      eslint-plugin-jsx-a11y: 6.10.2(eslint@9.35.0(jiti@2.5.1))
-      eslint-plugin-react-hooks: 5.2.0(eslint@9.35.0(jiti@2.5.1))
-      eslint-plugin-react-refresh: 0.4.20(eslint@9.35.0(jiti@2.5.1))
-    transitivePeerDependencies:
-      - '@eslint/json'
-      - '@next/eslint-plugin-next'
-      - '@prettier/plugin-xml'
-      - '@unocss/eslint-plugin'
-      - astro-eslint-parser
-      - eslint-plugin-astro
-      - eslint-plugin-format
-      - eslint-plugin-solid
-      - eslint-plugin-svelte
-      - eslint-plugin-turbo
-      - eslint-plugin-vue
-      - eslint-plugin-vuejs-accessibility
-      - eslint-processor-vue-blocks
-      - prettier-plugin-astro
-      - prettier-plugin-slidev
-      - supports-color
-      - svelte-eslint-parser
-      - ts-api-utils
-      - typescript
-      - vitest
-      - vue-eslint-parser
-
-  '@pixpilot/eslint-config@2.7.3(@eslint-react/eslint-plugin@1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2))(@next/eslint-plugin-next@15.5.2)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-hooks@5.2.0(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-refresh@0.4.20(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2)(vitest@3.2.4)':
+  '@pixpilot/eslint-config@2.8.0(@eslint-react/eslint-plugin@1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2))(@next/eslint-plugin-next@15.5.3)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-hooks@5.2.0(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-refresh@0.4.20(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2)(vitest@3.2.4)':
     dependencies:
       '@fastify/deepmerge': 3.1.0
-      '@pixpilot/antfu-eslint-config': 4.0.3(@eslint-react/eslint-plugin@1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2))(@next/eslint-plugin-next@15.5.2)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-hooks@5.2.0(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-refresh@0.4.20(eslint@9.35.0(jiti@2.5.1)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2)(vitest@3.2.4)
-      eslint: 9.35.0(jiti@2.5.1)
-      eslint-config-prettier: 10.1.8(eslint@9.35.0(jiti@2.5.1))
-      local-pkg: 1.1.2
-    optionalDependencies:
-      eslint-plugin-turbo: 2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6)
-    transitivePeerDependencies:
-      - '@eslint-react/eslint-plugin'
-      - '@eslint/json'
-      - '@next/eslint-plugin-next'
-      - '@prettier/plugin-xml'
-      - '@unocss/eslint-plugin'
-      - astro-eslint-parser
-      - eslint-plugin-astro
-      - eslint-plugin-format
-      - eslint-plugin-jsx-a11y
-      - eslint-plugin-react-hooks
-      - eslint-plugin-react-refresh
-      - eslint-plugin-solid
-      - eslint-plugin-svelte
-      - eslint-plugin-vue
-      - eslint-plugin-vuejs-accessibility
-      - eslint-processor-vue-blocks
-      - prettier-plugin-astro
-      - prettier-plugin-slidev
-      - supports-color
-      - svelte-eslint-parser
-      - typescript
-      - vitest
-      - vue-eslint-parser
-
-  '@pixpilot/eslint-config@2.8.0(@eslint-react/eslint-plugin@1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2))(@next/eslint-plugin-next@15.5.2)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-hooks@5.2.0(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-refresh@0.4.20(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-turbo@2.5.6(eslint@9.35.0(jiti@2.5.1))(turbo@2.5.6))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2)(vitest@3.2.4)':
-    dependencies:
-      '@fastify/deepmerge': 3.1.0
-      '@pixpilot/antfu-eslint-config': 4.0.3(@eslint-react/eslint-plugin@1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2))(@next/eslint-plugin-next@15.5.2)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-hooks@5.2.0(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-refresh@0.4.20(eslint@9.35.0(jiti@2.5.1)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2)(vitest@3.2.4)
+      '@pixpilot/antfu-eslint-config': 4.0.3(@eslint-react/eslint-plugin@1.53.0(eslint@9.35.0(jiti@2.5.1))(ts-api-utils@2.1.0(typescript@5.9.2))(typescript@5.9.2))(@next/eslint-plugin-next@15.5.3)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-hooks@5.2.0(eslint@9.35.0(jiti@2.5.1)))(eslint-plugin-react-refresh@0.4.20(eslint@9.35.0(jiti@2.5.1)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2)(vitest@3.2.4)
       eslint: 9.35.0(jiti@2.5.1)
       eslint-config-prettier: 10.1.8(eslint@9.35.0(jiti@2.5.1))
       local-pkg: 1.1.2
@@ -8019,7 +7959,7 @@ snapshots:
   '@testing-library/dom@10.4.1':
     dependencies:
       '@babel/code-frame': 7.27.1
-      '@babel/runtime': 7.28.3
+      '@babel/runtime': 7.28.4
       '@types/aria-query': 5.0.4
       aria-query: 5.3.0
       dom-accessibility-api: 0.5.16
@@ -8532,7 +8472,7 @@ snapshots:
 
   agent-base@6.0.2:
     dependencies:
-      debug: 4.4.1
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 
@@ -9156,6 +9096,10 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
+  debug@4.4.3:
+    dependencies:
+      ms: 2.1.3
+
   decimal.js@10.6.0: {}
 
   decode-named-character-reference@1.2.0:
@@ -9354,7 +9298,7 @@ snapshots:
   electron-winstaller@5.4.0:
     dependencies:
       '@electron/asar': 3.4.1
-      debug: 4.4.1
+      debug: 4.4.3
       fs-extra: 7.0.1
       lodash: 4.17.21
       temp: 0.9.4
@@ -10121,6 +10065,13 @@ snapshots:
       jsonfile: 6.2.0
       universalify: 2.0.1
 
+  fs-extra@11.3.2:
+    dependencies:
+      graceful-fs: 4.2.11
+      jsonfile: 6.2.0
+      universalify: 2.0.1
+    optional: true
+
   fs-extra@7.0.1:
     dependencies:
       graceful-fs: 4.2.11
@@ -10390,7 +10341,7 @@ snapshots:
     dependencies:
       '@tootallnate/once': 2.0.0
       agent-base: 6.0.2
-      debug: 4.4.1
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 
@@ -10409,7 +10360,7 @@ snapshots:
   https-proxy-agent@5.0.1:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.4.1
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 
@@ -12401,7 +12352,7 @@ snapshots:
   socks-proxy-agent@7.0.0:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.4.1
+      debug: 4.4.3
       socks: 2.8.7
     transitivePeerDependencies:
       - supports-color
