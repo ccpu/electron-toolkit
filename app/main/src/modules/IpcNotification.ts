@@ -1,6 +1,5 @@
 import type { IpcMainInvokeEvent } from 'electron';
-import type { AppModule } from '../AppModule';
-import type { ModuleContext } from '../ModuleContext';
+import type { AppModule, ModuleContext } from '../types';
 import { appApi } from '@internal/ipc';
 
 async function notify(title: string, options: { body: string }) {

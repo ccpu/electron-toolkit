@@ -5,6 +5,7 @@ export interface RendererConfig {
 export interface WindowConfig {
   renderer: URL | RendererConfig;
   preload: RendererConfig;
+  options: Record<string, Electron.BrowserWindowConstructorOptions>;
 }
 
 export interface WindowsConfig {

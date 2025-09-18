@@ -11,8 +11,8 @@ import { app, screen } from 'electron';
 interface WindowState {
   x?: number;
   y?: number;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   isMaximized?: boolean;
   isFullScreen?: boolean;
   zoomFactor?: number; // Store zoom level for each window
@@ -35,9 +35,6 @@ interface WindowStateManagerOptions {
   defaultZoomFactor?: number;
 }
 
-const DEFAULT_WIDTH = 800;
-const DEFAULT_HEIGHT = 600;
-const DEFAULT_ZOOM_FACTOR = 1.0;
 const EVENT_HANDLING_DELAY = 100;
 const JSON_INDENT = 2;
 const DISPLAY_MARGIN = 100;
@@ -48,7 +45,16 @@ class WindowStateManager {
   private winRef: BrowserWindow | null = null;
   private stateChangeTimer: NodeJS.Timeout | null = null;
   private readonly eventHandlingDelay = EVENT_HANDLING_DELAY;
-  private readonly config: Required<WindowStateManagerOptions>;
+  private readonly config: {
+    file: string;
+    path: string;
+    maximize: boolean;
+    fullScreen: boolean;
+    defaultWidth?: number;
+    defaultHeight?: number;
+    defaultZoomFactor?: number;
+  };
+
   private readonly fullStoreFileName: string;
 
   constructor(options: WindowStateManagerOptions = {}) {
@@ -59,9 +65,9 @@ class WindowStateManager {
       path: options.path || app.getPath('userData'),
       maximize: options.maximize !== false,
       fullScreen: options.fullScreen !== false,
-      defaultWidth: options.defaultWidth || DEFAULT_WIDTH,
-      defaultHeight: options.defaultHeight || DEFAULT_HEIGHT,
-      defaultZoomFactor: options.defaultZoomFactor || DEFAULT_ZOOM_FACTOR,
+      defaultWidth: options.defaultWidth,
+      defaultHeight: options.defaultHeight,
+      defaultZoomFactor: options.defaultZoomFactor,
     };
 
     this.fullStoreFileName = path.join(this.config.path, this.config.file);
@@ -71,13 +77,6 @@ class WindowStateManager {
 
     // DON'T validate state here since screen module isn't available yet
     // We'll validate when manage() is called
-
-    // Set state fallback values
-    this.state = {
-      ...this.state,
-      width: this.state.width || this.config.defaultWidth,
-      height: this.state.height || this.config.defaultHeight,
-    };
   }
 
   private isNormal(win: BrowserWindow): boolean {
@@ -90,8 +89,10 @@ class WindowStateManager {
         Number.isInteger(this.state.x) &&
         Number.isInteger(this.state.y) &&
         Number.isInteger(this.state.width) &&
+        this.state.width !== undefined &&
         this.state.width > 0 &&
         Number.isInteger(this.state.height) &&
+        this.state.height !== undefined &&
         this.state.height > 0,
     );
   }
@@ -118,10 +119,14 @@ class WindowStateManager {
   }): boolean {
     // Check if window is completely within the display bounds
     return (
-      this.state.x! >= bounds.x &&
-      this.state.y! >= bounds.y &&
-      this.state.x! + this.state.width <= bounds.x + bounds.width &&
-      this.state.y! + this.state.height <= bounds.y + bounds.height
+      this.state.x !== undefined &&
+      this.state.y !== undefined &&
+      this.state.width !== undefined &&
+      this.state.height !== undefined &&
+      this.state.x >= bounds.x &&
+      this.state.y >= bounds.y &&
+      this.state.x + this.state.width <= bounds.x + bounds.width &&
+      this.state.y + this.state.height <= bounds.y + bounds.height
     );
   }
 
@@ -151,7 +156,12 @@ class WindowStateManager {
     }
 
     // If window has position, find the display that contains the center point
-    if (this.state.x !== undefined && this.state.y !== undefined) {
+    if (
+      this.state.x !== undefined &&
+      this.state.y !== undefined &&
+      this.state.width !== undefined &&
+      this.state.height !== undefined
+    ) {
       const centerX = this.state.x + this.state.width / CENTER_POINT_DIVISOR;
       const centerY = this.state.y + this.state.height / CENTER_POINT_DIVISOR;
 
@@ -186,8 +196,14 @@ class WindowStateManager {
     // Ensure window fits within the display
     let newX = this.state.x || displayBounds.x;
     let newY = this.state.y || displayBounds.y;
-    const newWidth = Math.min(this.state.width, displayBounds.width - DISPLAY_MARGIN); // Leave some margin
-    const newHeight = Math.min(this.state.height, displayBounds.height - DISPLAY_MARGIN);
+    const newWidth = Math.min(
+      this.state.width || displayBounds.width,
+      displayBounds.width - DISPLAY_MARGIN,
+    ); // Leave some margin
+    const newHeight = Math.min(
+      this.state.height || displayBounds.height,
+      displayBounds.height - DISPLAY_MARGIN,
+    );
 
     // Adjust position if window extends beyond display bounds
     if (newX + newWidth > displayBounds.x + displayBounds.width) {
@@ -402,8 +418,14 @@ class WindowStateManager {
           win.setBounds({
             x: targetDisplay.bounds.x,
             y: targetDisplay.bounds.y,
-            width: Math.min(this.state.width, targetDisplay.bounds.width),
-            height: Math.min(this.state.height, targetDisplay.bounds.height),
+            width: Math.min(
+              this.state.width || targetDisplay.bounds.width,
+              targetDisplay.bounds.width,
+            ),
+            height: Math.min(
+              this.state.height || targetDisplay.bounds.height,
+              targetDisplay.bounds.height,
+            ),
           });
         }
       }
@@ -418,7 +440,7 @@ class WindowStateManager {
     // Restore zoom factor
     if (this.state.zoomFactor !== undefined) {
       win.webContents.setZoomFactor(this.state.zoomFactor);
-    } else {
+    } else if (this.config.defaultZoomFactor !== undefined) {
       win.webContents.setZoomFactor(this.config.defaultZoomFactor);
     }
 
@@ -451,11 +473,11 @@ class WindowStateManager {
     return this.state.y;
   }
 
-  public get width(): number {
+  public get width(): number | undefined {
     return this.state.width;
   }
 
-  public get height(): number {
+  public get height(): number | undefined {
     return this.state.height;
   }
 
@@ -475,8 +497,8 @@ class WindowStateManager {
     return this.state.isFullScreen;
   }
 
-  public get zoomFactor(): number {
-    return this.state.zoomFactor || this.config.defaultZoomFactor;
+  public get zoomFactor(): number | undefined {
+    return this.state.zoomFactor;
   }
 
   public setZoomFactor(zoomFactor: number): void {

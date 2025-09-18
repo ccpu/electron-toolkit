@@ -1,3 +1,3 @@
 import rollupConfig from '@internal/rollup-config';
 
-export default rollupConfig({ includeAllFiles: true });
+export default rollupConfig({ includeAllFiles: true, minify: false });

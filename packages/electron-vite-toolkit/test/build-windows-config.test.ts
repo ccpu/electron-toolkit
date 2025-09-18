@@ -4,17 +4,22 @@ import { buildWindowsConfig } from '../src/build-windows-config';
 
 // Mock dependencies
 vi.mock('node:fs');
+vi.mock('../src/utils/load-browser-window-options');
 
 const mockFs = vi.mocked(fs);
+const mockLoadBrowserWindowOptions = vi.mocked(
+  await import('../src/utils/load-browser-window-options'),
+).loadBrowserWindowOptions;
 
 describe('build-windows-config', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     process.env = {};
+    mockLoadBrowserWindowOptions.mockResolvedValue({});
   });
 
   describe('buildWindowsConfig', () => {
-    it('should build config for main window only', () => {
+    it('should build config for main window only', async () => {
       // Arrange
       const mockDirent = (name: string) => ({
         name,
@@ -25,7 +30,7 @@ describe('build-windows-config', () => {
       const windowsPath = '/test/windows';
 
       // Act
-      const config = buildWindowsConfig({ windowsPath });
+      const config = await buildWindowsConfig({ windowsPath });
 
       // Assert
       expect(config.windows).toBeDefined();
@@ -37,7 +42,7 @@ describe('build-windows-config', () => {
       });
     });
 
-    it('should build config for multiple windows', () => {
+    it('should build config for multiple windows', async () => {
       // Arrange
       const mockDirent = (name: string) => ({
         name,
@@ -52,7 +57,7 @@ describe('build-windows-config', () => {
       const windowsPath = '/test/windows';
 
       // Act
-      const config = buildWindowsConfig({ windowsPath });
+      const config = await buildWindowsConfig({ windowsPath });
 
       // Assert
       const expectedWindowCount = 3;
@@ -62,7 +67,7 @@ describe('build-windows-config', () => {
       expect(config.windows.about).toBeDefined();
     });
 
-    it('should use dev server URLs in development mode', () => {
+    it('should use dev server URLs in development mode', async () => {
       // Arrange
       process.env.MODE = 'development';
       process.env.VITE_DEV_SERVER_URL = 'http://localhost:5173';
@@ -80,7 +85,7 @@ describe('build-windows-config', () => {
       const windowsPath = '/test/windows';
 
       // Act
-      const config = buildWindowsConfig({ windowsPath });
+      const config = await buildWindowsConfig({ windowsPath });
 
       // Assert
       expect(config.windows.main).toBeDefined();
@@ -93,7 +98,7 @@ describe('build-windows-config', () => {
       );
     });
 
-    it('should use file paths in production mode', () => {
+    it('should use file paths in production mode', async () => {
       // Arrange
       process.env.MODE = 'production';
 
@@ -106,7 +111,7 @@ describe('build-windows-config', () => {
       const windowsPath = '/test/windows';
 
       // Act
-      const config = buildWindowsConfig({ windowsPath });
+      const config = await buildWindowsConfig({ windowsPath });
 
       // Assert
       expect(config.windows.main).toBeDefined();
@@ -114,7 +119,7 @@ describe('build-windows-config', () => {
       expect(typeof (config.windows.main!.renderer as any).path).toBe('string');
     });
 
-    it('should fallback to file paths when dev server URL not available', () => {
+    it('should fallback to file paths when dev server URL not available', async () => {
       // Arrange
       process.env.MODE = 'development';
       // No VITE_DEV_SERVER_URL set
@@ -128,12 +133,44 @@ describe('build-windows-config', () => {
       const windowsPath = '/test/windows';
 
       // Act
-      const config = buildWindowsConfig({ windowsPath });
+      const config = await buildWindowsConfig({ windowsPath });
 
       // Assert
       expect(config.windows.main).toBeDefined();
       expect(config.windows.main!.renderer).toHaveProperty('path');
       expect(typeof (config.windows.main!.renderer as any).path).toBe('string');
+    });
+
+    it('should load browser window options for each window', async () => {
+      // Arrange
+      const mockDirent = (name: string) => ({
+        name,
+        isDirectory: () => true,
+      });
+
+      mockFs.readdirSync.mockReturnValue([
+        mockDirent('main'),
+        mockDirent('settings'),
+      ] as any);
+      const windowsPath = '/test/windows';
+      const expectedWindowCount = 2;
+
+      const mockOptions = { width: 800, height: 600 };
+      mockLoadBrowserWindowOptions.mockResolvedValue(mockOptions);
+
+      // Act
+      const config = await buildWindowsConfig({ windowsPath });
+
+      // Assert
+      expect(mockLoadBrowserWindowOptions).toHaveBeenCalledTimes(expectedWindowCount);
+      expect(mockLoadBrowserWindowOptions).toHaveBeenCalledWith(
+        'Z:\\test\\windows\\main\\browser-window-options.mjs',
+      );
+      expect(mockLoadBrowserWindowOptions).toHaveBeenCalledWith(
+        'Z:\\test\\windows\\settings\\browser-window-options.mjs',
+      );
+      expect(config.windows.main!.options).toEqual(mockOptions);
+      expect(config.windows.settings!.options).toEqual(mockOptions);
     });
   });
 });

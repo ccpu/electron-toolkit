@@ -1,4 +1,4 @@
-import type { AppInitConfig } from './AppInitConfig';
+import type { AppInitConfig } from './types';
 import { createModuleRunner } from './ModuleRunner';
 import { terminateAppOnLastWindowClose } from './modules/ApplicationTerminatorOnLastWindowClose';
 import { autoUpdater } from './modules/AutoUpdater';

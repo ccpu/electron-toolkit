@@ -36,10 +36,12 @@ describe('windowManager', () => {
       main: {
         preload: { path: '/path/to/preload.js' },
         renderer: { path: '/path/to/renderer.html' },
+        options: {},
       },
       settings: {
         preload: { path: '/path/to/settings-preload.js' },
         renderer: new URL('http://localhost:3000/settings'),
+        options: {},
       },
     },
   };
@@ -120,11 +122,18 @@ describe('windowManager', () => {
       expect(wm).toBeInstanceOf(WindowManager);
     });
 
-    it('should initialize with mainWindowOptions', () => {
-      const mainWindowOptions = { width: 1200, height: 800 };
+    it('should initialize with window options in config', () => {
+      const configWithOptions = {
+        windows: {
+          main: {
+            preload: { path: '/path/to/preload.js' },
+            renderer: { path: '/path/to/renderer.html' },
+            options: { width: 1200, height: 800 },
+          },
+        },
+      };
       const wm = new WindowManager({
-        initConfig: mockConfig,
-        mainWindowOptions,
+        initConfig: configWithOptions,
       });
       expect(wm).toBeInstanceOf(WindowManager);
     });
@@ -138,12 +147,19 @@ describe('windowManager', () => {
       expect(wm).toBeInstanceOf(WindowManager);
     });
 
-    it('should initialize with both mainWindowOptions and defaultWindowOptions', () => {
-      const mainWindowOptions = { width: 1200, height: 800 };
+    it('should initialize with both window options in config and defaultWindowOptions', () => {
+      const configWithOptions = {
+        windows: {
+          main: {
+            preload: { path: '/path/to/preload.js' },
+            renderer: { path: '/path/to/renderer.html' },
+            options: { width: 1200, height: 800 },
+          },
+        },
+      };
       const defaultWindowOptions = { webPreferences: { contextIsolation: true } };
       const wm = new WindowManager({
-        initConfig: mockConfig,
-        mainWindowOptions,
+        initConfig: configWithOptions,
         defaultWindowOptions,
       });
       expect(wm).toBeInstanceOf(WindowManager);
@@ -278,15 +294,22 @@ describe('windowManager', () => {
       });
     });
 
-    it('should merge mainWindowOptions for main window', async () => {
-      const mainWindowOptions = {
-        width: 1200,
-        height: 800,
-        webPreferences: { nodeIntegration: true },
+    it('should merge window config options for main window', async () => {
+      const configWithOptions = {
+        windows: {
+          main: {
+            preload: { path: '/path/to/preload.js' },
+            renderer: { path: '/path/to/renderer.html' },
+            options: {
+              width: 1200,
+              height: 800,
+              webPreferences: { nodeIntegration: true },
+            },
+          },
+        },
       };
       const wm = new WindowManager({
-        initConfig: mockConfig,
-        mainWindowOptions,
+        initConfig: configWithOptions,
       });
 
       await wm.restoreOrCreateWindow();
@@ -298,7 +321,7 @@ describe('windowManager', () => {
         width: 800, // State manager takes precedence
         height: 600, // State manager takes precedence
         webPreferences: {
-          nodeIntegration: true, // From mainWindowOptions
+          nodeIntegration: true, // From config options
           contextIsolation: true,
           sandbox: false,
           webviewTag: false,
@@ -499,15 +522,22 @@ describe('windowManager', () => {
       expect(window).toBe(mockWindow);
     });
 
-    it('should use mainWindowOptions when creating main window', async () => {
-      const mainWindowOptions = {
-        width: 1200,
-        height: 800,
-        webPreferences: { nodeIntegration: true },
+    it('should use config options when creating main window', async () => {
+      const configWithOptions = {
+        windows: {
+          main: {
+            preload: { path: '/path/to/preload.js' },
+            renderer: { path: '/path/to/renderer.html' },
+            options: {
+              width: 1200,
+              height: 800,
+              webPreferences: { nodeIntegration: true },
+            },
+          },
+        },
       };
       const wm = new WindowManager({
-        initConfig: mockConfig,
-        mainWindowOptions,
+        initConfig: configWithOptions,
       });
 
       await wm.restoreOrCreateWindow();
@@ -519,7 +549,7 @@ describe('windowManager', () => {
         width: 800, // State manager takes precedence
         height: 600, // State manager takes precedence
         webPreferences: {
-          nodeIntegration: true, // From mainWindowOptions
+          nodeIntegration: true, // From config options
           contextIsolation: true,
           sandbox: false,
           webviewTag: false,
@@ -530,19 +560,26 @@ describe('windowManager', () => {
       });
     });
 
-    it('should combine defaultWindowOptions and mainWindowOptions for main window', async () => {
+    it('should combine defaultWindowOptions and config options for main window', async () => {
       const defaultWindowOptions = {
         webPreferences: { contextIsolation: false },
         titleBarStyle: 'hidden' as const,
       };
-      const mainWindowOptions = {
-        width: 1200,
-        webPreferences: { nodeIntegration: true },
+      const configWithOptions = {
+        windows: {
+          main: {
+            preload: { path: '/path/to/preload.js' },
+            renderer: { path: '/path/to/renderer.html' },
+            options: {
+              width: 1200,
+              webPreferences: { nodeIntegration: true },
+            },
+          },
+        },
       };
       const wm = new WindowManager({
-        initConfig: mockConfig,
+        initConfig: configWithOptions,
         defaultWindowOptions,
-        mainWindowOptions,
       });
 
       await wm.restoreOrCreateWindow();
@@ -555,12 +592,62 @@ describe('windowManager', () => {
         height: 600,
         titleBarStyle: 'hidden', // From defaultWindowOptions
         webPreferences: {
-          nodeIntegration: true, // From mainWindowOptions
+          nodeIntegration: true, // From config options
           contextIsolation: false, // From defaultWindowOptions
           sandbox: false,
           webviewTag: false,
           preload: '/path/to/preload.js',
           partition: 'window-main',
+          zoomFactor: 1.0,
+        },
+      });
+    });
+
+    it('should merge options in correct priority order: base -> default -> config -> runtime', async () => {
+      const defaultWindowOptions = {
+        webPreferences: { contextIsolation: false, nodeIntegration: false },
+        width: 1000,
+        title: 'Default Title',
+      };
+      const configWithOptions = {
+        windows: {
+          settings: {
+            preload: { path: '/path/to/settings-preload.js' },
+            renderer: new URL('http://localhost:3000/settings'),
+            options: {
+              webPreferences: { nodeIntegration: true },
+              height: 900,
+              title: 'Config Title',
+            },
+          },
+        },
+      };
+      const runtimeOptions = {
+        webPreferences: { contextIsolation: true },
+        width: 1200,
+        title: 'Runtime Title',
+      };
+      const wm = new WindowManager({
+        initConfig: configWithOptions,
+        defaultWindowOptions,
+      });
+
+      await wm.createWindow('settings', runtimeOptions);
+
+      expect(BrowserWindow).toHaveBeenCalledWith({
+        show: false,
+        x: 100,
+        y: 100,
+        width: 800, // State manager takes precedence
+        height: 600, // State manager takes precedence
+        title: 'Runtime Title', // Runtime options have highest priority
+        webPreferences: {
+          nodeIntegration: true, // From config options
+          contextIsolation: true, // From runtime options (highest priority)
+          sandbox: false, // From base options
+          webviewTag: false, // From base options
+          preload: '/path/to/settings-preload.js',
+          partition: 'window-settings',
           zoomFactor: 1.0,
         },
       });

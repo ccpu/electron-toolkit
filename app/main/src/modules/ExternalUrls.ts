@@ -1,5 +1,4 @@
-import type { AppModule } from '../AppModule';
-import type { ModuleContext } from '../ModuleContext';
+import type { AppModule, ModuleContext } from '../types';
 import { URL } from 'node:url';
 import { shell } from 'electron';
 

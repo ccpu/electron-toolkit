@@ -1,5 +1,4 @@
-import type { AppModule } from '../AppModule';
-import type { ModuleContext } from '../ModuleContext';
+import type { AppModule, ModuleContext } from '../types';
 
 class ApplicationTerminatorOnLastWindowClose implements AppModule {
   enable({ app }: ModuleContext): Promise<void> | void {

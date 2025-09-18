@@ -4,6 +4,7 @@
 export interface WindowConfig {
   renderer: { path: string } | URL;
   preload: { path: string };
+  options: Partial<Electron.BrowserWindowConstructorOptions>;
 }
 
 export interface ModuleContext {

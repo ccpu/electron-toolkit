@@ -3,12 +3,15 @@ import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { loadBrowserWindowOptions } from './utils/load-browser-window-options';
 
 interface WindowsConfigOptions {
   windowsPath: string;
 }
 
-export function buildWindowsConfig(options: WindowsConfigOptions): WindowsConfig {
+export async function buildWindowsConfig(
+  options: WindowsConfigOptions,
+): Promise<WindowsConfig> {
   const { windowsPath } = options;
 
   const windowsFolders = fs
@@ -16,8 +19,8 @@ export function buildWindowsConfig(options: WindowsConfigOptions): WindowsConfig
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => dirent.name);
 
-  const windows: Record<string, WindowConfig> = {};
-  for (const folder of windowsFolders) {
+  // Prepare window configurations and collect option loading promises
+  const windowPromises = windowsFolders.map(async (folder) => {
     const isMain = folder === 'main';
     let renderer: URL | RendererConfig;
 
@@ -55,14 +58,36 @@ export function buildWindowsConfig(options: WindowsConfigOptions): WindowsConfig
       };
     }
 
-    windows[folder] = {
-      renderer,
-      preload: {
-        path: fileURLToPath(
-          pathToFileURL(path.resolve(windowsPath, `${folder}/preload/dist/exposed.mjs`)),
-        ),
-      },
+    // Load browser window options for this window
+    const browserWindowOptionsPath = path.resolve(
+      windowsPath,
+      `${folder}/browser-window-options.mjs`,
+    );
+    const windowOptions = await loadBrowserWindowOptions(browserWindowOptionsPath);
+
+    return {
+      folder,
+      config: {
+        renderer,
+        preload: {
+          path: fileURLToPath(
+            pathToFileURL(
+              path.resolve(windowsPath, `${folder}/preload/dist/exposed.mjs`),
+            ),
+          ),
+        },
+        options: windowOptions,
+      } as WindowConfig,
     };
+  });
+
+  // Wait for all window configurations to be resolved
+  const windowConfigs = await Promise.all(windowPromises);
+
+  // Build the windows object
+  const windows: Record<string, WindowConfig> = {};
+  for (const { folder, config } of windowConfigs) {
+    windows[folder] = config;
   }
 
   return {

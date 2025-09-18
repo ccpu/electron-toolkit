@@ -1,21 +1,10 @@
-import type { AppInitConfig } from '../AppInitConfig.js';
-import type { AppModule } from '../AppModule.js';
+import type { WindowManagerInitConfig } from 'electron-window-toolkit';
 
-import type { ModuleContext } from '../ModuleContext.js';
-
-import type { WindowConfig } from '../types/common.js';
+import type { AppModule, ModuleContext } from '../types';
 
 import { appApi } from '@internal/ipc';
-
 import { ipcMain, Menu, MenuItem, shell } from 'electron';
 import { WindowManager } from 'electron-window-toolkit';
-
-/**
- * The expected shape of the initConfig object for the WindowManager.
- */
-interface WindowManagerInitConfig extends AppInitConfig {
-  windows: Record<string, WindowConfig>;
-}
 
 class MainWindowManager implements AppModule {
   readonly #windowManager: WindowManager;

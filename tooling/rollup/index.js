@@ -13,7 +13,7 @@ const outputDir = path.resolve(process.cwd(), 'dist');
  * @returns {import('rollup').RollupOptions} The Rollup configuration object
  */
 export function defineConfig(options = {}) {
-  const { includeAllFiles, ...restOfOptions } = options;
+  const { includeAllFiles, minify = true, sourcemap = false, ...restOfOptions } = options;
 
   // For all TypeScript files in 'src', excluding declaration files.
   let entryPoints;
@@ -40,6 +40,7 @@ export function defineConfig(options = {}) {
         // Set 'src' as the root. This strips 'src/' from the output path.
         // e.g., 'src/configs/main.ts' becomes 'dist/configs/main.cjs'
         preserveModulesRoot: 'src',
+        sourcemap,
       },
       {
         dir: outputDir,
@@ -47,6 +48,7 @@ export function defineConfig(options = {}) {
         format: 'es',
         preserveModules: true,
         preserveModulesRoot: 'src',
+        sourcemap,
       },
       ...(restOfOptions.output ? [restOfOptions.output].flat() : []),
     ],
@@ -59,8 +61,7 @@ export function defineConfig(options = {}) {
          */
         incremental: false,
       }),
-      terser(),
-
+      ...(minify ? [terser()] : []),
       ...(restOfOptions.plugins ? [restOfOptions.plugins].flat() : []),
     ],
   };

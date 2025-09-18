@@ -6,7 +6,7 @@ import { buildWindowsConfig } from 'electron-vite-toolkit/windows-config';
 (async () => {
   const scriptDir = path.dirname(fileURLToPath(import.meta.url));
   const windowsPath = path.resolve(scriptDir, '../app/windows');
-  const config = buildWindowsConfig({ windowsPath });
+  const config = await buildWindowsConfig({ windowsPath });
 
   const mainDist = await import('../app/main/dist/index.js');
   const { initApp } = mainDist;

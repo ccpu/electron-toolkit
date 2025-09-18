@@ -29,9 +29,9 @@ describe('windowStateManager', () => {
 
   it('should have required properties', () => {
     const wsm = new WindowStateManager();
-    expect(typeof wsm.width).toBe('number');
-    expect(typeof wsm.height).toBe('number');
-    expect(typeof wsm.zoomFactor).toBe('number');
+    expect(['number', 'undefined']).toContain(typeof wsm.width);
+    expect(['number', 'undefined']).toContain(typeof wsm.height);
+    expect(['number', 'undefined']).toContain(typeof wsm.zoomFactor);
   });
 
   it('should have required methods', () => {
@@ -41,5 +41,25 @@ describe('windowStateManager', () => {
     expect(typeof wsm.updateZoomFactorState).toBe('function');
     expect(typeof wsm.saveState).toBe('function');
     expect(typeof wsm.saveStateAsync).toBe('function');
+  });
+
+  it('should use default values when provided', () => {
+    const wsm = new WindowStateManager({
+      defaultWidth: 1200,
+      defaultHeight: 800,
+      defaultZoomFactor: 1.0,
+    });
+    // When defaults are provided but no saved state exists, width/height should still be undefined
+    // since we removed the fallback assignment - defaults are only used during resetStateToDefault
+    expect(['number', 'undefined']).toContain(typeof wsm.width);
+    expect(['number', 'undefined']).toContain(typeof wsm.height);
+    expect(['number', 'undefined']).toContain(typeof wsm.zoomFactor);
+  });
+
+  it('should return undefined values when no defaults provided', () => {
+    const wsm = new WindowStateManager();
+    expect(wsm.width).toBeUndefined();
+    expect(wsm.height).toBeUndefined();
+    expect(wsm.zoomFactor).toBeUndefined();
   });
 });

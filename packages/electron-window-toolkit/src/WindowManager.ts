@@ -30,25 +30,21 @@ class WindowManager {
   readonly #zoomManager: ZoomManager;
 
   readonly #mainWindowName: string;
-  readonly #mainWindowOptions: WindowOptions | undefined;
   readonly #defaultWindowOptions: WindowOptions | undefined;
 
   constructor({
     initConfig,
     openDevTools = false,
-    mainWindowOptions,
     defaultWindowOptions,
   }: {
     initConfig: WindowManagerInitConfig;
     openDevTools?: boolean;
-    mainWindowOptions?: WindowOptions;
     defaultWindowOptions?: WindowOptions;
   }) {
     this.#windowConfigs = initConfig.windows;
     this.#openDevTools = openDevTools;
     this.#zoomManager = createZoomManager();
     this.#mainWindowName = initConfig.mainWindowName ?? 'main';
-    this.#mainWindowOptions = mainWindowOptions;
     this.#defaultWindowOptions = defaultWindowOptions;
   }
 
@@ -141,9 +137,10 @@ class WindowManager {
       },
     };
 
-    // Merge options in steps: base -> default -> specific
+    // Merge options in steps: base -> default -> config options -> runtime options
     const withDefaults = merge(baseOptions, this.#defaultWindowOptions || {});
-    const mergedOptions = merge(withDefaults, options || {});
+    const withConfigOptions = merge(withDefaults, config.options || {});
+    const mergedOptions = merge(withConfigOptions, options || {});
 
     const browserWindow = new BrowserWindow({
       ...mergedOptions,
@@ -239,7 +236,7 @@ class WindowManager {
     let window = await this.getWindow(this.#mainWindowName);
 
     if (window === undefined) {
-      window = await this.createWindow(this.#mainWindowName, this.#mainWindowOptions);
+      window = await this.createWindow(this.#mainWindowName);
     }
 
     if (!show) {
