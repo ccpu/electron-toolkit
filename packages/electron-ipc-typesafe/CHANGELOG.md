@@ -1,5 +1,11 @@
 # electron-ipc-bridge
 
+## 1.2.1
+
+### Patch Changes
+
+- e879eb2: release test
+
 ## 1.2.0
 
 ### Minor Changes
