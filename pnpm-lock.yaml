@@ -188,10 +188,10 @@ importers:
   app/main:
     dependencies:
       '@app/preload':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../windows/main/preload
       '@app/renderer':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../windows/main/renderer
       '@internal/ipc':
         specifier: workspace:*
@@ -201,7 +201,7 @@ importers:
         version: link:../../packages/electron-window-toolkit
     devDependencies:
       '@internal/electron-versions':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../../packages/electron-versions
       '@internal/eslint-config':
         specifier: workspace:*
@@ -241,7 +241,7 @@ importers:
         version: link:../../../../packages/ipc
     devDependencies:
       '@internal/electron-versions':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../../../../packages/electron-versions
       '@internal/eslint-config':
         specifier: workspace:*

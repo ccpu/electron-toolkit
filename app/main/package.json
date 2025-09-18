@@ -24,13 +24,13 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@app/preload": "*",
-    "@app/renderer": "*",
+    "@app/preload": "workspace:*",
+    "@app/renderer": "workspace:*",
     "@internal/ipc": "workspace:*",
     "electron-window-toolkit": "workspace:*"
   },
   "devDependencies": {
-    "@internal/electron-versions": "*",
+    "@internal/electron-versions": "workspace:*",
     "@internal/eslint-config": "workspace:*",
     "@internal/prettier-config": "workspace:*",
     "@internal/tsconfig": "workspace:*",

@@ -31,7 +31,7 @@
     "@internal/ipc": "workspace:*"
   },
   "devDependencies": {
-    "@internal/electron-versions": "*",
+    "@internal/electron-versions": "workspace:*",
     "@internal/eslint-config": "workspace:*",
     "@internal/prettier-config": "workspace:*",
     "@internal/tsconfig": "workspace:*",
