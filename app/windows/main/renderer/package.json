@@ -51,7 +51,7 @@
     "@vitest/coverage-v8": "catalog:dev",
     "@vitest/ui": "catalog:dev",
     "eslint": "catalog:dev",
-    "globals": "^16.3.0",
+    "globals": "^16.4.0",
     "jsdom": "catalog:dev",
     "minimatch": "^10.0.3",
     "tailwindcss": "catalog:dev",
