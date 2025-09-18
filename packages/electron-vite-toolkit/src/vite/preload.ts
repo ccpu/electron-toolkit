@@ -1,6 +1,7 @@
 import type { UserConfig } from 'vite';
-import { getChromeMajorVersion } from '@internal/electron-versions';
 import { defineConfig } from 'vite';
+
+import { getChromeMajorVersion } from '../utils/electron-versions';
 
 import { electronPreloadExposer } from './plugins/electron-preload-exposer';
 import { electronPreloadHotReload } from './plugins/electron-preload-hot-reload';

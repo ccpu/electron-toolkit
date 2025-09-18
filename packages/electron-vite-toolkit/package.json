@@ -67,7 +67,6 @@
     "mlly": "1.8.0"
   },
   "devDependencies": {
-    "@internal/electron-versions": "workspace:*",
     "@internal/eslint-config": "workspace:*",
     "@internal/prettier-config": "workspace:*",
     "@internal/rollup-config": "workspace:*",

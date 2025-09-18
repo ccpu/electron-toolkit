@@ -48,8 +48,6 @@ const config = {
     'vite',
     '@vitejs/plugin-react',
     '@tailwindcss/vite',
-    // Workspace dependencies
-    '@internal/electron-versions',
     // Other runtime dependencies that should remain external
     'mlly',
   ],
