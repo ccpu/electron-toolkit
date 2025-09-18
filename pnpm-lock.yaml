@@ -566,9 +566,6 @@ importers:
         specifier: 1.8.0
         version: 1.8.0
     devDependencies:
-      '@internal/electron-versions':
-        specifier: workspace:*
-        version: link:../electron-versions
       '@internal/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint
