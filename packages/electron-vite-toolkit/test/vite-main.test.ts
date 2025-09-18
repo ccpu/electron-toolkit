@@ -3,11 +3,11 @@ import { mainConfig } from '../src/vite/main';
 
 // Mock dependencies
 vi.mock('node:child_process');
-vi.mock('@internal/electron-versions');
+vi.mock('../src/utils/electron-versions');
 vi.mock('electron', () => ({ default: '/path/to/electron' }));
 
 const mockGetNodeMajorVersion = vi.mocked(
-  await import('@internal/electron-versions'),
+  await import('../src/utils/electron-versions'),
 ).getNodeMajorVersion;
 
 // Test constants
