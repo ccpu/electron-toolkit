@@ -1,5 +1,16 @@
 # electron-vite-toolkit
 
+## 0.1.0
+
+### Minor Changes
+
+- c979ae2: fix publish error
+
+### Patch Changes
+
+- update mock path for `electron-versions`
+- remove workspace dependency for '@internal/electron-versions'
+
 ## 0.0.1
 
 ### Patch Changes
