@@ -1,5 +1,15 @@
 # electron-vite-toolkit
 
+## 0.4.0
+
+### Minor Changes
+
+- update package dependencies and improve rollup config
+
+### Patch Changes
+
+- update pnpm-lock.yaml to resolve dependency mismatch
+
 ## 0.3.0
 
 ### Minor Changes
