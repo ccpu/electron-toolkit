@@ -238,7 +238,7 @@ export default mainConfig({
 
 #### `createRendererViteConfig(options?)`
 
-Creates a Vite configuration for React renderer processes with Tailwind CSS support.
+Creates a base Vite configuration for renderer processes. Include your own plugins such as React and Tailwind CSS.
 
 **Parameters:**
 
@@ -248,11 +248,15 @@ Creates a Vite configuration for React renderer processes with Tailwind CSS supp
 
 ```javascript
 // vite.config.js for renderer
+import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
 import { createRendererViteConfig } from 'electron-vite-toolkit/vite/renderer';
 
 export default createRendererViteConfig({
   // your custom config
   plugins: [
+    react(),
+    tailwindcss(),
     // additional plugins
   ],
 });

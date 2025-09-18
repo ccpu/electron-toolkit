@@ -38,7 +38,7 @@
     "pnpm": ">=9.6.0"
   },
   "scripts": {
-    "start": "pnpm build:packages  && electron-vite-toolkit",
+    "start": "pnpm build:packages  && electron-vite-toolkit start",
     "build:packages": "turbo run build --filter=electron-utilities --filter=electron-vite-toolkit",
     "build": "turbo run build",
     "create-window": "node scripts/create-new-window.js",

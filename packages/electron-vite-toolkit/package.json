@@ -76,9 +76,7 @@
     "@internal/vitest-config": "workspace:*",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.4",
-    "@tailwindcss/vite": "^4.1.13",
     "@types/node": "catalog:dev",
-    "@vitejs/plugin-react": "^5.0.3",
     "eslint": "catalog:dev",
     "rollup": "catalog:dev",
     "typescript": "catalog:dev"

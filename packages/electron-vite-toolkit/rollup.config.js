@@ -50,6 +50,8 @@ const config = {
     '@tailwindcss/vite',
     // Other runtime dependencies that should remain external
     'mlly',
+    // Workspace dependencies that should remain external
+    'electron-utilities',
   ],
   plugins: [
     typescript({
