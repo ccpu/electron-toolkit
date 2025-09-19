@@ -77,7 +77,8 @@ describe('dev-mode', () => {
 
       mockFs.existsSync.mockImplementation(
         (pathToCheck) =>
-          typeof pathToCheck === 'string' && pathToCheck.includes('renderer'),
+          typeof pathToCheck === 'string' &&
+          (pathToCheck.includes('renderer') || pathToCheck.includes('preload')),
       );
 
       const mockServer = {

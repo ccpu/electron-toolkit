@@ -2,7 +2,9 @@ import type { RendererConfig, WindowConfig, WindowsConfig } from './types';
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
+
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { ensureWindowDirectories } from './utils/check-directory';
 import { getDevServerEnvVarName } from './utils/env-var-name';
 import { loadBrowserWindowOptions } from './utils/load-browser-window-options';
 
@@ -65,6 +67,8 @@ export async function buildWindowsConfig(
       `${folder}/browser-window-options.mjs`,
     );
     const windowOptions = await loadBrowserWindowOptions(browserWindowOptionsPath);
+
+    ensureWindowDirectories(folder, windowsPath, 'path' in renderer);
 
     return {
       folder,

@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { build, createServer } from 'vite';
+import { ensureWindowDirectories } from './utils/check-directory';
 import { waitForDevServers } from './utils/dev-server-wait';
 import { getDevServerEnvVarName } from './utils/env-var-name';
 import PortManager from './utils/port-manager';
@@ -44,44 +45,48 @@ async function main(options: DevModeOptions = {}): Promise<void> {
 
   console.log('🔍 Discovering renderer windows and allocating ports...');
 
+  for (const folder of windowsFolders) {
+    // Build preload for all windows (preloads still need to be built)
+    ensureWindowDirectories(folder, windowsPath, false);
+  }
+
   // Create dev servers for all renderer windows with dynamic port allocation
   for (const folder of windowsFolders) {
     const rendererPath = path.resolve(`app/windows/${folder}/renderer`);
-    if (fs.existsSync(rendererPath)) {
-      console.log(`📁 Found renderer: ${folder}`);
 
-      // Get an available port for this window
-      // Use random ports if RANDOM_PORTS env var is set, otherwise use sequential ports
+    console.log(`📁 Found renderer: ${folder}`);
 
-      const availablePort =
-        process.env.RANDOM_PORTS === 'true'
-          ? await portManager.getRandomAvailablePort()
-          : await portManager.findAvailablePort();
+    // Get an available port for this window
+    // Use random ports if RANDOM_PORTS env var is set, otherwise use sequential ports
 
-      console.log(`🚀 Allocating port ${availablePort} for ${folder} window`);
+    const availablePort =
+      process.env.RANDOM_PORTS === 'true'
+        ? await portManager.getRandomAvailablePort()
+        : await portManager.findAvailablePort();
 
-      const server = await createServer({
-        mode,
-        root: rendererPath,
-        server: {
-          port: availablePort,
-          strictPort: true, // Fail if port is not available
-        },
-      });
+    console.log(`🚀 Allocating port ${availablePort} for ${folder} window`);
 
-      await server.listen();
+    const server = await createServer({
+      mode,
+      root: rendererPath,
+      server: {
+        port: availablePort,
+        strictPort: true, // Fail if port is not available
+      },
+    });
 
-      rendererServers[folder] = server;
+    await server.listen();
 
-      // Set environment variables for each window
-      const actualPort = server.config.server.port;
-      if (folder === 'main') {
-        process.env.VITE_DEV_SERVER_URL = `http://localhost:${actualPort}`;
-        console.log(`✅ Main window dev server: http://localhost:${actualPort}`);
-      } else {
-        process.env[getDevServerEnvVarName(folder)] = `http://localhost:${actualPort}`;
-        console.log(`✅ ${folder} window dev server: http://localhost:${actualPort}`);
-      }
+    rendererServers[folder] = server;
+
+    // Set environment variables for each window
+    const actualPort = server.config.server.port;
+    if (folder === 'main') {
+      process.env.VITE_DEV_SERVER_URL = `http://localhost:${actualPort}`;
+      console.log(`✅ Main window dev server: http://localhost:${actualPort}`);
+    } else {
+      process.env[getDevServerEnvVarName(folder)] = `http://localhost:${actualPort}`;
+      console.log(`✅ ${folder} window dev server: http://localhost:${actualPort}`);
     }
   }
 

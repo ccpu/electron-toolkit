@@ -17,6 +17,7 @@ describe('build-windows-config', () => {
     vi.clearAllMocks();
     process.env = {};
     mockLoadBrowserWindowOptions.mockResolvedValue({});
+    mockFs.existsSync.mockReturnValue(true);
   });
 
   describe('buildWindowsConfig', () => {
