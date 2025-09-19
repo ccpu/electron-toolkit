@@ -1,5 +1,11 @@
 # electron-vite-toolkit
 
+## 0.6.0
+
+### Minor Changes
+
+- add `ensureWindowDirectories` utility for directory validation
+
 ## 0.5.1
 
 ### Patch Changes
