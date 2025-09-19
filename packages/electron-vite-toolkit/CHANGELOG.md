@@ -1,5 +1,11 @@
 # electron-vite-toolkit
 
+## 0.5.1
+
+### Patch Changes
+
+- add getDevServerEnvVarName to fix dash in window name issue
+
 ## 0.5.0
 
 ### Minor Changes
