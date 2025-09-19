@@ -5,6 +5,7 @@ import path from 'node:path';
 import process from 'node:process';
 import { build, createServer } from 'vite';
 import { waitForDevServers } from './utils/dev-server-wait.js';
+import { getDevServerEnvVarName } from './utils/env-var-name.js';
 import PortManager from './utils/port-manager.js';
 
 /**
@@ -78,8 +79,7 @@ async function main(options: DevModeOptions = {}): Promise<void> {
         process.env.VITE_DEV_SERVER_URL = `http://localhost:${actualPort}`;
         console.log(`✅ Main window dev server: http://localhost:${actualPort}`);
       } else {
-        const envVarName = `VITE_DEV_SERVER_URL_${folder.toUpperCase()}`;
-        process.env[envVarName] = `http://localhost:${actualPort}`;
+        process.env[getDevServerEnvVarName(folder)] = `http://localhost:${actualPort}`;
         console.log(`✅ ${folder} window dev server: http://localhost:${actualPort}`);
       }
     }

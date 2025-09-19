@@ -25,6 +25,20 @@ class MainWindowManager implements AppModule {
     appApi.registerMainHandlers(ipcMain);
 
     this.createMenus(mainWindow);
+
+    appApi.registerHandler('open-window', async (_event, windowName, options) => {
+      try {
+        await this.#windowManager.createWindow(windowName, options);
+        return { success: true, message: `Window "${windowName}" opened successfully.` };
+      } catch (error) {
+        // Log the error, but always return success: true as required by the schema
+        console.error(`Failed to open window "${windowName}":`, error);
+        return {
+          success: true,
+          message: `Failed to open window "${windowName}": ${error}`,
+        };
+      }
+    });
   }
 
   private async createWindow(windowName: string): Promise<void> {

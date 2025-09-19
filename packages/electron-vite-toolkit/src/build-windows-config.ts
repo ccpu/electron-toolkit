@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { getDevServerEnvVarName } from './utils/env-var-name.js';
 import { loadBrowserWindowOptions } from './utils/load-browser-window-options';
 
 interface WindowsConfigOptions {
@@ -32,7 +33,7 @@ export async function buildWindowsConfig(
         devServerUrl = process.env.VITE_DEV_SERVER_URL;
       } else {
         // For non-main windows, check for their specific dev server URL
-        const envVar = `VITE_DEV_SERVER_URL_${folder.toUpperCase()}`;
+        const envVar = getDevServerEnvVarName(folder);
         devServerUrl = process.env[envVar];
       }
 
