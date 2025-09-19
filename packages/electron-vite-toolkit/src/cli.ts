@@ -2,7 +2,7 @@
 import path from 'node:path';
 import process from 'node:process';
 import { parseArgs } from 'node:util';
-import { startDevMode } from './dev-mode.js';
+import { startDevMode } from './dev-mode';
 
 interface CliOptions {
   'windows-path'?: string;

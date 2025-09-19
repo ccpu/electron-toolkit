@@ -4,9 +4,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { build, createServer } from 'vite';
-import { waitForDevServers } from './utils/dev-server-wait.js';
-import { getDevServerEnvVarName } from './utils/env-var-name.js';
-import PortManager from './utils/port-manager.js';
+import { waitForDevServers } from './utils/dev-server-wait';
+import { getDevServerEnvVarName } from './utils/env-var-name';
+import PortManager from './utils/port-manager';
 
 /**
  * Configuration options for development mode

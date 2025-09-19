@@ -1,5 +1,5 @@
 import { contextBridge } from 'electron';
-import * as exports from './index.js';
+import * as exports from './index';
 
 function isExport(key: string): key is keyof typeof exports {
   return Object.hasOwn(exports, key);
@@ -12,4 +12,4 @@ for (const exportsKey in exports) {
 }
 
 // Re-export for tests
-export * from './index.js';
+export * from './index';

@@ -18,7 +18,7 @@ function createPreloadViteConfig(options: UserConfig = {}): UserConfig {
       target: `chrome${getChromeMajorVersion()}`,
       assetsDir: '.',
       lib: {
-        entry: ['src/exposed.ts', 'virtual:browser.js'],
+        entry: ['src/exposed.ts', 'virtual:browser'],
       },
       rollupOptions: {
         output: [

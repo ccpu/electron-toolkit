@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { getDevServerEnvVarName } from './utils/env-var-name.js';
+import { getDevServerEnvVarName } from './utils/env-var-name';
 import { loadBrowserWindowOptions } from './utils/load-browser-window-options';
 
 interface WindowsConfigOptions {

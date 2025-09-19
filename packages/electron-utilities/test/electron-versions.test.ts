@@ -1,6 +1,6 @@
 import { execSync } from 'node:child_process';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { getChromeMajorVersion, getNodeMajorVersion } from '../src/electron-versions.js';
+import { getChromeMajorVersion, getNodeMajorVersion } from '../src/electron-versions';
 
 // Mock the execSync function
 vi.mock('node:child_process');

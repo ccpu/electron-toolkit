@@ -19,7 +19,7 @@ import { resolveModuleExportNames } from 'mlly';
  * ```
  */
 export function electronPreloadExposer(): Plugin {
-  const virtualModuleId = 'virtual:browser.js';
+  const virtualModuleId = 'virtual:browser';
   const resolvedVirtualModuleId = `\0${virtualModuleId}`;
   let projectRoot = '';
 
