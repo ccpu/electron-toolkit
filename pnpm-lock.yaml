@@ -122,8 +122,8 @@ importers:
         specifier: catalog:dev
         version: 3.1.2(prettier@3.6.2)(typescript@5.9.2)
       '@pixpilot/workspace-package-generator':
-        specifier: ^1.1.3
-        version: 1.1.3
+        specifier: ^1.1.5
+        version: 1.1.5
       '@playwright/test':
         specifier: 1.55.0
         version: 1.55.0
@@ -1163,6 +1163,10 @@ packages:
     resolution: {integrity: sha512-9uIQ10o0WGdpP6GDhXcdOJPJuDgFtIDtN/9+ArJQ2NAfAmiuhTQdzkaTGR33v43GYS2UrSA0eX2pPPHoFVvpxA==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/runtime@7.28.4':
+    resolution: {integrity: sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/template@7.27.2':
     resolution: {integrity: sha512-LPDZ85aEJyYSd18/DkjNh4/y1ntkE5KwUHWTiqgRxruuZL2F1yuHligVHLvcHY2vMHXttKFpJn6LwfI7cw7ODw==}
     engines: {node: '>=6.9.0'}
@@ -1876,8 +1880,8 @@ packages:
       eslint-plugin-turbo:
         optional: true
 
-  '@pixpilot/workspace-package-generator@1.1.3':
-    resolution: {integrity: sha512-LpZhFliX5YEQkg6AE50QwOOKIiz2wEM1B48MvtTkkDcQNUFNT2gFaxGkO0sHRc/jcz2IZiTsXhGoHaE2Dtr7XQ==}
+  '@pixpilot/workspace-package-generator@1.1.5':
+    resolution: {integrity: sha512-tfwuMQ9BOtKUq/XT+GMyyVog8/JgBTRgxpQ7clnDIOI7qpmkv6lMo9YeS9xCZ1QfUWJ5SIXpeO1AY7kOP/DjKQ==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -3181,6 +3185,15 @@ packages:
       supports-color:
         optional: true
 
+  debug@4.4.3:
+    resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+
   decimal.js@10.6.0:
     resolution: {integrity: sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg==}
 
@@ -3853,6 +3866,10 @@ packages:
 
   fs-extra@11.3.1:
     resolution: {integrity: sha512-eXvGGwZ5CL17ZSwHWd3bbgk7UUpF6IFHtP57NYYakPvHOs8GDgDe5KJI36jIJzDkJ6eJjuzRA8eBQb6SkKue0g==}
+    engines: {node: '>=14.14'}
+
+  fs-extra@11.3.2:
+    resolution: {integrity: sha512-Xr9F6z6up6Ws+NjzMCZc6WXg2YFRlrLP9NQDO3VQrWrfiojdhS56TzueT88ze0uBdCTwEIhQ3ptnmKeWGFAe0A==}
     engines: {node: '>=14.14'}
 
   fs-extra@7.0.1:
@@ -6721,6 +6738,8 @@ snapshots:
 
   '@babel/runtime@7.28.3': {}
 
+  '@babel/runtime@7.28.4': {}
+
   '@babel/template@7.27.2':
     dependencies:
       '@babel/code-frame': 7.27.1
@@ -7147,8 +7166,8 @@ snapshots:
   '@electron/windows-sign@1.2.2':
     dependencies:
       cross-dirname: 0.1.0
-      debug: 4.4.1
-      fs-extra: 11.3.1
+      debug: 4.4.3
+      fs-extra: 11.3.2
       minimist: 1.2.8
       postject: 1.0.0-alpha.6
     transitivePeerDependencies:
@@ -7768,7 +7787,7 @@ snapshots:
       - vitest
       - vue-eslint-parser
 
-  '@pixpilot/workspace-package-generator@1.1.3':
+  '@pixpilot/workspace-package-generator@1.1.5':
     dependencies:
       '@manypkg/find-root': 3.1.0
       change-case: 5.4.4
@@ -8028,7 +8047,7 @@ snapshots:
   '@testing-library/dom@10.4.1':
     dependencies:
       '@babel/code-frame': 7.27.1
-      '@babel/runtime': 7.28.3
+      '@babel/runtime': 7.28.4
       '@types/aria-query': 5.0.4
       aria-query: 5.3.0
       dom-accessibility-api: 0.5.16
@@ -8541,7 +8560,7 @@ snapshots:
 
   agent-base@6.0.2:
     dependencies:
-      debug: 4.4.1
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 
@@ -9165,6 +9184,10 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
+  debug@4.4.3:
+    dependencies:
+      ms: 2.1.3
+
   decimal.js@10.6.0: {}
 
   decode-named-character-reference@1.2.0:
@@ -9363,7 +9386,7 @@ snapshots:
   electron-winstaller@5.4.0:
     dependencies:
       '@electron/asar': 3.4.1
-      debug: 4.4.1
+      debug: 4.4.3
       fs-extra: 7.0.1
       lodash: 4.17.21
       temp: 0.9.4
@@ -10130,6 +10153,13 @@ snapshots:
       jsonfile: 6.2.0
       universalify: 2.0.1
 
+  fs-extra@11.3.2:
+    dependencies:
+      graceful-fs: 4.2.11
+      jsonfile: 6.2.0
+      universalify: 2.0.1
+    optional: true
+
   fs-extra@7.0.1:
     dependencies:
       graceful-fs: 4.2.11
@@ -10399,7 +10429,7 @@ snapshots:
     dependencies:
       '@tootallnate/once': 2.0.0
       agent-base: 6.0.2
-      debug: 4.4.1
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 
@@ -10418,7 +10448,7 @@ snapshots:
   https-proxy-agent@5.0.1:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.4.1
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 
@@ -12410,7 +12440,7 @@ snapshots:
   socks-proxy-agent@7.0.0:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.4.1
+      debug: 4.4.3
       socks: 2.8.7
     transitivePeerDependencies:
       - supports-color
