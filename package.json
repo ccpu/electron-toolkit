@@ -47,7 +47,7 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage --config tooling/vitest/index.js",
     "typecheck": "turbo run typecheck",
-    "tsc:watch": "tsc --noEmit --watch --project tsconfig.json",
+    "tsc:watch": "pnpm exec tsc --noEmit --watch --project tsconfig.watch.json",
     "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
     "format:fix": "pnpm format --write",
     "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache && pnpm lint:root",
