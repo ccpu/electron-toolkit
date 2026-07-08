@@ -1,5 +1,16 @@
 # electron-vite-toolkit
 
+## 2.1.0
+
+### Minor Changes
+
+- 96c28ac: new release
+
+### Patch Changes
+
+- Updated dependencies [96c28ac]
+  - electron-utilities@1.1.0
+
 ## 2.0.0
 
 ### Major Changes

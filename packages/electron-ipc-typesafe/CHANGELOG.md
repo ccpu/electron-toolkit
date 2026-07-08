@@ -1,5 +1,11 @@
 # electron-ipc-bridge
 
+## 1.4.0
+
+### Minor Changes
+
+- 96c28ac: new release
+
 ## 1.3.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # electron-window-toolkit
 
+## 4.2.0
+
+### Minor Changes
+
+- 96c28ac: new release
+
 ## 4.1.0
 
 ### Minor Changes
