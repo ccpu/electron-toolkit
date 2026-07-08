@@ -1,4 +1,5 @@
 import { appConfig } from '@internal/configs';
+import { appApi } from '@internal/ipc';
 import { ThemeProvider } from '@internal/ui';
 import { useState } from 'react';
 import reactLogo from './assets/react.svg';
@@ -8,6 +9,10 @@ import viteLogo from '/vite.svg';
 
 function App() {
   const [count, setCount] = useState(0);
+
+  const openWidget = () => {
+    appApi.invoke.openWindow('widget').catch(console.error);
+  };
 
   return (
     <ThemeProvider defaultTheme={appConfig.theme.defaultTheme}>
@@ -62,6 +67,13 @@ function App() {
                 </code>{' '}
                 and save to test HMR
               </p>
+              <button
+                type="button"
+                onClick={openWidget}
+                className="bg-secondary text-secondary-foreground hover:bg-secondary/80 mt-4 block rounded-md px-6 py-3 font-medium transition-colors"
+              >
+                Open Widget
+              </button>
             </div>
 
             <p className="text-muted-foreground max-w-2xl text-center">

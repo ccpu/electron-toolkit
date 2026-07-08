@@ -16,7 +16,7 @@ export const appApi = createIpcSchema({
     'notify-info': defineHandler<[info: string], { success: true; message: string }>(),
     'open-window': defineHandler<
       [
-        windowName: 'settings' | 'job-assistant',
+        windowName: 'settings' | 'job-assistant' | 'widget',
         options?: Electron.BrowserWindowConstructorOptions,
       ],
       { success: true; message: string }
