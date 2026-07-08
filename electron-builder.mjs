@@ -73,7 +73,7 @@ export default async () => {
   }
 
   return {
-    productName: 'electron-app',
+    productName: 'electron-toolkit-app',
     directories: {
       output: 'dist',
       buildResources: 'buildResources',
