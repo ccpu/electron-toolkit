@@ -1,5 +1,11 @@
 # electron-window-toolkit
 
+## 4.0.0
+
+### Major Changes
+
+- 75664e5: new release
+
 ## 3.0.0
 
 ### Major Changes

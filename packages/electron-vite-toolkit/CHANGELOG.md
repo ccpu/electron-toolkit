@@ -1,5 +1,11 @@
 # electron-vite-toolkit
 
+## 2.0.0
+
+### Major Changes
+
+- 75664e5: new release
+
 ## 1.0.0
 
 ### Major Changes
