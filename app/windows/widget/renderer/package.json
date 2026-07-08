@@ -22,7 +22,7 @@
     "format:fix": "prettier --write . --ignore-path ../../../../.gitignore --ignore-path ../../../../.prettierignore",
     "lint": "eslint",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
-    "test": "vitest --run",
+    "test": "vitest --run --passWithNoTests",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui"
   },
