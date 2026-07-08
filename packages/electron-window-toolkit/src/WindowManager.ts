@@ -60,17 +60,17 @@ class WindowManager {
     return this.#windowStateManagers[windowName]!;
   }
 
-  async init(_context: ModuleContext): Promise<BrowserWindow> {
-    await app.whenReady();
+  async init(context: ModuleContext): Promise<BrowserWindow> {
+    await context.app.whenReady();
 
     // Create the main window on startup
     const mainWindow = await this.restoreOrCreateWindow(true);
 
     // Re-create main window if app is activated and no windows are open (macOS)
-    app.on('activate', () => this.restoreOrCreateWindow(true));
+    context.app.on('activate', () => this.restoreOrCreateWindow(true));
 
     // Focus existing main window if a second instance is started
-    app.on('second-instance', () => this.restoreOrCreateWindow(true));
+    context.app.on('second-instance', () => this.restoreOrCreateWindow(true));
 
     return mainWindow;
   }

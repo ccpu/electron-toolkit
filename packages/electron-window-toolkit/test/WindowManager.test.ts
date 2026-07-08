@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { BrowserWindow } from 'electron';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { WindowManager } from '../src/WindowManager';
 import { WindowStateManager } from '../src/WindowStateManager';

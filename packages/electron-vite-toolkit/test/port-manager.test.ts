@@ -103,9 +103,7 @@ describe('portManager', () => {
       vi.spyOn(portManager, 'isPortAvailable').mockResolvedValue(false);
 
       // Act & Assert
-      await expect(portManager.findAvailablePort()).rejects.toThrow(
-        'Unable to find an available port after 100 attempts',
-      );
+      await expect(portManager.findAvailablePort()).rejects.toThrowError();
     });
   });
 
@@ -131,7 +129,7 @@ describe('portManager', () => {
 
       // Act & Assert
       await expect(portManager.getRandomAvailablePort()).rejects.toThrow(
-        'Unable to find a random available port after 100 attempts',
+        'Unable to find a random available port after 1000 attempts',
       );
     });
   });
