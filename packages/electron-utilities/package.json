@@ -1,7 +1,7 @@
 {
   "name": "electron-utilities",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "packageManager": "pnpm@10.17.0",
   "author": "Mo doaie <m.doaie@hotmail.com>",
   "license": "MIT",

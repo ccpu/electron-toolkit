@@ -1,5 +1,16 @@
 # electron-vite-toolkit
 
+## 1.0.0
+
+### Major Changes
+
+- 6b05cfc: new release
+
+### Patch Changes
+
+- Updated dependencies [6b05cfc]
+  - electron-utilities@1.0.0
+
 ## 0.6.1
 
 ### Patch Changes
