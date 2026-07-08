@@ -1,4 +1,4 @@
-import { BrowserWindow } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { WindowManager } from '../src/WindowManager';
 import { WindowStateManager } from '../src/WindowStateManager';
@@ -9,6 +9,7 @@ vi.mock('electron', () => ({
   app: {
     whenReady: vi.fn(),
     on: vi.fn(),
+    getPath: vi.fn(() => '/mock/user/data'),
   },
 }));
 
