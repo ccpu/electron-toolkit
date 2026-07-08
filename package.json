@@ -62,7 +62,7 @@
     "deps:update:major": "npx taze major -r -w && pnpm install",
     "turbo:gen:init": "pnpm turbo gen init",
     "prepare": "husky",
-    "release": "pnpm changeset"
+    "changesets:release": "pnpm changeset"
   },
   "dependencies": {
     "@manypkg/get-packages": "^3.1.0",
