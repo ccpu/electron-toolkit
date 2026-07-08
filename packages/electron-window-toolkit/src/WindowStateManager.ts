@@ -379,7 +379,14 @@ class WindowStateManager {
     if (this.stateChangeTimer) {
       clearTimeout(this.stateChangeTimer);
     }
-    this.stateChangeTimer = setTimeout(() => this.updateState(), this.eventHandlingDelay);
+    this.stateChangeTimer = setTimeout(() => {
+      // Update the in-memory state and flush it to disk. Debouncing the write
+      // here keeps persistence robust against hard process kills (e.g. an OS
+      // shutdown that terminates the process without a clean 'close'/'closed'),
+      // where relying on the 'closed' handler alone would lose the last bounds.
+      this.updateState();
+      this.saveStateAsync();
+    }, this.eventHandlingDelay);
   };
 
   private closeHandler = (): void => {

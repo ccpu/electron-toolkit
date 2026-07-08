@@ -16,7 +16,11 @@ class PortManager {
   constructor() {
     this.usedPorts = new Set<number>();
     this.basePort = 5173; // Default starting port for Vite
-    this.maxAttempts = 100; // Maximum number of ports to try
+    // Scan a wide span so we can escape OS-reserved port ranges. On Windows,
+    // Hyper-V/WSL/Docker reserve large contiguous TCP ranges (often several
+    // hundred ports starting around 5000) that all fail to bind with EACCES.
+    // A small limit here would give up before clearing such a block.
+    this.maxAttempts = 1000; // Maximum number of ports to try
   }
 
   /**
@@ -65,7 +69,9 @@ class PortManager {
     }
 
     throw new Error(
-      `Unable to find an available port after ${this.maxAttempts} attempts`,
+      `Unable to find an available port in range ${startPort}-${currentPort - 1} ` +
+        `after ${this.maxAttempts} attempts. On Windows, check for OS-reserved ` +
+        `ranges with "netsh interface ipv4 show excludedportrange protocol=tcp".`,
     );
   }
 
