@@ -1,5 +1,15 @@
 # electron-window-toolkit
 
+## 4.1.0
+
+### Minor Changes
+
+- add renderer and theme provider with dark mode support
+
+### Patch Changes
+
+- bump version to 4.0.1
+
 ## 4.0.0
 
 ### Major Changes
