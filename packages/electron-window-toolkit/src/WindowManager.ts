@@ -1,10 +1,9 @@
 import type { ModuleContext, WindowConfig, WindowOptions } from './types/common';
 import type { ZoomManager } from './ZoomManager';
 
-import process from 'node:process';
 import deepmerge from '@fastify/deepmerge';
 
-import { BrowserWindow } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import { WindowStateManager } from './WindowStateManager';
 import { createZoomManager } from './ZoomManager';
 
@@ -55,13 +54,13 @@ class WindowManager {
     if (!this.#windowStateManagers[windowName]) {
       this.#windowStateManagers[windowName] = new WindowStateManager({
         file: `${windowName}-window-state.json`,
-        path: process.cwd(),
+        path: app.getPath('userData'),
       });
     }
     return this.#windowStateManagers[windowName]!;
   }
 
-  async init({ app }: ModuleContext): Promise<BrowserWindow> {
+  async init(_context: ModuleContext): Promise<BrowserWindow> {
     await app.whenReady();
 
     // Create the main window on startup
