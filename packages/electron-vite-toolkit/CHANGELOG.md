@@ -1,5 +1,12 @@
 # electron-vite-toolkit
 
+## 0.6.1
+
+### Patch Changes
+
+- mock app.getPath in tests
+- update productName to 'electron-toolkit-app'
+
 ## 0.6.0
 
 ### Minor Changes
