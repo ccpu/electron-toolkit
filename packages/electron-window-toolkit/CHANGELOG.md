@@ -1,5 +1,11 @@
 # electron-window-toolkit
 
+## 4.2.1
+
+### Patch Changes
+
+- improve Windows window state recovery
+
 ## 4.2.0
 
 ### Minor Changes
