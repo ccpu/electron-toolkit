@@ -1,5 +1,11 @@
 # electron-vite-toolkit
 
+## 2.1.1
+
+### Patch Changes
+
+- f821be9: new release
+
 ## 2.1.0
 
 ### Minor Changes
