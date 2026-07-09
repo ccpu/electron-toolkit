@@ -13,7 +13,12 @@ const outputDir = path.resolve(process.cwd(), 'dist');
  * @returns {import('rollup').RollupOptions} The Rollup configuration object
  */
 export function defineConfig(options = {}) {
-  const { includeAllFiles, minify = true, sourcemap = false, ...restOfOptions } = options;
+  const {
+    includeAllFiles,
+    minify = false,
+    sourcemap = false,
+    ...restOfOptions
+  } = options;
 
   // For all TypeScript files in 'src', excluding declaration files.
   let entryPoints;
