@@ -1,5 +1,11 @@
 # electron-ipc-bridge
 
+## 1.5.0
+
+### Minor Changes
+
+- 4079124: new release
+
 ## 1.4.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # electron-utilities
 
+## 1.2.0
+
+### Minor Changes
+
+- 4079124: new release
+
 ## 1.1.0
 
 ### Minor Changes
