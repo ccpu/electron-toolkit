@@ -1,5 +1,16 @@
 # electron-vite-toolkit
 
+## 2.2.0
+
+### Minor Changes
+
+- 4079124: new release
+
+### Patch Changes
+
+- Updated dependencies [4079124]
+  - electron-utilities@1.2.0
+
 ## 2.1.1
 
 ### Patch Changes

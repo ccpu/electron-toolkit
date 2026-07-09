@@ -1,5 +1,11 @@
 # electron-window-toolkit
 
+## 4.3.0
+
+### Minor Changes
+
+- 4079124: new release
+
 ## 4.2.1
 
 ### Patch Changes
