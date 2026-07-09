@@ -20,7 +20,7 @@ class PortManager {
     // Hyper-V/WSL/Docker reserve large contiguous TCP ranges (often several
     // hundred ports starting around 5000) that all fail to bind with EACCES.
     // A small limit here would give up before clearing such a block.
-    this.maxAttempts = 1000; // Maximum number of ports to try
+    this.maxAttempts = 2000; // Maximum number of ports to try
   }
 
   /**

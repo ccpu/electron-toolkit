@@ -30,21 +30,33 @@ class WindowManager {
 
   readonly #mainWindowName: string;
   readonly #defaultWindowOptions: WindowOptions | undefined;
+  /** Default for whether window position (x/y) is persisted and restored. */
+  #trackWindowPosition: boolean;
+  /** Per-window position-tracking overrides, keyed by window name. */
+  readonly #windowPositionTracking: Record<string, boolean> = {};
 
   constructor({
     initConfig,
     openDevTools = false,
     defaultWindowOptions,
+    trackWindowPosition = true,
   }: {
     initConfig: WindowManagerInitConfig;
     openDevTools?: boolean;
     defaultWindowOptions?: WindowOptions;
+    /**
+     * Whether to persist and restore each window's position (x/y). Window size
+     * is always tracked. Can be toggled at runtime via
+     * {@link WindowManager.setPositionTracking}. Defaults to `true`.
+     */
+    trackWindowPosition?: boolean;
   }) {
     this.#windowConfigs = initConfig.windows;
     this.#openDevTools = openDevTools;
     this.#zoomManager = createZoomManager();
     this.#mainWindowName = initConfig.mainWindowName ?? 'main';
     this.#defaultWindowOptions = defaultWindowOptions;
+    this.#trackWindowPosition = trackWindowPosition;
   }
 
   /**
@@ -55,6 +67,8 @@ class WindowManager {
       this.#windowStateManagers[windowName] = new WindowStateManager({
         file: `${windowName}-window-state.json`,
         path: app.getPath('userData'),
+        trackPosition:
+          this.#windowPositionTracking[windowName] ?? this.#trackWindowPosition,
       });
     }
     return this.#windowStateManagers[windowName]!;
@@ -252,6 +266,64 @@ class WindowManager {
 
   getZoomMenuItems(): Electron.MenuItemConstructorOptions[] {
     return this.#zoomManager.getZoomMenuItems();
+  }
+
+  /**
+   * Enables or disables position (x/y) tracking for a single window. Window
+   * size continues to be tracked either way. The setting applies whether or not
+   * the window has been created yet, and persists for future re-creations.
+   *
+   * @param windowName The name of the window to configure.
+   * @param enabled Whether position tracking should be enabled.
+   */
+  setWindowsPositionTracking(windowName: string, enabled: boolean): void {
+    this.#windowPositionTracking[windowName] = enabled;
+    this.#windowStateManagers[windowName]?.setPositionTracking(enabled);
+  }
+
+  /** Enables position tracking for a single window. */
+  enableWindowsPositionTracking(windowName: string): void {
+    this.setWindowsPositionTracking(windowName, true);
+  }
+
+  /** Disables position tracking for a single window. */
+  disableWindowsPositionTracking(windowName: string): void {
+    this.setWindowsPositionTracking(windowName, false);
+  }
+
+  /**
+   * Returns whether position tracking is currently enabled for a window,
+   * falling back to the manager-wide default when no per-window override is set.
+   */
+  isWindowsPositionTrackingEnabled(windowName: string): boolean {
+    return this.#windowPositionTracking[windowName] ?? this.#trackWindowPosition;
+  }
+
+  /**
+   * Enables or disables position (x/y) tracking for all windows at once. This
+   * updates the manager-wide default (used for windows created later), clears
+   * any per-window overrides, and applies the setting to every existing window.
+   *
+   * @param enabled Whether position tracking should be enabled.
+   */
+  setPositionTracking(enabled: boolean): void {
+    this.#trackWindowPosition = enabled;
+    for (const key of Object.keys(this.#windowPositionTracking)) {
+      delete this.#windowPositionTracking[key];
+    }
+    for (const stateManager of Object.values(this.#windowStateManagers)) {
+      stateManager.setPositionTracking(enabled);
+    }
+  }
+
+  /** Enables position tracking for all windows. */
+  enablePositionTracking(): void {
+    this.setPositionTracking(true);
+  }
+
+  /** Disables position tracking for all windows. */
+  disablePositionTracking(): void {
+    this.setPositionTracking(false);
   }
 }
 

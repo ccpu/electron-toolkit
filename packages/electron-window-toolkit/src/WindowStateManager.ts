@@ -33,17 +33,34 @@ interface WindowStateManagerOptions {
   defaultWidth?: number;
   defaultHeight?: number;
   defaultZoomFactor?: number;
+  /**
+   * Whether the window position (x/y) should be persisted and restored.
+   * When disabled, only the size is tracked and the position is left to the
+   * default provided by the caller/Electron. Defaults to `true`.
+   */
+  trackPosition?: boolean;
 }
 
 const EVENT_HANDLING_DELAY = 100;
 const JSON_INDENT = 2;
 const DISPLAY_MARGIN = 100;
 const CENTER_POINT_DIVISOR = 2;
+/**
+ * Minimum number of pixels (per axis) of the window that must remain on a
+ * display for its saved position to be considered restorable. Requiring full
+ * containment instead would "correct" windows the user deliberately parked
+ * overlapping a screen edge (e.g. a floating bar over the taskbar, or a window
+ * straddling two monitors), snapping them away from their saved spot on every
+ * launch.
+ */
+const MIN_VISIBLE_ON_DISPLAY = 32;
 
 class WindowStateManager {
   private state: WindowState = {} as WindowState;
   private winRef: BrowserWindow | null = null;
   private stateChangeTimer: NodeJS.Timeout | null = null;
+  /** Whether the window position (x/y) is currently being tracked. */
+  private trackPosition: boolean;
   private readonly eventHandlingDelay = EVENT_HANDLING_DELAY;
   private readonly config: {
     file: string;
@@ -70,6 +87,8 @@ class WindowStateManager {
       defaultZoomFactor: options.defaultZoomFactor,
     };
 
+    this.trackPosition = options.trackPosition !== false;
+
     this.fullStoreFileName = path.join(this.config.path, this.config.file);
 
     // Load previous state
@@ -88,6 +107,18 @@ class WindowStateManager {
       this.state &&
         Number.isInteger(this.state.x) &&
         Number.isInteger(this.state.y) &&
+        Number.isInteger(this.state.width) &&
+        this.state.width !== undefined &&
+        this.state.width > 0 &&
+        Number.isInteger(this.state.height) &&
+        this.state.height !== undefined &&
+        this.state.height > 0,
+    );
+  }
+
+  private hasSize(): boolean {
+    return Boolean(
+      this.state &&
         Number.isInteger(this.state.width) &&
         this.state.width !== undefined &&
         this.state.width > 0 &&
@@ -117,17 +148,30 @@ class WindowStateManager {
     width: number;
     height: number;
   }): boolean {
-    // Check if window is completely within the display bounds
-    return (
-      this.state.x !== undefined &&
-      this.state.y !== undefined &&
-      this.state.width !== undefined &&
-      this.state.height !== undefined &&
-      this.state.x >= bounds.x &&
-      this.state.y >= bounds.y &&
-      this.state.x + this.state.width <= bounds.x + bounds.width &&
-      this.state.y + this.state.height <= bounds.y + bounds.height
-    );
+    // The window counts as "within" the display when enough of it is visible
+    // to see and grab it — not only when it is completely contained. Partial
+    // overhang past a screen edge is a position the user chose; preserve it.
+    if (
+      this.state.x === undefined ||
+      this.state.y === undefined ||
+      this.state.width === undefined ||
+      this.state.height === undefined
+    ) {
+      return false;
+    }
+
+    const visibleWidth =
+      Math.min(this.state.x + this.state.width, bounds.x + bounds.width) -
+      Math.max(this.state.x, bounds.x);
+    const visibleHeight =
+      Math.min(this.state.y + this.state.height, bounds.y + bounds.height) -
+      Math.max(this.state.y, bounds.y);
+
+    // Windows smaller than the threshold must simply be mostly visible.
+    const requiredWidth = Math.min(MIN_VISIBLE_ON_DISPLAY, this.state.width);
+    const requiredHeight = Math.min(MIN_VISIBLE_ON_DISPLAY, this.state.height);
+
+    return visibleWidth >= requiredWidth && visibleHeight >= requiredHeight;
   }
 
   private findBestDisplay(): Electron.Display | null {
@@ -301,8 +345,10 @@ class WindowStateManager {
     try {
       const winBounds = targetWindow.getBounds();
       if (this.isNormal(targetWindow)) {
-        this.state.x = winBounds.x;
-        this.state.y = winBounds.y;
+        if (this.trackPosition) {
+          this.state.x = winBounds.x;
+          this.state.y = winBounds.y;
+        }
         this.state.width = winBounds.width;
         this.state.height = winBounds.height;
       }
@@ -399,18 +445,59 @@ class WindowStateManager {
     this.saveState();
   };
 
+  /**
+   * Applies `bounds` to the window, compensating for two Windows quirks:
+   * on displays with fractional DPI scaling (e.g. 125%) a single `setBounds`
+   * can land a pixel or two off after the DIP↔physical round-trip, and
+   * non-resizable windows can ignore the size portion of the call. If the
+   * first attempt misses, re-apply once with resizing temporarily enabled.
+   */
+  private applyBounds(
+    win: BrowserWindow,
+    bounds: { x: number; y: number; width: number; height: number },
+  ): void {
+    win.setBounds(bounds);
+
+    const actual = win.getBounds();
+    if (
+      actual.x === bounds.x &&
+      actual.y === bounds.y &&
+      actual.width === bounds.width &&
+      actual.height === bounds.height
+    ) {
+      return;
+    }
+
+    const wasResizable = win.isResizable();
+    if (!wasResizable) {
+      win.setResizable(true);
+    }
+    win.setBounds(bounds);
+    if (!wasResizable) {
+      win.setResizable(false);
+    }
+  }
+
   public manage(win: BrowserWindow): void {
     // Validate state now that screen module is available
     this.validateState();
 
     // Set window bounds first if we have valid position/size
     if (this.hasBounds()) {
-      win.setBounds({
-        x: this.state.x!,
-        y: this.state.y!,
-        width: this.state.width,
-        height: this.state.height,
-      });
+      if (this.trackPosition) {
+        this.applyBounds(win, {
+          x: this.state.x!,
+          y: this.state.y!,
+          width: this.state.width!,
+          height: this.state.height!,
+        });
+      } else {
+        // Position tracking disabled: restore size only, leave position to default.
+        win.setSize(this.state.width!, this.state.height!);
+      }
+    } else if (!this.trackPosition && this.hasSize()) {
+      // No stored position, but we still have a valid size to restore.
+      win.setSize(this.state.width!, this.state.height!);
     }
 
     // Handle maximized state - do this after setting bounds to ensure correct display
@@ -471,13 +558,27 @@ class WindowStateManager {
     }
   }
 
+  /**
+   * Enables or disables tracking of the window position (x/y). When disabled,
+   * the position is no longer persisted or restored; the size continues to be
+   * tracked. Useful for temporarily pinning a window to a caller-defined
+   * position without persisting it.
+   */
+  public setPositionTracking(enabled: boolean): void {
+    this.trackPosition = enabled;
+  }
+
+  public isPositionTrackingEnabled(): boolean {
+    return this.trackPosition;
+  }
+
   // Getters for state properties
   public get x(): number | undefined {
-    return this.state.x;
+    return this.trackPosition ? this.state.x : undefined;
   }
 
   public get y(): number | undefined {
-    return this.state.y;
+    return this.trackPosition ? this.state.y : undefined;
   }
 
   public get width(): number | undefined {
