@@ -1,5 +1,11 @@
 # @app/widget-renderer
 
+## 0.0.7
+
+### Patch Changes
+
+- @internal/ipc@0.0.8
+
 ## 0.0.6
 
 ### Patch Changes

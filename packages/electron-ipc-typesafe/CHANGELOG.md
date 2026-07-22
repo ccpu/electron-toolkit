@@ -1,5 +1,11 @@
 # electron-ipc-bridge
 
+## 1.5.1
+
+### Patch Changes
+
+- 69b17db: set default minify option to false
+
 ## 1.5.0
 
 ### Minor Changes

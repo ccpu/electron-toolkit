@@ -1,5 +1,11 @@
 # electron-window-toolkit
 
+## 4.3.1
+
+### Patch Changes
+
+- 69b17db: set default minify option to false
+
 ## 4.3.0
 
 ### Minor Changes

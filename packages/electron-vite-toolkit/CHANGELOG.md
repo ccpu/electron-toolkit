@@ -1,5 +1,13 @@
 # electron-vite-toolkit
 
+## 2.2.1
+
+### Patch Changes
+
+- 69b17db: set default minify option to false
+- Updated dependencies [69b17db]
+  - electron-utilities@1.2.1
+
 ## 2.2.0
 
 ### Minor Changes
